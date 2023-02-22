@@ -1,0 +1,70 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+
+import Home from 'Home';
+
+import DemoOutlet from 'Demo/DemoOutlet';
+import DemoIndex from 'Demo/Index';
+
+import PopupEdgeDemo from 'Demo/Pages/PopupEdgeDemo';
+import SwitchDemo from 'Demo/Pages/SwitchDemo';
+import SliderDemo from 'Demo/Pages/SliderDemo';
+import FetcherDemo from 'Demo/Pages/FetcherDemo';
+import InputTextDemo from 'Demo/Pages/InputTextDemo';
+import TextShortenerDemo from 'Demo/Pages/TextShortenerDemo';
+
+import './index.css';
+
+const demoPages = [{
+    path: 'popup-edge',
+    caption: 'Components/popup:Edge',
+    shortCaption: 'Ed',
+    element: <PopupEdgeDemo/>
+}, {
+    path: 'switch',
+    caption: 'Components/toggle:Switch',
+    shortCaption: 'Sw',
+    element: <SwitchDemo/>
+}, {
+    path: 'slider-range',
+    caption: 'Components/slider:Range',
+    shortCaption: 'Rg',
+    element: <SliderDemo/>
+}, {
+    path: 'fetcher',
+    caption: 'Components/hooks:useFetcher',
+    shortCaption: 'uF',
+    element: <FetcherDemo/>
+}, {
+    path: 'input-text',
+    caption: 'Components/input:Text',
+    shortCaption: 'Tx',
+    element: <InputTextDemo/>
+}, {
+    path: 'text-shortener',
+    caption: 'Components/animate:TextShortener',
+    shortCaption: 'TS',
+    element: <TextShortenerDemo/>
+}]
+
+const router = createBrowserRouter([{
+    path: "/",
+    element: <Home/>
+}, {
+    path: 'demo',
+    element: <DemoOutlet pages={
+        demoPages.map(({path, caption, shortCaption}) => ({path, caption, shortCaption}))
+    }/>,
+    children: [{
+        index: true,
+        element: <DemoIndex/>
+    }, ...demoPages.map(({path, element}) => ({path, element}))]
+}]);
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+    .render(
+        <React.StrictMode>
+            <RouterProvider router={router}/>
+        </React.StrictMode>
+    );
