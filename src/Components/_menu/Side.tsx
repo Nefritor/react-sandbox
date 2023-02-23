@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 
 import {BsChevronCompactLeft, BsChevronCompactRight} from 'react-icons/bs';
 import {RiHomeLine} from 'react-icons/ri';
@@ -18,16 +18,12 @@ interface ISideProps {
 export default function Side(props: ISideProps): JSX.Element {
     const [isExtended, setIsExtended] = useState(false);
 
-    useEffect(() => {
-        console.log('isExtended', isExtended)
-    }, [isExtended])
-
     return (
         <div className='p-[5px]
                         shrink-0
                         w-[300px]
                         dark:bg-gray-800
-                        dark:text-white
+                        dark:text-gray-400
                         bg-gray-200
                         flex
                         flex-col'
@@ -38,17 +34,23 @@ export default function Side(props: ISideProps): JSX.Element {
             <div className='flex
                             items-center
                             justify-center
-                            p-[5px]
+                            relative
+                            h-[34px]
                             my-2
                             text-xl
                             text-center
                             cursor-pointer'
                  onClick={() => props.onItemClick(null)}>
-                {
-                    isExtended ?
-                        props.title :
-                        <RiHomeLine className='m-[4px]'/>
-                }
+                <RiHomeLine className='m-[4px] absolute transition-opacity duration-300'
+                            style={{
+                                opacity: isExtended ? 0 : 1
+                            }}/>
+                <span className='absolute transition-opacity duration-300'
+                      style={{
+                          opacity: isExtended ? 1 : 0
+                      }}>
+                    {props.title}
+                </span>
             </div>
             <div className='flex
                             flex-col
@@ -57,14 +59,33 @@ export default function Side(props: ISideProps): JSX.Element {
                     props.items.map(({key, caption, shortCaption}) => (
                         <div key={key}
                              className='p-1
-                                        text-center
+                                        h-[30px]
+                                        relative
+                                        overflow-hidden
+                                        flex
+                                        items-center
+                                        justify-center
                                         rounded-md
                                         cursor-pointer
                                         hover:bg-gray-100
-                                        dark:text-white
+                                        dark:text-gray-400
                                         dark:hover:bg-gray-900'
                              onClick={() => props.onItemClick(key)}>
-                            {isExtended ? caption : shortCaption}
+                            <>
+                                <span className='absolute transition-opacity duration-300'
+                                      style={{
+                                          opacity: isExtended ? 1 : 0
+                                      }}>
+                                    {caption}
+                                </span>
+                                <span className='absolute transition-opacity duration-300'
+                                      style={{
+                                          opacity: isExtended ? 0 : 1
+                                      }}>
+                                    {shortCaption}
+                                </span>
+                            </>
+
                         </div>
                     ))
                 }
@@ -92,6 +113,7 @@ export default function Side(props: ISideProps): JSX.Element {
                                 h-[40px]
                                 rounded-xl
                                 text-2xl
+                                dark:bg-gray-700
                                 text-gray-500'>
                     {
                         isExtended ?

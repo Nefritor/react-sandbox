@@ -23,7 +23,7 @@ export default function DemoOutlet(props: IDemoOutletProps) {
     })), [props.pages]);
 
     const onItemClick = useCallback((key: string | null) => {
-        navigate(key || '/demo/');
+        navigate(key || '/demo');
     }, [navigate]);
 
     return (

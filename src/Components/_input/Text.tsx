@@ -16,9 +16,9 @@ type TBackground =
 const getBackgroundClass = (value?: TBackground) => {
     switch (value) {
         case 'contrast':
-            return 'bg-transparent border-b-2 border-gray-300';
+            return 'rounded-none bg-transparent border-b-2 border-gray-300 dark:border-gray-500';
         default:
-            return 'rounded-md';
+            return 'rounded-md shadow-sm dark:bg-gray-600';
     }
 }
 
@@ -35,21 +35,21 @@ export default function Text(props: IInputProps) {
         <div className='flex items-baseline'>
             {
                 props.label &&
-                <div className='mr-3 text-zinc-500'>{props.label}</div>
+                <div className='mr-3 text-zinc-500 dark:text-gray-400'>{props.label}</div>
             }
             <div className={`relative ${props.placeholder ? 'mt-4' : ''}`}
                  onClick={() => inputRef.current?.focus()}>
                 {
                     props.placeholder &&
                     <div
-                        className={`absolute px-2 ${props.value ? 'top-[-1rem] text-xs text-zinc-500' : 'text-zinc-400 top-0'}`}
+                        className={`absolute px-2 ${props.value ? 'top-[-1rem] text-xs text-zinc-500 dark:text-gray-400' : 'text-zinc-400 dark:text-gray-500 top-0'}`}
                         style={{
                             transition: 'top .15s ease, font-size .15s ease, color .15s ease'
                         }}>
                         {props.placeholder}
                     </div>
                 }
-                <input className={`outline-none px-2 ${getBackgroundClass(props.background)}`}
+                <input className={`outline-none px-2 dark:text-gray-400 ${getBackgroundClass(props.background)}`}
                        ref={inputRef}
                        type="text"
                        value={props.value}

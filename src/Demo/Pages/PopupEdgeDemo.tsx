@@ -14,7 +14,7 @@ export default function PopupEdgeDemo() {
     const [leftValue, setLeftValue] = useState('lol');
     const [visibilityBottom, setVisibilityBottom] = useState(false);
     const [bottomValue, setBottomValue] = useState('lol');
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains('dark'));
 
     const getLayers = (): ILayer[] => {
         return [{
@@ -111,7 +111,7 @@ export default function PopupEdgeDemo() {
                     'flex-grow'
                 )
             }>
-                <span className='text-xl dark:text-white'>Direction: {direction}</span>
+                <span className='text-xl dark:text-gray-400'>Direction: {direction}</span>
                 <div className={clsx('flex', {'flex-col': config.isVertical})}>
                     {config.isVerse ? <>{getPopup()} {getButtons()}</> : <>{getButtons()} {getPopup()}</>}
                 </div>
@@ -131,7 +131,7 @@ export default function PopupEdgeDemo() {
             )
         }>
             <div className='p-3 flex items-center gap-2'>
-                <span className='dark:text-white'>Dark mode</span>
+                <span className='dark:text-gray-400'>Dark mode</span>
                 <Switch value={darkMode}
                         onChange={() => setDarkMode((prev) => !prev)}/>
             </div>
@@ -146,7 +146,7 @@ export default function PopupEdgeDemo() {
                     'shadow-md'
                 )
             }>
-                <div className='dark:text-white text-3xl text-center mb-3'>
+                <div className='dark:text-gray-400 text-3xl text-center mb-3'>
                     Component demo: PopupEdge
                 </div>
                 <div className='flex gap-3 flex-wrap'>

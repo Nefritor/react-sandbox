@@ -28,7 +28,7 @@ export default function Switch(props: IProps): JSX.Element {
 
     const isMoved = useRef(false);
 
-    const [position, setPosition] = useState<number>(0);
+    const [position, setPosition] = useState<number>(props.value ? sliderWidth : 0);
     const startPosition = useRef<number>(0);
 
     const getEndPosition = useCallback((pos: number) => {
@@ -104,7 +104,10 @@ export default function Switch(props: IProps): JSX.Element {
     }, [position, sliderWidth]);
 
     useEffect(() => {
-        setPosition(props.value ? sliderWidth : 0)
+        const newPosition = props.value ? sliderWidth : 0;
+        if (position !== newPosition) {
+            setPosition(newPosition);
+        }
     }, [props.value, sliderWidth]);
 
     return (

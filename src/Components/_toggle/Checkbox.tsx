@@ -15,7 +15,7 @@ export default function Checkbox(props: ICheckboxProps) {
                    readOnly={true}/>
             {
                 props.label &&
-                <div className='ml-3'>{props.label}</div>
+                <div className='ml-3 dark:text-gray-400'>{props.label}</div>
             }
         </div>
     )

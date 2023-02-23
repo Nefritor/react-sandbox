@@ -58,23 +58,24 @@ type TAdvancedStateType =
     | 'success'
     | 'fail';
 
-const getBGColor = (state: TAdvancedStateType) => {
+const getBGClass = (state: TAdvancedStateType) => {
     switch (state) {
         case 'loading':
-            return '#d1d5db';
+            return 'bg-gray-300 dark:bg-gray-700';
         case 'success':
-            return '#81c784';
+            return 'bg-[#81c784] dark:bg-[#345035]';
         case 'fail':
-            return '#e57373';
+            return 'bg-[#e57373] dark:bg-[#492525]';
         default:
             return '';
     }
 }
 
 const getIcon = (state: TAdvancedStateType) => {
+    const isDarkMode = document.documentElement.classList.contains('dark')
     switch (state) {
         case 'loading':
-            return <ReactLoading type='spin' color='#000' height={20} width={20} className='m-[2px]'/>;
+            return <ReactLoading type='spin' color={isDarkMode ? '#9ca3af' : '#000'} height={20} width={20} className='m-[2px]'/>;
         case 'success':
             return <BiCheckCircle/>;
         case 'fail':
@@ -161,12 +162,11 @@ const FetcherNotificationElement = memo((props: IElementProps): JSX.Element => {
 
     return (
         <div ref={ref}
-             className='w-fit px-2 gap-2 rounded-md flex absolute shadow-md right-0 cursor-pointer select-none overflow-hidden hover:brightness-95 active:brightness-90'
+             className={'w-fit px-2 gap-2 rounded-md flex absolute shadow-md right-0 cursor-pointer select-none overflow-hidden hover:brightness-95 active:brightness-90 dark:text-gray-400 ' + getBGClass(stateType)}
              style={{
                  bottom: props.offset,
                  height: 55,
                  right: isVisible ? 0 : (ref.current !== null ? -ref.current.offsetWidth - 50 : -500),
-                 backgroundColor: getBGColor(stateType),
                  transition: 'right .3s ease, bottom .5s ease, filter .3s ease, background-color .5s ease'
              }}
              onClick={onClick}>
