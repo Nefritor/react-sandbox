@@ -34,7 +34,8 @@ export default function Navigation(props: ISideProps): JSX.Element {
                     <RiHomeLine/>
                 </div>
                 <div className='flex
-                                scrollbar-thin'>
+                                overflow-x-auto
+                                scrollbar-none'>
                     {
                         props.items.map((item: INavigationItem) => (
                             <div className={
