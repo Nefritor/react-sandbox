@@ -1,7 +1,6 @@
-import {Outlet, useNavigate} from 'react-router-dom';
-
-import {Side} from 'Components/menu';
+import {Outlet, useNavigate, useLocation} from 'react-router-dom';
 import {useCallback, useMemo} from 'react';
+import {Navigation} from 'Components/menu';
 
 interface IPage {
     path: string;
@@ -15,6 +14,7 @@ interface IDemoOutletProps {
 
 export default function DemoOutlet(props: IDemoOutletProps) {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const items = useMemo(() => props.pages.map((page) => ({
         key: page.path,
@@ -23,17 +23,16 @@ export default function DemoOutlet(props: IDemoOutletProps) {
     })), [props.pages]);
 
     const onItemClick = useCallback((key: string | null) => {
-        navigate(key || '/demo');
+        const newKey = '/demo/' + (key || '')
+        navigate(newKey);
     }, [navigate]);
 
     return (
         <div className='flex w-screen h-screen'>
-            <Side title='DEMO'
-                  items={items}
-                  onItemClick={onItemClick}/>
-            <div className='grow overflow-hidden shadow-xl'>
-                <Outlet/>
-            </div>
+            <Outlet/>
+            <Navigation selectedKey={location.pathname.replace('/demo/', '') || null}
+                        items={items}
+                        onItemClick={onItemClick}/>
         </div>
     );
 }

@@ -19,32 +19,32 @@ import './index.css';
 const demoPages = [{
     path: 'popup-edge',
     caption: 'Components/popup:Edge',
-    shortCaption: 'Ed',
+    shortCaption: 'Edge',
     element: <PopupEdgeDemo/>
 }, {
     path: 'switch',
     caption: 'Components/toggle:Switch',
-    shortCaption: 'Sw',
+    shortCaption: 'Switch',
     element: <SwitchDemo/>
 }, {
     path: 'slider-range',
     caption: 'Components/slider:Range',
-    shortCaption: 'Rg',
+    shortCaption: 'Range',
     element: <SliderDemo/>
 }, {
     path: 'fetcher',
     caption: 'Components/hooks:useFetcher',
-    shortCaption: 'uF',
+    shortCaption: 'useFetcher',
     element: <FetcherDemo/>
 }, {
     path: 'input-text',
     caption: 'Components/input:Text',
-    shortCaption: 'Tx',
+    shortCaption: 'Text',
     element: <InputTextDemo/>
 }, {
     path: 'text-shortener',
     caption: 'Components/animate:TextShortener',
-    shortCaption: 'TS',
+    shortCaption: 'TextShortener',
     element: <TextShortenerDemo/>
 }]
 
