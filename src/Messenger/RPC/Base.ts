@@ -23,7 +23,7 @@ const servicePort = 3333;
 const isSecured = window.location.protocol === 'https:';
 
 const getRequestUrl = (method: string) => `${window.location.protocol}//${window.location.hostname}:${servicePort}/${method}`;
-const getWebSocketUrl = (params: string) => `ws://${window.location.hostname}:${servicePort}/${params}`;
+const getWebSocketUrl = (params: string) => `${isSecured ? 'wss:' : 'ws:'}//${window.location.hostname}:${servicePort}/${params}`;
 
 export const get = (method: string) => {
     return axios.get(getRequestUrl(method));
