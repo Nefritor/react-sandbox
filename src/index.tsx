@@ -13,6 +13,9 @@ import SliderDemo from 'Demo/Pages/SliderDemo';
 import FetcherDemo from 'Demo/Pages/FetcherDemo';
 import InputTextDemo from 'Demo/Pages/InputTextDemo';
 import TextShortenerDemo from 'Demo/Pages/TextShortenerDemo';
+import MessengerDemo from 'Demo/Pages/MessengerDemo';
+
+import MessengerIndex from 'Messenger/Index';
 
 import './index.css';
 
@@ -46,6 +49,11 @@ const demoPages = [{
     caption: 'Components/animate:TextShortener',
     shortCaption: 'TextShortener',
     element: <TextShortenerDemo/>
+}, {
+    path: 'messenger',
+    caption: 'Messenger/Index',
+    shortCaption: 'Messenger',
+    element: <MessengerDemo/>
 }]
 
 const router = createBrowserRouter([{
@@ -60,11 +68,12 @@ const router = createBrowserRouter([{
         index: true,
         element: <DemoIndex/>
     }, ...demoPages.map(({path, element}) => ({path, element}))]
+}, {
+    path: 'messenger',
+    element: <MessengerIndex/>
 }]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
     .render(
-        <React.StrictMode>
-            <RouterProvider router={router}/>
-        </React.StrictMode>
+        <RouterProvider router={router}/>
     );

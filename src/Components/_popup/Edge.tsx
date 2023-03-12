@@ -30,6 +30,9 @@ export default function Edge(props: IProps) {
                      clsx(
                          'absolute',
                          'transition-transform',
+                         (direction === 'top' || direction === 'bottom') ?
+                             'w-[inherit]' :
+                             'h-[inherit]',
                          () => {
                              switch (direction) {
                                  case 'top':
@@ -59,13 +62,7 @@ export default function Edge(props: IProps) {
     const isVerse = direction === 'top' || direction === 'left';
 
     return (
-        <div className={
-            clsx(
-                'relative',
-                'h-full',
-                'w-full'
-            )
-        }>
+        <div className='relative h-full'>
             <div className={
                 clsx(
                     isVertical ? 'w-full' : 'h-full',

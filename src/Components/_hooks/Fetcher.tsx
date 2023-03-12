@@ -1,7 +1,9 @@
-import React, {forwardRef, memo, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
+import React, {forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
 import ReactLoading from 'react-loading';
 import getUUID from 'react-uuid';
 import {BiCheckCircle, BiErrorCircle} from "react-icons/bi";
+import clsx from 'clsx';
+import timeout from 'Utils/Timeout';
 
 interface IElementProps extends IFetcherData {
     offset: number;
@@ -11,6 +13,7 @@ interface IElementProps extends IFetcherData {
 
 interface IStateConfig {
     caption: string;
+    blockClass?: string;
 }
 
 interface IAdvancedStateConfig extends IStateConfig {
@@ -21,6 +24,8 @@ interface INotificationConfig {
     loading: IStateConfig;
     success?: IAdvancedStateConfig;
     fail?: IAdvancedStateConfig;
+    showIcon?: boolean;
+    showTimer?: boolean;
 }
 
 interface INotificationsListProps {
@@ -31,8 +36,8 @@ interface IFetcherConfig {
     itemsGap: number;
 }
 
-interface IFetcherData {
-    title: string;
+export interface IFetcherData {
+    title?: string;
     config: INotificationConfig;
     onClick?: () => void;
     promise: Promise<void>;
@@ -58,14 +63,14 @@ type TAdvancedStateType =
     | 'success'
     | 'fail';
 
-const getBGClass = (state: TAdvancedStateType) => {
+const getBGClass = (state: TAdvancedStateType, config: INotificationConfig) => {
     switch (state) {
         case 'loading':
-            return 'bg-gray-300 dark:bg-gray-700';
+            return config.loading.blockClass || 'bg-gray-300 dark:bg-gray-700';
         case 'success':
-            return 'bg-[#81c784] dark:bg-[#345035]';
+            return config.success?.blockClass || 'bg-[#81c784] dark:bg-[#345035]';
         case 'fail':
-            return 'bg-[#e57373] dark:bg-[#492525]';
+            return config.fail?.blockClass || 'bg-[#e57373] dark:bg-[#492525]';
         default:
             return '';
     }
@@ -75,7 +80,8 @@ const getIcon = (state: TAdvancedStateType) => {
     const isDarkMode = document.documentElement.classList.contains('dark')
     switch (state) {
         case 'loading':
-            return <ReactLoading type='spin' color={isDarkMode ? '#9ca3af' : '#000'} height={20} width={20} className='m-[2px]'/>;
+            return <ReactLoading type='spin' color={isDarkMode ? '#9ca3af' : '#000'} height={20} width={20}
+                                 className='m-[2px]'/>;
         case 'success':
             return <BiCheckCircle/>;
         case 'fail':
@@ -125,22 +131,22 @@ const FetcherNotificationElement = memo((props: IElementProps): JSX.Element => {
 
     const ref = useRef<HTMLDivElement>(null);
 
-    const onClick = () => {
+    const onClick = useCallback(() => {
         if (props.onClick) {
             props.onClick();
         }
         remove();
-    }
+    }, [])
 
-    const remove = () => {
+    const remove = useCallback(() => {
         setIsVisible(false);
         props.onBeforeRemove();
         setTimeout(() => {
             props.onRemove();
         }, 300);
-    };
+    }, []);
 
-    const promiseResult = (type: TAdvancedStateType) => {
+    const promiseResult = useCallback((type: TAdvancedStateType) => {
         if (props.config[type]) {
             setStateType(type);
             if (type !== 'loading') {
@@ -151,39 +157,54 @@ const FetcherNotificationElement = memo((props: IElementProps): JSX.Element => {
         } else {
             remove();
         }
-    }
+    }, []);
 
     useEffect(() => {
-        setIsVisible(true);
-        props.promise
-            .then(() => promiseResult('success'))
-            .catch(() => promiseResult('fail'));
+        setTimeout(() => {
+            setIsVisible(true);
+            props.promise
+                .then(() => promiseResult('success'))
+                .catch(() => promiseResult('fail'));
+        }, 100);
     }, []);
 
     return (
         <div ref={ref}
-             className={'w-fit px-2 gap-2 rounded-md flex absolute shadow-md right-0 cursor-pointer select-none overflow-hidden hover:brightness-95 active:brightness-90 dark:text-gray-400 ' + getBGClass(stateType)}
+             className={clsx(
+                 'w-fit px-2 gap-2 rounded-md flex absolute shadow-md right-0 cursor-pointer select-none overflow-hidden',
+                 'hover:brightness-95 active:brightness-90 dark:text-gray-400',
+                 getBGClass(stateType, props.config)
+             )}
              style={{
-                 bottom: props.offset,
+                 bottom: props.offset + 10,
                  height: 55,
-                 right: isVisible ? 0 : (ref.current !== null ? -ref.current.offsetWidth - 50 : -500),
+                 right: isVisible ? 10 : (ref.current !== null ? -ref.current.offsetWidth - 50 : -500),
                  transition: 'right .3s ease, bottom .5s ease, filter .3s ease, background-color .5s ease'
              }}
              onClick={onClick}>
             <div>
-                <div className='text-xs text-ellipsis overflow-hidden whitespace-nowrap mt-1'>
-                    {props.title}
-                </div>
-                <div>
+                {
+                    props.title &&
+                    <div className='text-xs text-ellipsis overflow-hidden whitespace-nowrap mt-1'>
+                        {props.title}
+                    </div>
+                }
+                <div className='whitespace-nowrap'>
                     {props.config[stateType]?.caption}
                 </div>
             </div>
-            <div className='flex items-center text-2xl mb-3'>
-                {getIcon(stateType)}
-            </div>
-            <div className='absolute text-[10px] right-2 bottom-0.5'>
-                <Timer isPlaying={stateType === 'loading'} showAt={2}/>
-            </div>
+            {
+                (props.config.showIcon === undefined || props.config.showIcon) &&
+                <div className='flex items-center text-2xl mb-3'>
+                    {getIcon(stateType)}
+                </div>
+            }
+            {
+                (props.config.showTimer === undefined || props.config.showTimer) &&
+                <div className='absolute text-[10px] right-2 bottom-0.5'>
+                    <Timer isPlaying={stateType === 'loading'} showAt={2}/>
+                </div>
+            }
         </div>
     )
 })
@@ -208,7 +229,7 @@ const FetcherNotificationList = forwardRef((props: INotificationsListProps, ref:
     }
 
     return (
-        <div className='absolute right-3 bottom-3'>
+        <>
             {
                 notifications.map(({uuid, data}, index, items) => (
                     <FetcherNotificationElement key={uuid}
@@ -221,9 +242,24 @@ const FetcherNotificationList = forwardRef((props: INotificationsListProps, ref:
                                                 onBeforeRemove={() => beforeRemove(uuid)}/>
                 ))
             }
-        </div>
+        </>
     )
 })
+
+export const getNotificationData = (title: string, text: string) => {
+    return {
+        title: title,
+        config: {
+            loading: {
+                caption: text,
+                blockClass: 'bg-gray-600 text-white'
+            },
+            showTimer: false,
+            showIcon: false
+        },
+        promise: timeout()
+    }
+}
 
 export const useFetcher = (config?: IFetcherConfig): [(data: IFetcherData) => void, () => JSX.Element] => {
     const fetcherRef = useRef<IFetcherHandle>(null);

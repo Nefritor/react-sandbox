@@ -1,24 +1,36 @@
-import {Ref, useEffect, useRef} from "react";
+import React, {RefObject, useEffect, useRef} from "react";
+import clsx from 'clsx';
 
-interface IInputProps {
+export interface IInputProps {
     placeholder?: string;
+    absolutePlaceholder?: boolean;
+    staticPlaceholder?: boolean;
     label?: string;
     value: string;
     background?: TBackground;
-    onInit?: (ref: Ref<HTMLInputElement>) => void;
+    inputClassName?: string;
+    onInit?: (ref: RefObject<HTMLInputElement>) => void;
     onChange: (value: string) => void;
+    onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+    onSubmit?: () => void;
+    type?: TType;
+    children?: JSX.Element;
 }
 
 type TBackground =
     | 'default'
     | 'contrast';
 
+type TType =
+    | 'text'
+    | 'password';
+
 const getBackgroundClass = (value?: TBackground) => {
     switch (value) {
         case 'contrast':
             return 'rounded-none bg-transparent border-b-2 border-gray-300 dark:border-gray-500';
         default:
-            return 'rounded-md shadow-sm dark:bg-gray-600';
+            return 'rounded-md dark:bg-gray-600';
     }
 }
 
@@ -32,15 +44,21 @@ export default function Text(props: IInputProps) {
     }, [inputRef]);
 
     return (
-        <div className='flex items-baseline'>
+        <form className='flex grow items-center'
+              onSubmit={(e) => {e.preventDefault(); props.onSubmit?.();}}>
             {
                 props.label &&
-                <div className='mr-3 text-zinc-500 dark:text-gray-400'>{props.label}</div>
+                <div className='mr-3 shrink-0 text-zinc-500 dark:text-gray-400'>{props.label}</div>
             }
-            <div className={`relative ${props.placeholder ? 'mt-4' : ''}`}
+            <div className={clsx(
+                getBackgroundClass(props.background),
+                'dark:text-gray-400 relative flex',
+                [props.inputClassName],
+                {'mt-4': props.placeholder && !props.absolutePlaceholder && !props.staticPlaceholder}
+            )}
                  onClick={() => inputRef.current?.focus()}>
                 {
-                    props.placeholder &&
+                    props.placeholder && (!props.staticPlaceholder || !props.value) &&
                     <div
                         className={`absolute px-2 ${props.value ? 'top-[-1rem] text-xs text-zinc-500 dark:text-gray-400' : 'text-zinc-400 dark:text-gray-500 top-0'}`}
                         style={{
@@ -49,12 +67,18 @@ export default function Text(props: IInputProps) {
                         {props.placeholder}
                     </div>
                 }
-                <input className={`outline-none px-2 dark:text-gray-400 ${getBackgroundClass(props.background)}`}
+                <input className={clsx(
+                    'outline-none px-2 bg-transparent w-full'
+                )}
                        ref={inputRef}
-                       type="text"
+                       type={props.type || 'text'}
                        value={props.value}
+                       onFocus={(e) => props.onFocus?.(e)}
                        onChange={(e) => props.onChange(e.target.value)}/>
+                {
+                    props.children
+                }
             </div>
-        </div>
+        </form>
     )
 }

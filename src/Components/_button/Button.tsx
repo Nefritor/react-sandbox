@@ -1,6 +1,6 @@
 interface IButtonProps {
     className?: string;
-    caption: string;
+    caption: string | JSX.Element;
     onClick: () => void;
 }
 

@@ -1,5 +1,8 @@
-import {useFetcher} from './_hooks/Fetcher';
+import {useFetcher, getNotificationData, IFetcherData} from './_hooks/Fetcher';
 
 export {
-    useFetcher
+    useFetcher,
+    getNotificationData,
+
+    type IFetcherData
 }

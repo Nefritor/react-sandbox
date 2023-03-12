@@ -1,5 +1,6 @@
-import Text from './_input/Text';
+import Text, {IInputProps} from './_input/Text';
 
 export {
-    Text
+    Text,
+    type IInputProps
 }
