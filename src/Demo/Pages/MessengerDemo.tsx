@@ -5,8 +5,8 @@ import Uuid from 'react-uuid';
 import {AES, enc} from 'crypto-ts';
 
 import {Text} from 'Components/input';
-import MessagesList, {IMessage, Sender} from '../../Messenger/Chat/MessagesList/MessagesList';
-import {Button} from '../../Components/button';
+import MessagesList, {IMessage, Sender} from 'Messenger/Chat/MessagesList/MessagesList';
+import {Button} from 'Components/button';
 
 export default function MessengerDemo(): JSX.Element {
     const [secretSender, setSecretSender] = useState('12345');
