@@ -44,11 +44,15 @@ export default function Text(props: IInputProps) {
     }, [inputRef]);
 
     return (
-        <form className='flex grow items-baseline'
+        <form className='flex grow items-end'
               onSubmit={(e) => {e.preventDefault(); props.onSubmit?.();}}>
             {
                 props.label &&
-                <div className='mr-3 shrink-0 text-gray-500 dark:text-gray-400 transition-colors select-none'>{props.label}</div>
+                <div className={clsx(
+                    'mr-3 shrink-0 text-gray-500 dark:text-gray-400 transition-colors select-none pb-1',
+                )}>
+                    {props.label}
+                </div>
             }
             <div className={clsx(
                 getBackgroundClass(props.background),
