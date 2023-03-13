@@ -17,7 +17,7 @@ export default function SecretInput(props: ISecretProps): JSX.Element {
     const getButtons = () => (
         <div className='flex items-center px-1 gap-1'
              onClick={(event) => event.stopPropagation()}>
-            <MdContentCopy className='cursor-pointer text-gray-400 hover:text-gray-600 transition-[color]'
+            <MdContentCopy className='cursor-pointer text-gray-400 hover:brightness-90 transition-colors'
                            onClick={onCopyClick}/>
         </div>
     )

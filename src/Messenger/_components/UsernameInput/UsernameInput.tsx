@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {MdCheck, MdEdit} from 'react-icons/md';
-import {GrRevert} from 'react-icons/gr';
+import {RxReset} from 'react-icons/rx';
 
 import {Button} from 'Components/button';
 import {Text} from 'Components/input';
@@ -35,17 +35,16 @@ export default function UsernameInput(props: IProps): JSX.Element {
                 isEdit ?
                     <div className='flex gap-3 relative items-center'>
                         <Text value={inputValue}
-                              inputClassName='w-[200px] bg-gray-300 shadow-md h-8'
+                              className='w-[200px] bg-gray-300 dark:bg-gray-700 shadow-md h-8 transition-colors'
                               onInit={(ref) => ref.current?.focus()}
                               onChange={setInputValue}>
-                            <Button caption={<MdCheck size={20}/>}
-                                    className='bg-gray-700 hover:bg-gray-600 active:bg-gray-500'
+                            <Button caption={<MdCheck className='text-white dark:text-gray-900 transition-colors' size={20}/>}
+                                    className='bg-gray-700 hover:brightness-95 active:brightness-90 dark:bg-gray-500 transition-colors'
                                     onClick={onConfirm}/>
                         </Text>
                         {
                             inputValue !== props.value &&
-                            <GrRevert className='absolute -right-3 translate-x-full cursor-pointer'
-                                      size={20}
+                            <RxReset className='absolute -right-3 translate-x-full cursor-pointer text-gray-700 dark:text-gray-300 transition-colors'
                                       onClick={() => setIsEdit(false)}/>
                         }
                     </div>
@@ -54,10 +53,13 @@ export default function UsernameInput(props: IProps): JSX.Element {
                                     items-center
                                     cursor-pointer
                                     text-gray-500
+                                    dark:text-gray-400
+                                    hover:brightness-95
                                     text-lg
-                                    hover:text-gray-400
+                                    active:brightness-90
                                     leading-8
-                                    transition-[color]'
+                                    transition-colors
+                                    select-none'
                          onClick={onEdit}>
                         <span>{props.value}</span>
                         &nbsp;

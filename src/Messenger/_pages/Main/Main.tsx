@@ -45,7 +45,7 @@ export default function Main(): JSX.Element {
     }
 
     return (
-        <div className='flex flex-col w-screen h-screen p-3 overflow-hidden relative fixed'>
+        <div className='bg-white dark:bg-gray-900 flex flex-col w-screen h-screen p-3 overflow-hidden relative fixed transition-colors'>
             {getPage(roomData)}
             <Fetcher/>
         </div>

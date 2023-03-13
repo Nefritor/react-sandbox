@@ -15,7 +15,7 @@ import {IWebSocketRef, startWebSocket, updateWebSocketMessage} from 'Messenger/w
 
 
 import {IMessage, IMessageData, Sender, Status} from 'Messenger/interface';
-import {MessagesList, SecretInput} from 'Messenger/components';
+import {MessagesList, SecretInput, ThemeSwitch} from 'Messenger/components';
 
 interface IProps {
     roomId: string;
@@ -200,8 +200,8 @@ export default function Chat(props: IProps): JSX.Element {
         <>
             <div className='flex justify-between items-center mb-3 gap-3'>
                 <div className={clsx(
-                    'text-2xl tracking-widest overflow-hidden',
-                    'hover:text-gray-500 transition-[color] cursor-pointer flex items-center'
+                    'text-2xl tracking-widest overflow-hidden text-gray-700 dark:text-gray-400',
+                    'hover:brightness-95 transition-colors cursor-pointer flex items-center select-none'
                 )}
                      title={props.roomName}
                      onClick={() => props.onLeaveRoom()}>
@@ -211,26 +211,27 @@ export default function Chat(props: IProps): JSX.Element {
                     </span>
                 </div>
                 <div className='flex gap-3 items-center select-none shrink-0'>
-                    <div className='cursor-pointer'
+                    <div className='cursor-pointer text-gray-400 hover:brightness-90 transition-colors'
                          onClick={() => setSecretVisible((value) => !value)}>
                         {
                             secretVisible ?
-                                <RxEyeOpen className='text-gray-400 hover:text-gray-600 transition-[color]'
-                                           size={18}/> :
-                                <RxEyeClosed className='text-gray-400 hover:text-gray-600 transition-[color]'
-                                             size={18}/>
+                                <RxEyeOpen size={18}/> :
+                                <RxEyeClosed size={18}/>
                         }
                     </div>
                     <SecretInput value={secret}
                                  staticPlaceholder={true}
                                  placeholder={dict('Секретный ключ')}
-                                 inputClassName='bg-gray-300 w-[170px] text-md leading-7 rounded-lg shadow-md'
+                                 className='bg-gray-300 w-[170px] text-md leading-7 rounded-lg shadow-md'
                                  type={secretVisible ? 'text' : 'password'}
                                  onCopy={onCopySecret}
                                  onChange={onSecretChange}/>
                 </div>
             </div>
-            <div className='bg-gray-300 rounded-lg grow flex flex-col min-h-0 mb-3 p-3 shadow-md scrollbar-thin'>
+            <div className={clsx(
+                'bg-gray-300 dark:bg-gray-700 rounded-lg grow flex flex-col',
+                'min-h-0 mb-3 p-3 shadow-md scrollbar-thin transition-colors'
+            )}>
                 <div className='grow relative'>
                     <MessagesList list={messages}
                                   onBlockInit={onMessageBlockInit}
@@ -250,22 +251,23 @@ export default function Chat(props: IProps): JSX.Element {
                                     text-sm
                                     tracking-widest
                                     bg-gray-700
+                                    dark:bg-gray-600
                                     rounded-full
                                     shadow-md
                                     cursor-pointer
                                     hover:brightness-90
-                                    transition-[filter]
+                                    transition-colors
                                     select-none'
                              onClick={onBottomScroll}>
                             <RxCaretDown size={20}/>
-                            <span>NEW MESSAGE</span>
+                            <span>{dict('Новое сообщение').toUpperCase()}</span>
                         </div>
                     }
                     <div ref={listBottomRef}/>
                 </div>
             </div>
-            <div className='bg-gray-300 rounded-lg flex w-full shadow-md'>
-                <Text inputClassName='text-md leading-10 w-full'
+            <div className='rounded-lg flex w-full shadow-md'>
+                <Text className='bg-gray-300 text-md leading-10 w-full'
                       value={messageText}
                       placeholder={`${dict('Напишите сообщение')}...`}
                       staticPlaceholder={true}
@@ -274,8 +276,8 @@ export default function Chat(props: IProps): JSX.Element {
                       onInit={(ref) => ref.current?.focus()}>
                     <div className='overflow-hidden rounded-r-lg shrink-0'>
                         <div className={clsx(
-                            'bg-gray-700 px-4 cursor-pointer hover:brightness-90',
-                            'tracking-widest text-white transition-[transform]',
+                            'bg-gray-700 dark:bg-gray-500 px-4 cursor-pointer hover:brightness-90',
+                            'tracking-widest text-white dark:text-gray-800 transition-all',
                             messageText ?
                                 '' :
                                 'translate-x-[101%]'

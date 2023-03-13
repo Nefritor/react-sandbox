@@ -13,7 +13,7 @@ import {Constants} from 'Messenger/utils';
 import {Rooms as RoomsRPC} from 'Messenger/rpc';
 import {dict} from 'Messenger/i18n';
 
-import {UsernameInput} from 'Messenger/components';
+import {ThemeSwitch, UsernameInput} from 'Messenger/components';
 
 interface IRoom extends IListElement {
     title: string;
@@ -36,7 +36,7 @@ export default function Rooms(props: IProps): JSX.Element {
     const getRoomItem = useCallback((data: IRoom) => <>{data.title}</>, []);
 
     const getRoomsEmptyView = useCallback(() => (
-        <div className='text-lg text-center py-4'>
+        <div className='text-lg text-center py-4 select-none'>
             {dict('Список комнат пуст').toUpperCase()}
         </div>
     ), []);
@@ -61,14 +61,14 @@ export default function Rooms(props: IProps): JSX.Element {
 
     const getRoomCreateView = useCallback(() => (
         <div className='mt-3'>
-            <Text inputClassName='bg-gray-300 shadow-md h-8 w-full'
+            <Text className='bg-gray-300 dark:bg-gray-700 shadow-md h-8 w-full transition-colors'
                   label={dict('Название').toUpperCase()}
                   value={newRoomName}
                   onChange={setNewRoomName}
                   onSubmit={onCreateRoom}>
                 <div className='overflow-hidden rounded-r-lg shrink-0'>
                     <div className={clsx(
-                        'bg-gray-700 px-3 cursor-pointer hover:brightness-90',
+                        'bg-gray-700 dark:bg-gray-500 dark:text-gray-900 px-3 cursor-pointer hover:brightness-90 transition-colors',
                         'text-white transition-[transform] leading-8',
                         newRoomName ?
                             '' :
@@ -111,7 +111,19 @@ export default function Rooms(props: IProps): JSX.Element {
 
     return (
         <>
-            <div className='flex flex-col text-center justify-center tracking-widest mb-3 min-h-[100px] h-[20%]'>
+            <ThemeSwitch className='absolute right-3 top-3 shadow-md'/>
+            <div className='flex
+                            flex-col
+                            text-center
+                            justify-center
+                            tracking-widest
+                            mb-3
+                            min-h-[100px]
+                            h-[20%]
+                            select-none
+                            text-black
+                            dark:text-gray-300
+                            transition-colors'>
                 <div>
                     <span className='text-3xl'>MESSENGER</span>
                     &nbsp;
@@ -119,30 +131,30 @@ export default function Rooms(props: IProps): JSX.Element {
                 </div>
             </div>
             <div className='flex flex-col items-center min-h-[75px] h-[15%]'>
-                <span className='tracking-widest text-gray-500 text-sm'>
+                <span className='tracking-widest text-gray-500 text-sm select-none dark:text-gray-400 transition-colors'>
                     {dict('Имя пользователя').toUpperCase()}
                 </span>
                 <UsernameInput value={userName}
                                onChange={setUserName}
                                onError={() => props.onNotification(getNotificationData(dict('Имя пользователя'), dict('Введите имя пользователя')))}/>
             </div>
-            <div className='flex items-baseline relative text-xl tracking-widest justify-center mb-3'>
-                {dict('Комнаты').toUpperCase()}
+            <div className='flex items-baseline relative text-xl tracking-widest justify-center mb-3 select-none'>
+                <span className='text-black dark:text-gray-300 transition-colors'>{dict('Комнаты').toUpperCase()}</span>
                 &nbsp;
                 {
                     !!rooms.length &&
-                    <div className='text-sm text-gray-400'>
+                    <div className='text-sm text-gray-400 dark:text-gray-500 transition-colors'>
                         {rooms.length}
                     </div>
                 }
             </div>
             <div
                 className={clsx(
-                    'bg-gray-300 rounded-lg min-w-[300px] max-w-[600px] w-[50%]',
+                    'rounded-lg min-w-[300px] max-w-[600px] w-[50%]',
                     'self-center overflow-hidden shadow-md mb-3 scrollbar-thin'
                 )}>
                 <ListView<IRoom>
-                    itemClasName='bg-gray-300 leading-10 text-lg text-ellipsis overflow-hidden whitespace-nowrap'
+                    itemClassName='leading-10 text-lg text-ellipsis overflow-hidden whitespace-nowrap select-none'
                     list={rooms}
                     item={getRoomItem}
                     emptyView={getRoomsEmptyView()}
@@ -151,7 +163,7 @@ export default function Rooms(props: IProps): JSX.Element {
             <div className='flex justify-center mb-11'>
                 <div className='min-w-[300px] max-w-[600px] w-[50%]'>
                     <Button caption={(showRoomCreate ? dict('Отмена') : dict('Создать комнату')).toUpperCase()}
-                            className='rounded-lg shadow-md w-full bg-gray-700 hover:bg-gray-600 active:bg-gray-500'
+                            className='rounded-lg shadow-md w-full bg-gray-700'
                             onClick={() => {
                                 setNewRoomName('');
                                 setShowRoomCreate(!showRoomCreate)

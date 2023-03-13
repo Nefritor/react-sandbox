@@ -50,7 +50,9 @@ export default function MessagesList(props: IProps): JSX.Element {
                                       onBlockInit={(id) => props.onBlockInit?.(id)}/>
                     )) :
                     <div className='flex flex-col items-center justify-center h-full'>
-                        <div className='tracking-widest text-2xl'>{dict('Нет сообщений').toUpperCase()}</div>
+                        <div className='tracking-widest text-2xl dark:text-gray-400 transition-colors'>
+                            {dict('Нет сообщений').toUpperCase()}
+                        </div>
                     </div>
             }
         </div>
@@ -84,34 +86,41 @@ function MessageBlock(props: IMessageBlock): JSX.Element {
     return (
         <div ref={blockRef}
              className={clsx(
-                 'bg-gray-400 flex flex-col w-fit px-2 py-1 min-w-[100px] max-w-[300px] relative shadow-md rounded-t-lg',
+                 'bg-gray-400 dark:bg-gray-600 flex flex-col w-fit px-2 py-1',
+                 'min-w-[100px] max-w-[300px] relative shadow-md rounded-t-lg transition-colors',
                  props.message.sender === Sender.IN ?
                      'self-end rounded-bl-lg' :
                      'rounded-br-lg'
              )}>
             {
                 props.message.sender !== Sender.IN &&
-                <div className='text-xs leading-none tracking-widest text-gray-600 select-none'>
+                <div className={clsx(
+                    'text-xs leading-none tracking-widest text-gray-600',
+                    'dark:text-gray-400 transition-colors select-none'
+                )}>
                     {props.message.senderName}
                 </div>
             }
             <div className={clsx(
-                'leading-5 break-words',
+                'leading-5 break-words transition-colors',
                 (() => {
                     switch (props.message.style) {
                         case 'error':
-                            return 'text-red-800';
+                            return 'text-red-700 dark:brightness-50';
                         case 'success':
-                            return 'text-green-800';
+                            return 'text-green-700 dark:brightness-50';
                         default:
-                            return 'text-black';
+                            return 'text-black dark:text-gray-300';
                     }
                 })()
             )}>
                 {props.message.text}
             </div>
             <div
-                className='text-xs self-end leading-3 tracking-tighter text-gray-600 select-none flex gap-0.5 translate-x-1'>
+                className={clsx(
+                    'text-xs self-end leading-3 tracking-tighter text-gray-600',
+                    'dark:text-gray-400 select-none flex gap-0.5 translate-x-1 transition-colors'
+                )}>
                 {formatDateTime(props.message.date)}
                 {props.message.status !== undefined && getStatusIcon(props.message.status)}
             </div>
