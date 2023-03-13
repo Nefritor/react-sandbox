@@ -210,8 +210,8 @@ export default function Chat(props: IProps): JSX.Element {
                         {props.roomName.toUpperCase()}
                     </span>
                 </div>
-                <div className='flex gap-3 items-center cursor-pointer select-none shrink-0'>
-                    <div className=''
+                <div className='flex gap-3 items-center select-none shrink-0'>
+                    <div className='cursor-pointer'
                          onClick={() => setSecretVisible((value) => !value)}>
                         {
                             secretVisible ?
@@ -224,7 +224,7 @@ export default function Chat(props: IProps): JSX.Element {
                     <Secret value={secret}
                             staticPlaceholder={true}
                             placeholder={dict('Секретный ключ')}
-                            inputClassName='bg-gray-300 w-[160px] text-md leading-7 rounded-lg shadow-md'
+                            inputClassName='bg-gray-300 w-[170px] text-md leading-7 rounded-lg shadow-md'
                             type={secretVisible ? 'text' : 'password'}
                             onCopy={onCopySecret}
                             onChange={onSecretChange}/>
