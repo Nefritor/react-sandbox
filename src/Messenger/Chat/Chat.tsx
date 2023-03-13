@@ -6,8 +6,6 @@ import {MdOutlineKeyboardArrowLeft} from 'react-icons/md';
 import {RxCaretDown, RxEyeClosed, RxEyeOpen} from 'react-icons/rx';
 import Cookies from 'universal-cookie';
 
-import {generate} from '@wcj/generate-password';
-
 import {getNotificationData, IFetcherData} from 'Components/hooks';
 import {Text} from 'Components/input';
 
@@ -64,27 +62,29 @@ export default function Chat(props: IProps): JSX.Element {
     };
 
     const sendMessage = useCallback(() => {
-        const id = getUUID();
-        addMessage({
-            id,
-            sender: 0,
-            text: messageText,
-            date: Date.now(),
-            status: Status.SENDING
-        });
-        wsRef.current.webSocket?.send(
-            JSON.stringify({
-                type: 'message',
-                origin: cookies.get('uuid'),
-                data: JSON.stringify({
-                    id,
-                    text: AES.encrypt(messageText, secret).toString(),
-                    date: Date.now(),
-                    senderName: AES.encrypt(cookies.get('username'), secret).toString()
+        if (messageText) {
+            const id = getUUID();
+            addMessage({
+                id,
+                sender: 0,
+                text: messageText,
+                date: Date.now(),
+                status: Status.SENDING
+            });
+            wsRef.current.webSocket?.send(
+                JSON.stringify({
+                    type: 'message',
+                    origin: cookies.get('uuid'),
+                    data: JSON.stringify({
+                        id,
+                        text: AES.encrypt(messageText, secret).toString(),
+                        date: Date.now(),
+                        senderName: AES.encrypt(cookies.get('username'), secret).toString()
+                    })
                 })
-            })
-        );
-        setMessageText('');
+            );
+            setMessageText('');
+        }
     }, [messageText, secret]);
 
     const changeMessage = (id: string, data: Partial<IMessage>) => {
@@ -282,7 +282,7 @@ export default function Chat(props: IProps): JSX.Element {
                         )}
                              onClick={(event) => {
                                  event.stopPropagation();
-                                 sendMessage()
+                                 sendMessage();
                              }}>
                             {dict('Отправить').toUpperCase()}
                         </div>
