@@ -18,12 +18,15 @@ export enum CloseCode {
     CLOSED_BY_SERVER = 3001
 }
 
-const servicePort = 3333;
+const serviceStandartPort = 3333;
+const serviceSecuredPort = 3334;
 
 const isSecured = window.location.protocol === 'https:';
 
-const getRequestUrl = (method: string) => `${window.location.protocol}//${window.location.hostname}:${servicePort}/${method}`;
-const getWebSocketUrl = (params: string) => `${isSecured ? 'wss:' : 'ws:'}//${window.location.hostname}:${servicePort}/${params}`;
+const getRequestUrl = (method: string) =>
+    `${window.location.protocol}//${window.location.hostname}:${isSecured ? serviceSecuredPort: serviceStandartPort}/${method}`;
+const getWebSocketUrl = (params: string) =>
+    `${isSecured ? 'wss:' : 'ws:'}//${window.location.hostname}:${isSecured ? serviceSecuredPort : serviceStandartPort}/${params}`;
 
 export const get = (method: string) => {
     return axios.get(getRequestUrl(method));

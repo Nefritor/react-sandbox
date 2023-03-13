@@ -39,7 +39,7 @@ const dict = getDictionary();
 export default function Chat(props: IProps): JSX.Element {
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [messageText, setMessageText] = useState('');
-    const [secret, setSecret] = useState(generate({length: 12}));
+    const [secret, setSecret] = useState('');
     const [secretVisible, setSecretVisible] = useState(false);
     const [hasUnread, setHasUnread] = useState(false);
     const [isBottom, setIsBottom] = useState(false);
@@ -134,8 +134,8 @@ export default function Chat(props: IProps): JSX.Element {
                     isDecrypted = true
                 }
                 if (!isDecrypted) {
-                    messageData.text = '[encrypted]';
-                    messageData.senderName = '[encrypted]';
+                    messageData.text = `[${dict('зашифровано')}]`;
+                    messageData.senderName = `[${dict('зашифровано')}]`;
                     messageData.style = 'error';
                 }
                 addMessage({
@@ -222,7 +222,8 @@ export default function Chat(props: IProps): JSX.Element {
                         }
                     </div>
                     <Secret value={secret}
-                            absolutePlaceholder={true}
+                            staticPlaceholder={true}
+                            placeholder={dict('Секретный ключ')}
                             inputClassName='bg-gray-300 w-[160px] text-md leading-7 rounded-lg shadow-md'
                             type={secretVisible ? 'text' : 'password'}
                             onCopy={onCopySecret}
@@ -269,7 +270,8 @@ export default function Chat(props: IProps): JSX.Element {
                       placeholder={`${dict('Напишите сообщение')}...`}
                       staticPlaceholder={true}
                       onChange={setMessageText}
-                      onSubmit={sendMessage}>
+                      onSubmit={sendMessage}
+                      onInit={(ref) => ref.current?.focus()}>
                     <div className='overflow-hidden rounded-r-lg shrink-0'>
                         <div className={clsx(
                             'bg-gray-700 px-4 cursor-pointer hover:brightness-90',

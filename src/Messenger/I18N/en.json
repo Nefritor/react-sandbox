@@ -16,6 +16,7 @@
     "Отправить" : "Send",
     "Секретный ключ" : "Secret key",
     "Скопировано в буфер" : "Copied to clipboard",
-    "Введите корректное название комнаты" : "Please enter a valid room name"
+    "Введите корректное название комнаты" : "Please enter a valid room name",
+    "зашифровано" : "encrypted"
   }
 }
