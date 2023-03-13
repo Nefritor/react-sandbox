@@ -5,7 +5,8 @@ import Uuid from 'react-uuid';
 import {AES, enc} from 'crypto-ts';
 
 import {Text} from 'Components/input';
-import MessagesList, {IMessage, Sender} from 'Messenger/Chat/MessagesList/MessagesList';
+import {MessagesList} from 'Messenger/components';
+import {IMessage, Sender} from 'Messenger/interface';
 import {Button} from 'Components/button';
 
 export default function MessengerDemo(): JSX.Element {

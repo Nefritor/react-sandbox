@@ -1,5 +1,5 @@
-import axios from 'axios';
 import {MutableRefObject} from 'react';
+import {Constants} from 'Messenger/utils';
 
 interface IWebSocketCallbacks {
     onOpen: () => void;
@@ -13,27 +13,8 @@ export interface IWebSocketRef {
     errorCount: number;
 }
 
-export enum CloseCode {
-    CLOSED_BY_USER = 3000,
-    CLOSED_BY_SERVER = 3001
-}
-
-const serviceStandartPort = 3333;
-const serviceSecuredPort = 3334;
-
-const isSecured = window.location.protocol === 'https:';
-
-const getRequestUrl = (method: string) =>
-    `${window.location.protocol}//${window.location.hostname}:${isSecured ? serviceSecuredPort: serviceStandartPort}/${method}`;
 const getWebSocketUrl = (params: string) =>
-    `${isSecured ? 'wss:' : 'ws:'}//${window.location.hostname}:${isSecured ? serviceSecuredPort : serviceStandartPort}/${params}`;
-
-export const get = (method: string) => {
-    return axios.get(getRequestUrl(method));
-}
-export const post = (method: string, data: Record<string, unknown>) => {
-    return axios.post(getRequestUrl(method), data)
-}
+    `${Constants.webSocketProtocol}//${window.location.hostname}:${Constants.webSocketPort}/${params}`;
 
 export const startWebSocket = (wsRef: MutableRefObject<IWebSocketRef>, callbacks: Partial<IWebSocketCallbacks>, params?: string) => {
     wsRef.current.webSocket = new WebSocket(getWebSocketUrl(params || ''));
@@ -50,8 +31,8 @@ export const startWebSocket = (wsRef: MutableRefObject<IWebSocketRef>, callbacks
     }
     wsRef.current.webSocket.onclose = (event) => {
         switch (event.code) {
-            case CloseCode.CLOSED_BY_USER:
-            case CloseCode.CLOSED_BY_SERVER:
+            case Constants.WSCloseCode.CLOSED_BY_USER:
+            case Constants.WSCloseCode.CLOSED_BY_SERVER:
                 callbacks.onClose?.(event.reason);
                 break;
             default:

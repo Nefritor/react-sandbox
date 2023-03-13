@@ -15,7 +15,7 @@ import InputTextDemo from 'Demo/Pages/InputTextDemo';
 import TextShortenerDemo from 'Demo/Pages/TextShortenerDemo';
 import MessengerDemo from 'Demo/Pages/MessengerDemo';
 
-import MessengerIndex from 'Messenger/Index';
+import {Main as Messenger} from 'Messenger/pages';
 
 import './index.css';
 
@@ -70,7 +70,7 @@ const router = createBrowserRouter([{
     }, ...demoPages.map(({path, element}) => ({path, element}))]
 }, {
     path: 'messenger',
-    element: <MessengerIndex/>
+    element: <Messenger/>
 }]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

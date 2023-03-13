@@ -9,11 +9,13 @@ import Cookies from 'universal-cookie';
 import {getNotificationData, IFetcherData} from 'Components/hooks';
 import {Text} from 'Components/input';
 
-import {getDictionary} from 'Messenger/I18N/Dictionary';
-import {CloseCode, IWebSocketRef, startWebSocket, updateWebSocketMessage} from 'Messenger/RPC/Base';
+import {dict} from 'Messenger/i18n';
+import {Constants} from 'Messenger/utils';
+import {IWebSocketRef, startWebSocket, updateWebSocketMessage} from 'Messenger/webSocket';
 
-import MessagesList, {IMessage, IMessageData, Sender, Status} from './MessagesList/MessagesList';
-import Secret from './SecretInput/SecretInput';
+
+import {IMessage, IMessageData, Sender, Status} from 'Messenger/interface';
+import {MessagesList, SecretInput} from 'Messenger/components';
 
 interface IProps {
     roomId: string;
@@ -31,8 +33,6 @@ interface IWebSocketData {
 }
 
 const cookies = new Cookies();
-
-const dict = getDictionary();
 
 export default function Chat(props: IProps): JSX.Element {
     const [messages, setMessages] = useState<IMessage[]>([]);
@@ -181,7 +181,7 @@ export default function Chat(props: IProps): JSX.Element {
             observer.observe(listBottomRef.current);
         }
         return () => {
-            wsRef.current.webSocket?.close(CloseCode.CLOSED_BY_USER);
+            wsRef.current.webSocket?.close(Constants.WSCloseCode.CLOSED_BY_USER);
             observer.disconnect();
         }
     }, []);
@@ -221,13 +221,13 @@ export default function Chat(props: IProps): JSX.Element {
                                              size={18}/>
                         }
                     </div>
-                    <Secret value={secret}
-                            staticPlaceholder={true}
-                            placeholder={dict('Секретный ключ')}
-                            inputClassName='bg-gray-300 w-[170px] text-md leading-7 rounded-lg shadow-md'
-                            type={secretVisible ? 'text' : 'password'}
-                            onCopy={onCopySecret}
-                            onChange={onSecretChange}/>
+                    <SecretInput value={secret}
+                                 staticPlaceholder={true}
+                                 placeholder={dict('Секретный ключ')}
+                                 inputClassName='bg-gray-300 w-[170px] text-md leading-7 rounded-lg shadow-md'
+                                 type={secretVisible ? 'text' : 'password'}
+                                 onCopy={onCopySecret}
+                                 onChange={onSecretChange}/>
                 </div>
             </div>
             <div className='bg-gray-300 rounded-lg grow flex flex-col min-h-0 mb-3 p-3 shadow-md scrollbar-thin'>

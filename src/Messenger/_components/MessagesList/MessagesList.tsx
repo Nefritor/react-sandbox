@@ -2,26 +2,14 @@ import clsx from 'clsx';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {BiCheck, BiCheckDouble, BiDotsHorizontalRounded, BiErrorCircle} from 'react-icons/bi';
 
-import {getDictionary} from 'Messenger/I18N/Dictionary';
+import {dict} from 'Messenger/i18n';
 
 import {formatDateTime} from 'Utils/Date';
 
+import {Sender, Status, IMessage} from 'Messenger/interface';
+
 interface IProps extends Partial<IMessageEvents> {
     list: IMessage[];
-}
-
-export interface IMessage extends IMessageData {
-    style?: ITextStyle;
-    status?: Status;
-}
-
-export interface IMessageData {
-    id: string;
-    sender: Sender;
-    senderName?: string;
-    origin?: string;
-    text: string;
-    date: number;
 }
 
 interface IMessageBlock extends IMessageEvents {
@@ -31,23 +19,6 @@ interface IMessageBlock extends IMessageEvents {
 interface IMessageEvents {
     onBlockVisible: (data: IMessage) => void;
     onBlockInit: (data: IMessage) => void;
-}
-
-export type ITextStyle =
-    | 'default'
-    | 'error'
-    | 'success';
-
-export enum Sender {
-    IN,
-    OUT
-}
-
-export enum Status {
-    SENDING,
-    SENT,
-    READ,
-    ERROR
 }
 
 const getStatusIcon = (status: Status) => {
@@ -62,8 +33,6 @@ const getStatusIcon = (status: Status) => {
             return <BiErrorCircle/>;
     }
 }
-
-const dict = getDictionary();
 
 export default function MessagesList(props: IProps): JSX.Element {
     return (

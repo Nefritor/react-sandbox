@@ -8,11 +8,12 @@ import {Text} from 'Components/input';
 import {IListElement, View as ListView} from 'Components/list';
 import {Edge} from 'Components/popup';
 
-import {CloseCode, IWebSocketRef, startWebSocket} from 'Messenger/RPC/Base';
-import {createRoom, getRooms} from 'Messenger/RPC/Rooms';
-import {getDictionary} from 'Messenger/I18N/Dictionary';
+import {IWebSocketRef, startWebSocket} from 'Messenger/webSocket';
+import {Constants} from 'Messenger/utils';
+import {Rooms as RoomsRPC} from 'Messenger/rpc';
+import {dict} from 'Messenger/i18n';
 
-import UsernameInput from './UsernameInput/UsernameInput';
+import {UsernameInput} from 'Messenger/components';
 
 interface IRoom extends IListElement {
     title: string;
@@ -24,8 +25,6 @@ interface IProps {
 }
 
 const cookies = new Cookies();
-
-const dict = getDictionary();
 
 export default function Rooms(props: IProps): JSX.Element {
     const [userName, setUserName] = useState(cookies.get('username'));
@@ -43,13 +42,13 @@ export default function Rooms(props: IProps): JSX.Element {
     ), []);
 
     const onRoomSelect = useCallback((id: string) => {
-        wsRef.current.webSocket?.close(CloseCode.CLOSED_BY_USER);
+        wsRef.current.webSocket?.close(Constants.WSCloseCode.CLOSED_BY_USER);
         props.onRoomSelect(id);
     }, []);
 
     const onCreateRoom = useCallback(() => {
         if (newRoomName) {
-            createRoom(newRoomName).then((data) => {
+            RoomsRPC.createRoom(newRoomName).then((data) => {
                 if (!data) {
                     props.onNotification(getNotificationData(dict('Создать комнату'), 'Room is already exists'));
                 }
@@ -88,7 +87,7 @@ export default function Rooms(props: IProps): JSX.Element {
     }, [userName]);
 
     useEffect(() => {
-        getRooms().then((data) => {
+        RoomsRPC.getRooms().then((data) => {
             setRooms(data);
         });
         startWebSocket(wsRef, {
@@ -107,7 +106,7 @@ export default function Rooms(props: IProps): JSX.Element {
                 console.log('CLOSE', reason)
             }
         }, 'rooms');
-        return () => wsRef.current.webSocket?.close(CloseCode.CLOSED_BY_USER);
+        return () => wsRef.current.webSocket?.close(Constants.WSCloseCode.CLOSED_BY_USER);
     }, []);
 
     return (
@@ -127,16 +126,15 @@ export default function Rooms(props: IProps): JSX.Element {
                                onChange={setUserName}
                                onError={() => props.onNotification(getNotificationData(dict('Имя пользователя'), dict('Введите имя пользователя')))}/>
             </div>
-            <div className='flex text-xl tracking-widest justify-center mb-3'>
-                <div className='flex items-baseline relative'>
-                    {dict('Комнаты').toUpperCase()}
-                    {
-                        !!rooms.length &&
-                        <div className='absolute -right-1.5 bottom-0 text-sm text-gray-400 translate-x-full'>
-                            {rooms.length}
-                        </div>
-                    }
-                </div>
+            <div className='flex items-baseline relative text-xl tracking-widest justify-center mb-3'>
+                {dict('Комнаты').toUpperCase()}
+                &nbsp;
+                {
+                    !!rooms.length &&
+                    <div className='text-sm text-gray-400'>
+                        {rooms.length}
+                    </div>
+                }
             </div>
             <div
                 className={clsx(

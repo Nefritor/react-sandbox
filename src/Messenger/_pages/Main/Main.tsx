@@ -4,18 +4,15 @@ import Cookies from 'universal-cookie';
 
 import {useFetcher} from 'Components/hooks';
 
-import Chat from 'Messenger/Chat/Chat';
-import Rooms from 'Messenger/Rooms/Rooms';
-import {getRoomData} from 'Messenger/RPC/Rooms';
+import {Chat, Rooms} from 'Messenger/pages';
+import {Rooms as RoomsRPC} from 'Messenger/rpc';
 
-import {getDictionary} from './I18N/Dictionary';
+import {dict} from 'Messenger/i18n';
 
 interface IRoomData {
     id: string;
     title: string;
 }
-
-const dict = getDictionary();
 
 const cookies = new Cookies();
 
@@ -26,12 +23,12 @@ if (!cookies.get('username')) {
     cookies.set('username', dict('Аноним'));
 }
 
-export default function Index(): JSX.Element {
+export default function Main(): JSX.Element {
     const [fetch, Fetcher] = useFetcher();
     const [roomData, setRoomData] = useState<IRoomData | null>(null);
 
     const onRoomSelect = (id: string) => {
-        getRoomData(id).then((data: IRoomData) => {
+        RoomsRPC.getRoomData(id).then((data: IRoomData) => {
             setRoomData(data);
         })
     }
