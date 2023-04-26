@@ -1,4 +1,10 @@
+import {useEffect} from 'react';
+
 export default function Home() {
+    useEffect(() => {
+        document.title = 'N3F Home';
+    }, []);
+
     return (
         <div>
             <div>Home</div>

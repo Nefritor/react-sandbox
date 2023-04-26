@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import getUUID from 'react-uuid';
 import Cookies from 'universal-cookie';
 
@@ -43,6 +43,10 @@ export default function Main(): JSX.Element {
         return <Rooms onRoomSelect={onRoomSelect}
                       onNotification={(data) => fetch(data)}/>;
     }
+
+    useEffect(() => {
+        document.title = 'Messenger';
+    }, []);
 
     return (
         <div className='bg-white dark:bg-gray-900 flex flex-col w-screen h-screen p-3 overflow-hidden relative fixed transition-colors'>

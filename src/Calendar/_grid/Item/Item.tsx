@@ -21,7 +21,7 @@ export default function Item(props: IProps): JSX.Element {
     const isToday = useMemo(() => currentDateTime === props.date.getTime(), []);
     return (
         <Block className={clsx(
-            'select-none h-fit dark:text-white',
+            'select-none dark:text-white',
             isToday ?
                 'bg-gray-500 dark:bg-gray-800 text-white' :
                 props.weekday > 4 ? 'bg-gray-400 dark:bg-gray-500' : 'bg-gray-300 dark:bg-gray-600',

@@ -1,4 +1,4 @@
-import React, {Suspense, useMemo} from 'react';
+import React, {Suspense, useEffect, useMemo} from 'react';
 import Background from 'Layout/Background';
 import {ThemeSwitch} from 'Messenger/components';
 import {Day, DayMs, WeekMs} from 'Calendar/constants';
@@ -52,6 +52,11 @@ const getIcon = (bodyPart: BodyPart) => {
 
 export default function Main(): JSX.Element {
     const trainingData = useMemo(getTrainingDaysData, []);
+
+    useEffect(() => {
+        document.title = 'Training calendar';
+    }, []);
+
     return (
         <div className='w-screen h-screen'>
             <Background className='p-3'>

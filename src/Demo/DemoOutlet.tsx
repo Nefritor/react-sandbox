@@ -1,5 +1,5 @@
 import {Outlet, useNavigate, useLocation} from 'react-router-dom';
-import {useCallback, useMemo} from 'react';
+import {useCallback, useEffect, useMemo} from 'react';
 import {Navigation} from 'Components/menu';
 
 interface IPage {
@@ -26,6 +26,10 @@ export default function DemoOutlet(props: IDemoOutletProps) {
         const newKey = '/demo/' + (key || '')
         navigate(newKey);
     }, [navigate]);
+
+    useEffect(() => {
+        document.title = 'Demo components';
+    }, []);
 
     return (
         <div className='flex w-screen h-screen'>

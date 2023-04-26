@@ -19,13 +19,16 @@ export default function ThemeSwitch(props: IProps): JSX.Element {
 
     useEffect(() => {
         const classList = document.documentElement.classList;
+        const icon = document.querySelector('link[rel="icon"]');
         const isDarkTheme = classList.contains('dark');
         if (darkTheme && !isDarkTheme) {
             classList.add('dark');
             localStorage.setItem('theme', 'dark');
+            icon?.setAttribute('href', 'favicon-dark.ico');
         } else if (!darkTheme && isDarkTheme) {
             classList.remove('dark');
             localStorage.setItem('theme', 'light');
+            icon?.setAttribute('href', 'favicon.ico');
         }
     }, [darkTheme]);
 
