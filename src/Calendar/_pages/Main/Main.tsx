@@ -6,7 +6,7 @@ import {View} from 'Calendar/grid';
 import {GiBackPain, GiChestArmor, GiLegArmor} from 'react-icons/gi';
 import {AiFillStar} from 'react-icons/ai';
 
-const startTime = new Date('04.24.2023').getTime();
+const startTime = new Date('04/24/2023').getTime();
 const visibleDays = [Day.Monday, Day.Wednesday, Day.Friday];
 
 enum BodyPart {
