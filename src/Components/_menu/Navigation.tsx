@@ -29,8 +29,9 @@ export default function Navigation(props: ISideProps): JSX.Element {
                             leading-none
                             mb-3
                             mx-3'>
-                <div className={clsx('p-3 hover:brightness-95 transition-[filter]', props.selectedKey === null ? 'bg-gray-500 text-white' : 'bg-gray-300')}
-                     onClick={() => props.onItemClick(null)}>
+                <div
+                    className={clsx('p-3 hover:brightness-95 transition-[filter]', props.selectedKey === null ? 'bg-gray-500 text-white' : 'bg-gray-300')}
+                    onClick={() => props.onItemClick(null)}>
                     <RiHomeLine/>
                 </div>
                 <div className='flex
@@ -38,9 +39,11 @@ export default function Navigation(props: ISideProps): JSX.Element {
                                 scrollbar-none'>
                     {
                         props.items.map((item: INavigationItem) => (
-                            <div className={
-                                clsx('p-3 hover:brightness-95 transition-[filter]', item.key === props.selectedKey ? 'bg-gray-500 text-white' : 'bg-gray-200')
-                            }
+                            <div key={item.key}
+                                 className={clsx(
+                                     'p-3 hover:brightness-95 transition-[filter]',
+                                     item.key === props.selectedKey ? 'bg-gray-500 text-white' : 'bg-gray-200'
+                                 )}
                                  onClick={() => props.onItemClick(item.key)}>
                                 {item.shortCaption}
                             </div>

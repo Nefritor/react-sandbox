@@ -1,4 +1,5 @@
 import React, {SyntheticEvent, useEffect, useMemo, useRef, useState} from "react";
+import clsx from 'clsx';
 
 interface IProps {
     value: number;
@@ -159,7 +160,9 @@ export default function Range(props: IProps) {
     }, [props.max, props.min, props.value, sliderWidth]);
 
     return (
-        <div className='rounded-full relative cursor-pointer select-none bg-gray-600'
+        <div className={clsx(
+            'rounded-full relative cursor-pointer select-none bg-gray-600'
+        )}
              style={{
                  height: props.height,
                  width: props.width
@@ -174,7 +177,10 @@ export default function Range(props: IProps) {
                      transition: isMoving ? undefined : 'left .3s ease'
                  }}>
                 <div
-                    className={'flex items-center justify-center rounded-full absolute ' + (isMoving ? 'bg-gray-500' : 'bg-gray-300')}
+                    className={clsx(
+                        'flex items-center justify-center rounded-full absolute',
+                        (isMoving ? 'bg-gray-500' : 'bg-gray-300')
+                    )}
                     style={{
                         height: buttonDiameter,
                         width: buttonDiameter,

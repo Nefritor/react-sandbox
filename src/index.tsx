@@ -14,8 +14,12 @@ import FetcherDemo from 'Demo/Pages/FetcherDemo';
 import InputTextDemo from 'Demo/Pages/InputTextDemo';
 import TextShortenerDemo from 'Demo/Pages/TextShortenerDemo';
 import MessengerDemo from 'Demo/Pages/MessengerDemo';
+import HideLayoutDemo from 'Demo/Pages/HideLayoutDemo';
+import TestDemo from 'Demo/Pages/TestDemo';
 
 import {Main as Messenger} from 'Messenger/pages';
+
+import {Main as Calendar} from 'Calendar/pages';
 
 import './index.css';
 
@@ -54,6 +58,16 @@ const demoPages = [{
     caption: 'Messenger/Index',
     shortCaption: 'Messenger',
     element: <MessengerDemo/>
+}, {
+    path: 'hide',
+    caption: 'Components/layout:Hide',
+    shortCaption: 'Hide',
+    element: <HideLayoutDemo/>
+}, {
+    path: 'test',
+    caption: 'Test',
+    shortCaption: 'Test',
+    element: <TestDemo/>
 }]
 
 const router = createBrowserRouter([{
@@ -71,6 +85,9 @@ const router = createBrowserRouter([{
 }, {
     path: 'messenger',
     element: <Messenger/>
+}, {
+    path: 'calendar',
+    element: <Calendar/>
 }]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
