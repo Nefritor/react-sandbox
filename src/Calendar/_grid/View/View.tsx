@@ -1,14 +1,25 @@
-import React, {ReactNode, Suspense, useState} from 'react';
+import React, {ReactNode, Suspense, useEffect, useState} from 'react';
 import {Day, DayMs, FullWeek, WeekDaysCount, WeekMs} from 'Calendar/constants';
-import {Item, IItemData} from 'Calendar/grid';
+import {IItemData, Item} from 'Calendar/grid';
 import Block from 'Layout/Block';
-import {getDateMonth, MonthType, getWeekDay, DaysType} from 'Utils/Date';
 
 interface IProps {
-    startTime: number;
+    startDate: Date;
     visibleDays?: Day[];
     weeksCount: number;
+    blockSize?: IBlockSize;
+    blockOffset?: IBlockOffset;
     itemBottomContent: (props: IItemData) => ReactNode;
+}
+
+interface IBlockSize {
+    height: number;
+    width: number;
+}
+
+interface IBlockOffset {
+    vertical: number;
+    horizontal: number;
 }
 
 interface IDay {
@@ -17,77 +28,73 @@ interface IDay {
     isActive: boolean;
 }
 
-type IWeek = IDay[];
-type IDates = IWeek[];
-
-const getInitialDates = (startTime: number, visibleDays: Day[], weeksCount: number): IDates => {
-    const startDayIndex = (new Date(startTime).getDay() || 7) - 1;
-    return new Array(weeksCount).fill(undefined).map((_, weekIndex) => {
-        const week = new Array(WeekDaysCount);
-        for (let dayIndex = 0; dayIndex < WeekDaysCount; dayIndex++) {
-            if (weekIndex !== 0 || dayIndex >= startDayIndex) {
-                const date = new Date(startTime + (WeekMs * weekIndex) + (DayMs * (dayIndex - startDayIndex)));
-                if (date.getTime() >= startTime) {
-                    week[dayIndex] = {
-                        date,
-                        weekday: dayIndex,
-                        isActive: visibleDays.includes(dayIndex)
-                    }
-                }
-            }
-        }
-        return week;
-    })
+interface IDayBlock {
+    data: IDay;
+    position: IPosition;
 }
 
-const now = new Date();
+interface IPosition {
+    top: number;
+    left: number;
+}
 
 export default function View(
     {
-        startTime,
+        startDate,
         visibleDays = FullWeek,
         weeksCount,
-        itemBottomContent
+        itemBottomContent,
+        blockSize = {height: 80, width: 100},
+        blockOffset = {vertical: 12, horizontal: 12}
     }: IProps
 ): JSX.Element {
-    const [dates, setDates] = useState<IDates>(getInitialDates(startTime, visibleDays, weeksCount));
+    const [dayBlocks, setDayBlocks] = useState<IDayBlock[]>([]);
+
+    useEffect(() => {
+        setDayBlocks(() => {
+            const startDayIndex = (startDate.getDay() || 7) - 1;
+            const days: IDayBlock[] = [];
+            for (let weekIndex = 0; weekIndex < weeksCount; weekIndex++) {
+                for (let dayIndex = weekIndex === 0 ? startDayIndex : 0; dayIndex < WeekDaysCount; dayIndex++) {
+                    days.push({
+                        position: {
+                            top: weekIndex && (weekIndex * (blockSize.height + blockOffset.vertical)),
+                            left: dayIndex && (dayIndex * (blockSize.width + blockOffset.horizontal))
+                        },
+                        data: {
+                            date: new Date(startDate.getTime() + (WeekMs * weekIndex) + (DayMs * (dayIndex - startDayIndex))),
+                            weekday: dayIndex,
+                            isActive: visibleDays.includes(dayIndex)
+                        }
+                    })
+                }
+            }
+            return days;
+        });
+    }, [blockOffset.horizontal, blockOffset.vertical, blockSize.height, blockSize.width, startDate, visibleDays, weeksCount]);
 
     return (
-        <div className='flex flex-col max-w-[800px] w-full flex-grow min-h-[1px] self-center justify-self-center '>
-            <div className='flex flex-col flex-shrink-0 h-[75px] dark:text-white'>
-                <span className='text-xl'>Сегодня</span>
-                <span className='text-3xl'>
+        <Block className='scrollbar-thin'>
+            <div className='flex flex-col gap-3 relative'
+                 style={{
+                     height: (blockSize.height * weeksCount) + (blockOffset.vertical * (weeksCount - 1))
+                 }}>
+                <Suspense>
                     {
-                        `${getDateMonth(now, MonthType.FullDate)}, ${getWeekDay(now, DaysType.Full)}`
+                        dayBlocks.map((dayBlock, index) => (
+                            <div key={index}
+                                 className='absolute'
+                                 style={dayBlock.position}>
+                                <Item date={dayBlock.data.date}
+                                      weekday={dayBlock.data.weekday}
+                                      isActive={dayBlock.data.isActive}
+                                      size={blockSize}
+                                      bottomContent={itemBottomContent}/>
+                            </div>
+                        ))
                     }
-                </span>
+                </Suspense>
             </div>
-            <Block className='scrollbar-thin'>
-                <div className='flex flex-col gap-3 relative'>
-                    <Suspense>
-                        {
-                            dates.map((week, weekIndex) => (
-                                <div className='flex gap-3 h-[80px]'
-                                     key={weekIndex}>
-                                    {
-                                        week.map((day) => (
-                                            <Item key={`${weekIndex}:${day.weekday}`}
-                                                  className='absolute w-[100px]'
-                                                  style={{
-                                                      left: day.weekday && (day.weekday * 100 + day.weekday * 12)
-                                                  }}
-                                                  date={day.date}
-                                                  weekday={day.weekday}
-                                                  isActive={day.isActive}
-                                                  bottomContent={itemBottomContent}/>
-                                        ))
-                                    }
-                                </div>
-                            ))
-                        }
-                    </Suspense>
-                </div>
-            </Block>
-        </div>
+        </Block>
     )
 }

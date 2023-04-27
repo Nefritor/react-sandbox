@@ -1,11 +1,15 @@
-import React, {CSSProperties, ReactNode, useMemo} from 'react';
+import React, {CSSProperties, ReactNode, useEffect, useState} from 'react';
 import Block from 'Layout/Block';
 import clsx from 'clsx';
-import {getWeekDay} from 'Utils/Date';
+import {callEvery, EveryType, getWeekDay} from 'Utils/Date';
 
 interface IProps extends IItemData {
     className?: string;
     style?: CSSProperties;
+    size: {
+        height: number;
+        width: number;
+    };
     bottomContent?: (props: IItemData) => ReactNode;
 }
 
@@ -15,10 +19,18 @@ export interface IItemData {
     isActive: boolean;
 }
 
-const currentDateTime = new Date().setHours(0, 0, 0, 0);
+const getIsToady = (date: Date): boolean => {
+    const now = new Date();
+    return date.getTime() === now.setHours(0, 0, 0, 0);
+}
 
 export default function Item(props: IProps): JSX.Element {
-    const isToday = useMemo(() => currentDateTime === props.date.getTime(), []);
+    const [isToday, setIsToday] = useState<boolean>(getIsToady(props.date));
+
+    useEffect(() => {
+        callEvery( () => setIsToday(getIsToady(props.date)), EveryType.Day);
+    }, [isToday, props.date]);
+
     return (
         <Block className={clsx(
             'select-none dark:text-white',
@@ -26,14 +38,17 @@ export default function Item(props: IProps): JSX.Element {
                 'bg-gray-500 dark:bg-gray-800 text-white' :
                 props.weekday > 4 ? 'bg-gray-400 dark:bg-gray-500' : 'bg-gray-300 dark:bg-gray-600',
             {
-                'opacity-10': !props.isActive
+                'opacity-10': !isToday && !props.isActive
             },
             [props.className]
         )}
                hasPadding={false}
                hasBackground={false}
                hasBorder={false}
-               style={props.style}>
+               style={{
+                   width: props.size.width,
+                   height: props.size.height,
+               }}>
             <div className={clsx('flex px-2')}>
                 <div className='text-3xl'>{props.date.getDate()}</div>
                 <div className='flex-grow text-right text-sm'>{getWeekDay(props.date)}</div>
