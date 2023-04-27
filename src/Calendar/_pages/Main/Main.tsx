@@ -108,7 +108,7 @@ export default function Main(): JSX.Element {
                     <div className='flex flex-col flex-shrink-0 h-[100px] dark:text-white'>
                         <div className='flex items-baseline gap-3'>
                             <span className='text-xl'>Сегодня</span>
-                            <span className='text-xl bg-gray-300 px-2 rounded-md'>{getCaption(todayBodyPart)}</span>
+                            <span className='text-xl bg-gray-300 dark:bg-gray-600 px-2 rounded-md'>{getCaption(todayBodyPart)}</span>
                         </div>
                         <span className='text-3xl'>
                             {`${getDateMonth(now, MonthType.FullDate)}, ${getWeekDay(now, DaysType.Full)}`}
