@@ -99,9 +99,7 @@ export default function Edit(props: IProps): ReactElement {
     useEffect(() => {
         if (props.selectedId) {
             const exercise = data.find((item) => item.id === props.selectedId);
-            if (exercise) {
-                setSelectedExercise(exercise);
-            }
+            setSelectedExercise(exercise);
         }
     }, [props.selectedId]);
 
@@ -109,7 +107,9 @@ export default function Edit(props: IProps): ReactElement {
         <Block>
             {
                 !selectedExercise ?
-                    <div>Ничего не выбрано</div> :
+                    !props.selectedId ?
+                        <div>Ничего не выбрано</div> :
+                        <div>Данных нет</div> :
                     <div className='flex flex-col gap-3'>
                         <div className='text-xl'>
                             <Text value={selectedExercise.title}
