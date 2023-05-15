@@ -35,16 +35,16 @@ export default function UsernameInput(props: IProps): JSX.Element {
                 isEdit ?
                     <div className='flex gap-3 relative items-center'>
                         <Text value={inputValue}
-                              className='w-[200px] bg-gray-300 dark:bg-gray-700 shadow-md h-8 transition-colors'
+                              className='w-[200px] bg-gray-300 dark:bg-gray-700 shadow-md h-8'
                               onInit={(ref) => ref.current?.focus()}
                               onChange={setInputValue}>
-                            <Button caption={<MdCheck className='text-white dark:text-gray-900 transition-colors' size={20}/>}
-                                    className='bg-gray-700 hover:brightness-95 active:brightness-90 dark:bg-gray-500 transition-colors'
+                            <Button caption={<MdCheck className='text-white dark:text-gray-900' size={20}/>}
+                                    className='bg-gray-700 hover:brightness-95 active:brightness-90 dark:bg-gray-500'
                                     onClick={onConfirm}/>
                         </Text>
                         {
                             inputValue !== props.value &&
-                            <RxReset className='absolute -right-3 translate-x-full cursor-pointer text-gray-700 dark:text-gray-300 transition-colors'
+                            <RxReset className='absolute -right-3 translate-x-full cursor-pointer text-gray-700 dark:text-gray-300'
                                       onClick={() => setIsEdit(false)}/>
                         }
                     </div>
@@ -58,7 +58,6 @@ export default function UsernameInput(props: IProps): JSX.Element {
                                     text-lg
                                     active:brightness-90
                                     leading-8
-                                    transition-colors
                                     select-none'
                          onClick={onEdit}>
                         <span>{props.value}</span>

@@ -44,19 +44,19 @@ export default function Text(props: IInputProps) {
     }, [inputRef]);
 
     return (
-        <form className='flex grow items-end'
+        <form className='flex grow items-baseline'
               onSubmit={(e) => {e.preventDefault(); props.onSubmit?.();}}>
             {
                 props.label &&
                 <div className={clsx(
-                    'mr-3 shrink-0 text-gray-500 dark:text-gray-400 transition-colors select-none pb-1',
+                    'mr-3 shrink-0 text-gray-500 dark:text-gray-400 select-none pb-1',
                 )}>
                     {props.label}
                 </div>
             }
             <div className={clsx(
                 getBackgroundClass(props.background),
-                'dark:text-gray-400 relative flex transition-colors',
+                'dark:text-gray-400 relative flex',
                 [props.className],
                 {'mt-4': props.placeholder && !props.absolutePlaceholder && !props.staticPlaceholder}
             )}
@@ -68,7 +68,7 @@ export default function Text(props: IInputProps) {
                             'absolute px-2 select-none cursor-text',
                             props.value ?
                                 'top-[-1rem] text-xs text-gray-500 dark:text-gray-400' :
-                                'text-gray-400 dark:text-gray-500 top-0 transition-colors'
+                                'text-gray-400 dark:text-gray-500 top-0'
                         )}
                         style={{
                             transition: 'top .15s ease, font-size .15s ease, color .15s ease'

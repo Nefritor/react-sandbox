@@ -201,7 +201,7 @@ export default function Chat(props: IProps): JSX.Element {
             <div className='flex justify-between items-center mb-3 gap-3'>
                 <div className={clsx(
                     'text-2xl tracking-widest overflow-hidden text-gray-700 dark:text-gray-400',
-                    'hover:brightness-95 transition-colors cursor-pointer flex items-center select-none'
+                    'hover:brightness-95 cursor-pointer flex items-center select-none'
                 )}
                      title={props.roomName}
                      onClick={() => props.onLeaveRoom()}>
@@ -211,7 +211,7 @@ export default function Chat(props: IProps): JSX.Element {
                     </span>
                 </div>
                 <div className='flex gap-3 items-center select-none shrink-0'>
-                    <div className='cursor-pointer text-gray-400 hover:brightness-90 transition-colors'
+                    <div className='cursor-pointer text-gray-400 hover:brightness-90'
                          onClick={() => setSecretVisible((value) => !value)}>
                         {
                             secretVisible ?
@@ -230,7 +230,7 @@ export default function Chat(props: IProps): JSX.Element {
             </div>
             <div className={clsx(
                 'bg-gray-300 dark:bg-gray-700 rounded-lg grow flex flex-col',
-                'min-h-0 mb-3 p-3 shadow-md scrollbar-thin transition-colors'
+                'min-h-0 mb-3 p-3 shadow-md scrollbar-thin'
             )}>
                 <div className='grow relative'>
                     <MessagesList list={messages}
@@ -256,7 +256,6 @@ export default function Chat(props: IProps): JSX.Element {
                                     shadow-md
                                     cursor-pointer
                                     hover:brightness-90
-                                    transition-colors
                                     select-none'
                              onClick={onBottomScroll}>
                             <RxCaretDown size={20}/>

@@ -50,7 +50,7 @@ export default function MessagesList(props: IProps): JSX.Element {
                                       onBlockInit={(id) => props.onBlockInit?.(id)}/>
                     )) :
                     <div className='flex flex-col items-center justify-center h-full'>
-                        <div className='tracking-widest text-2xl dark:text-gray-400 transition-colors'>
+                        <div className='tracking-widest text-2xl dark:text-gray-400'>
                             {dict('Нет сообщений').toUpperCase()}
                         </div>
                     </div>
@@ -87,7 +87,7 @@ function MessageBlock(props: IMessageBlock): JSX.Element {
         <div ref={blockRef}
              className={clsx(
                  'bg-gray-400 dark:bg-gray-600 flex flex-col w-fit px-2 py-1',
-                 'min-w-[100px] max-w-[300px] relative shadow-md rounded-t-lg transition-colors',
+                 'min-w-[100px] max-w-[300px] relative shadow-md rounded-t-lg',
                  props.message.sender === Sender.IN ?
                      'self-end rounded-bl-lg' :
                      'rounded-br-lg'
@@ -96,13 +96,13 @@ function MessageBlock(props: IMessageBlock): JSX.Element {
                 props.message.sender !== Sender.IN &&
                 <div className={clsx(
                     'text-xs leading-none tracking-widest text-gray-600',
-                    'dark:text-gray-400 transition-colors select-none'
+                    'dark:text-gray-400 select-none'
                 )}>
                     {props.message.senderName}
                 </div>
             }
             <div className={clsx(
-                'leading-5 break-words transition-colors',
+                'leading-5 break-words',
                 (() => {
                     switch (props.message.style) {
                         case 'error':
@@ -119,7 +119,7 @@ function MessageBlock(props: IMessageBlock): JSX.Element {
             <div
                 className={clsx(
                     'text-xs self-end leading-3 tracking-tighter text-gray-600',
-                    'dark:text-gray-400 select-none flex gap-0.5 translate-x-1 transition-colors'
+                    'dark:text-gray-400 select-none flex gap-0.5 translate-x-1'
                 )}>
                 {formatDateTime(props.message.date)}
                 {props.message.status !== undefined && getStatusIcon(props.message.status)}

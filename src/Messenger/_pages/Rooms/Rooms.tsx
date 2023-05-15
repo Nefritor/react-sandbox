@@ -61,14 +61,14 @@ export default function Rooms(props: IProps): JSX.Element {
 
     const getRoomCreateView = useCallback(() => (
         <div className='mt-3'>
-            <Text className='bg-gray-300 dark:bg-gray-700 shadow-md h-8 w-full transition-colors'
+            <Text className='bg-gray-300 dark:bg-gray-700 shadow-md h-8 w-full'
                   label={dict('Название').toUpperCase()}
                   value={newRoomName}
                   onChange={setNewRoomName}
                   onSubmit={onCreateRoom}>
                 <div className='overflow-hidden rounded-r-lg shrink-0'>
                     <div className={clsx(
-                        'bg-gray-700 dark:bg-gray-500 dark:text-gray-900 px-3 cursor-pointer hover:brightness-90 transition-colors',
+                        'bg-gray-700 dark:bg-gray-500 dark:text-gray-900 px-3 cursor-pointer hover:brightness-90',
                         'text-white transition-[transform] leading-8',
                         newRoomName ?
                             '' :
@@ -122,8 +122,7 @@ export default function Rooms(props: IProps): JSX.Element {
                             h-[20%]
                             select-none
                             text-black
-                            dark:text-gray-300
-                            transition-colors'>
+                            dark:text-gray-300'>
                 <div>
                     <span className='text-3xl'>MESSENGER</span>
                     &nbsp;
@@ -131,7 +130,7 @@ export default function Rooms(props: IProps): JSX.Element {
                 </div>
             </div>
             <div className='flex flex-col items-center min-h-[75px] h-[15%]'>
-                <span className='tracking-widest text-gray-500 text-sm select-none dark:text-gray-400 transition-colors'>
+                <span className='tracking-widest text-gray-500 text-sm select-none dark:text-gray-400'>
                     {dict('Имя пользователя').toUpperCase()}
                 </span>
                 <UsernameInput value={userName}
@@ -139,11 +138,11 @@ export default function Rooms(props: IProps): JSX.Element {
                                onError={() => props.onNotification(getNotificationData(dict('Имя пользователя'), dict('Введите имя пользователя')))}/>
             </div>
             <div className='flex items-baseline relative text-xl tracking-widest justify-center mb-3 select-none'>
-                <span className='text-black dark:text-gray-300 transition-colors'>{dict('Комнаты').toUpperCase()}</span>
+                <span className='text-black dark:text-gray-300'>{dict('Комнаты').toUpperCase()}</span>
                 &nbsp;
                 {
                     !!rooms.length &&
-                    <div className='text-sm text-gray-400 dark:text-gray-500 transition-colors'>
+                    <div className='text-sm text-gray-400 dark:text-gray-500'>
                         {rooms.length}
                     </div>
                 }

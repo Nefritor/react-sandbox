@@ -11,7 +11,7 @@ export default function Button(props: IButtonProps) {
     return (
         <button className={clsx(
             'py-1 w-fit px-2 bg-blue-500 rounded text-white select-none',
-            'hover:brightness-95 active:brightness-90 dark:text-gray-300 transition-colors',
+            'hover:brightness-95 active:brightness-90 dark:text-gray-300',
             [props.className]
         )}
                 onClick={onClick}>

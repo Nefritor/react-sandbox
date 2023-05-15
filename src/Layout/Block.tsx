@@ -9,6 +9,7 @@ interface IProps {
     hasBackground?: boolean;
     hasBorder?: boolean;
     style?: CSSProperties;
+    onClick?: React.MouseEventHandler<HTMLDivElement>;
     children: ReactNode;
 }
 
@@ -20,6 +21,7 @@ export default function Block(
         hasPadding = true,
         hasBackground = true,
         hasBorder = true,
+        onClick,
         style
     }: IProps): JSX.Element {
     return (
@@ -33,7 +35,8 @@ export default function Block(
                 'border-2 border-gray-300 dark:border-gray-600': hasBorder
             }
         )}
-             style={style}>
+             style={style}
+             onClick={onClick}>
             {children}
         </div>
     )

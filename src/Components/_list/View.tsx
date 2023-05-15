@@ -23,7 +23,7 @@ export interface IListElement {
 export default function View<IElement extends IListElement>(props: IProps<IElement>): JSX.Element {
     return (
         <div className={clsx(
-            'flex flex-col gap-0.5 bg-gray-400/30 dark:bg-gray-700/70 transition-colors',
+            'flex flex-col gap-0.5 bg-gray-400/30 dark:bg-gray-700/70',
             [props.className]
         )}>
 
@@ -44,7 +44,7 @@ export default function View<IElement extends IListElement>(props: IProps<IEleme
 function ItemWrapper(props: IWrapper) {
     return (
         <div className={clsx(
-            'px-3 bg-gray-300 dark:bg-gray-700 dark:hover:brightness-110 hover:brightness-95 transition-colors',
+            'bg-gray-300 dark:bg-gray-700 dark:hover:brightness-110 hover:brightness-95',
             'cursor-pointer text-black dark:text-gray-400',
             [props.className]
         )}

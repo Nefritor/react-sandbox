@@ -21,6 +21,8 @@ import {Main as Messenger} from 'Messenger/pages';
 
 import {Main as Calendar} from 'Calendar/pages';
 
+import {Main as Constructor} from 'Constructor/exercise';
+
 import './index.css';
 
 const demoPages = [{
@@ -88,6 +90,9 @@ const router = createBrowserRouter([{
 }, {
     path: 'calendar',
     element: <Calendar/>
+}, {
+    path: 'constructor',
+    element: <Constructor/>
 }]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
