@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {createRef, ReactElement, useEffect, useRef, useState} from 'react';
 import {IExercise, IExerciseData, TExerciseDataType} from 'Constructor/interface';
 import Block from 'Layout/Block';
 import {Text} from 'Components/input';
@@ -46,6 +46,9 @@ const data = [{
 export default function Edit(props: IProps): ReactElement {
     const [selectedExercise, setSelectedExercise] = useState<IExercise>();
 
+    const addButtonRef = createRef<HTMLDivElement>();
+    const needScroll = useRef<boolean>(false);
+
     const onExerciseDataChange = (id: string, meta: IExerciseData['meta']) => {
         if (data) {
             setSelectedExercise((exercise) => {
@@ -82,7 +85,8 @@ export default function Edit(props: IProps): ReactElement {
                     ]
                 }
             }
-        })
+        });
+        needScroll.current = true;
     }
 
     const removeExerciseData = (id: string) => {
@@ -93,7 +97,7 @@ export default function Edit(props: IProps): ReactElement {
                     exerciseData: exercise.exerciseData.filter((data) => data.id !== id)
                 }
             }
-        })
+        });
     }
 
     useEffect(() => {
@@ -103,15 +107,22 @@ export default function Edit(props: IProps): ReactElement {
         }
     }, [props.selectedId]);
 
+    useEffect(() => {
+        if (needScroll.current) {
+            needScroll.current = false;
+            addButtonRef.current?.scrollIntoView({behavior: 'smooth'});
+        }
+    }, [selectedExercise]);
+
     return (
-        <Block>
+        <Block className='flex flex-col h-full'>
             {
                 !selectedExercise ?
                     !props.selectedId ?
                         <div>Ничего не выбрано</div> :
                         <div>Данных нет</div> :
-                    <div className='flex flex-col gap-3'>
-                        <div className='text-xl'>
+                    <div className='flex flex-col gap-3 min-h-[1px]'>
+                        <div className='shrink-0 text-xl'>
                             <Text value={selectedExercise.title}
                                   background={'contrast'}
                                   placeholder='Название упражнения'
@@ -124,36 +135,39 @@ export default function Edit(props: IProps): ReactElement {
                                       }
                                   })}/>
                         </div>
-                        {
-                            selectedExercise.exerciseData.map((data) => (
-                                <Block className='relative'
-                                       key={data.id}>
-                                    <div className={clsx(
-                                        'absolute h-fit right-2 top-2 p-2 rounded-full bg-gray-200 dark:bg-gray-700',
-                                        'hover:brightness-90 dark:hover:brightness-125 cursor-pointer'
-                                    )}
-                                         onClick={() => removeExerciseData(data.id)}>
-                                        <HiOutlineTrash size={20} className='text-gray-600 dark:text-gray-400'/>
-                                    </div>
-                                    <div className='text-gray-500 text-sm'>type: {data.type}</div>
-                                    <Text value={data.meta.name}
-                                          background={'contrast'}
-                                          label='Название'
-                                          onChange={(value) =>
-                                              onExerciseDataChange(data.id, {...data.meta, name: value})}/>
-                                    <Text value={data.meta.unit}
-                                          background={'contrast'}
-                                          label='Единица'
-                                          onChange={(value) =>
-                                              onExerciseDataChange(data.id, {...data.meta, unit: value})}/>
-                                </Block>
-                            ))
-                        }
-                        <Block
-                            className='flex justify-center hover:brightness-90 dark:hover:brightness-125 cursor-pointer'
-                            onClick={() => addExerciseData('custom')}>
-                            <RiAddFill size={20} className='text-gray-600 dark:text-gray-400'/>
-                        </Block>
+                        <div className='grow flex flex-col gap-3 scrollbar-thin'>
+                            {
+                                selectedExercise.exerciseData.map((data) => (
+                                    <Block className='relative'
+                                           key={data.id}>
+                                        <div className={clsx(
+                                            'absolute h-fit right-2 top-2 p-2 rounded-full bg-gray-200 dark:bg-gray-700',
+                                            'hover:brightness-90 dark:hover:brightness-125 cursor-pointer'
+                                        )}
+                                             onClick={() => removeExerciseData(data.id)}>
+                                            <HiOutlineTrash size={20} className='text-gray-600 dark:text-gray-400'/>
+                                        </div>
+                                        <div className='text-gray-500 text-sm'>type: {data.type}</div>
+                                        <Text value={data.meta.name}
+                                              background={'contrast'}
+                                              label='Название'
+                                              onChange={(value) =>
+                                                  onExerciseDataChange(data.id, {...data.meta, name: value})}/>
+                                        <Text value={data.meta.unit}
+                                              background={'contrast'}
+                                              label='Единица'
+                                              onChange={(value) =>
+                                                  onExerciseDataChange(data.id, {...data.meta, unit: value})}/>
+                                    </Block>
+                                ))
+                            }
+                            <Block
+                                ref={addButtonRef}
+                                className='flex justify-center hover:brightness-90 dark:hover:brightness-125 cursor-pointer'
+                                onClick={() => addExerciseData('custom')}>
+                                <RiAddFill size={20} className='text-gray-600 dark:text-gray-400'/>
+                            </Block>
+                        </div>
                     </div>
             }
         </Block>

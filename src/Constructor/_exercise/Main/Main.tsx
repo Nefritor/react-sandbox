@@ -12,12 +12,12 @@ export default function Main(): ReactElement {
                 <Suspense>
                     <ThemeSwitch className='absolute right-3 top-3 shadow-md'/>
                 </Suspense>
-                <div className='flex flex-col sm:flex-row gap-3 justify-center'>
-                    <div className='w-full shrink-[2] sm:max-w-[300px] max-h-[200px] sm:max-h-full scrollbar-thin rounded-md'>
+                <div className='flex flex-col sm:flex-row gap-3 justify-center overflow-hidden'>
+                    <div className='grow shrink-0 min-h-[80px] max-h-[150px] sm:max-h-full sm:max-w-[300px] scrollbar-thin rounded-md'>
                         <ExerciseList selectedId={selectedId}
                                       onExerciseSelected={setSelectedId}/>
                     </div>
-                    <div className='w-full shrink max-w-[700px]'>
+                    <div className='grow min-h-[1px] max-w-[700px]'>
                         <ExerciseEdit selectedId={selectedId}/>
                     </div>
                 </div>

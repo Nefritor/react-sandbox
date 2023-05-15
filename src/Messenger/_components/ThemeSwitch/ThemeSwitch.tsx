@@ -34,7 +34,7 @@ export default function ThemeSwitch(props: IProps): JSX.Element {
 
     return (
         <div className={clsx(
-            'flex items-center justify-center h-12 w-12 rounded-full cursor-pointer hover:brightness-95 select-none',
+            'flex items-center justify-center h-12 w-12 rounded-full cursor-pointer hover:brightness-95 select-none z-10',
             darkTheme ? 'bg-gray-600' : 'bg-amber-300',
             [props.className]
         )}
