@@ -36,7 +36,7 @@ export default function Item(props: IProps): JSX.Element {
             'select-none dark:text-white',
             isToday ?
                 'bg-gray-500 dark:bg-gray-800 text-white' :
-                props.weekday > 4 ? 'bg-gray-400 dark:bg-gray-500' : 'bg-gray-300 dark:bg-gray-600',
+                props.weekday > 4 ? 'bg-gray-300 dark:bg-gray-600' : 'bg-gray-200 dark:bg-gray-700',
             {
                 'opacity-10': !isToday && !props.isActive
             },

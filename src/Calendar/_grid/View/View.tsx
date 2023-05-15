@@ -1,7 +1,6 @@
 import React, {ReactNode, Suspense, useEffect, useState} from 'react';
 import {Day, DayMs, FullWeek, WeekDaysCount, WeekMs} from 'Calendar/constants';
 import {IItemData, Item} from 'Calendar/grid';
-import Block from 'Layout/Block';
 
 interface IProps {
     startDate: Date;
@@ -45,7 +44,7 @@ export default function View(
         weeksCount,
         itemBottomContent,
         blockSize = {height: 80, width: 100},
-        blockOffset = {vertical: 12, horizontal: 12}
+        blockOffset = {vertical: 10, horizontal: 10}
     }: IProps
 ): JSX.Element {
     const [dayBlocks, setDayBlocks] = useState<IDayBlock[]>([]);
@@ -74,27 +73,25 @@ export default function View(
     }, [blockOffset.horizontal, blockOffset.vertical, blockSize.height, blockSize.width, startDate, visibleDays, weeksCount]);
 
     return (
-        <Block className='scrollbar-thin'>
-            <div className='flex flex-col gap-3 relative'
-                 style={{
-                     height: (blockSize.height * weeksCount) + (blockOffset.vertical * (weeksCount - 1))
-                 }}>
-                <Suspense>
-                    {
-                        dayBlocks.map((dayBlock, index) => (
-                            <div key={index}
-                                 className='absolute'
-                                 style={dayBlock.position}>
-                                <Item date={dayBlock.data.date}
-                                      weekday={dayBlock.data.weekday}
-                                      isActive={dayBlock.data.isActive}
-                                      size={blockSize}
-                                      bottomContent={itemBottomContent}/>
-                            </div>
-                        ))
-                    }
-                </Suspense>
-            </div>
-        </Block>
+        <div className='flex flex-col gap-3 relative scrollbar-thin'
+             style={{
+                 height: (blockSize.height * weeksCount) + (blockOffset.vertical * (weeksCount - 1))
+             }}>
+            <Suspense>
+                {
+                    dayBlocks.map((dayBlock, index) => (
+                        <div key={index}
+                             className='absolute'
+                             style={dayBlock.position}>
+                            <Item date={dayBlock.data.date}
+                                  weekday={dayBlock.data.weekday}
+                                  isActive={dayBlock.data.isActive}
+                                  size={blockSize}
+                                  bottomContent={itemBottomContent}/>
+                        </div>
+                    ))
+                }
+            </Suspense>
+        </div>
     )
 }

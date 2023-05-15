@@ -24,13 +24,13 @@ enum BodyPart {
 
 const trainingData = [
     [1, 0, 3, 2],
-    [1, 0, 3, 2],
-    [0, 1, 3, 2],
-    [0, 2, 3, 1],
-    [2, 0, 3, 1]
+    [1, 0, 3],
+    [2, 0, 3, 1],
+    [2, 1, 3, 0],
+    [1, 2, 3, 0]
 ];
 
-const trainerDay = [3, 1, 1, 1, 1];
+const trainerDay = [3, -1, 1, 1, 1];
 
 const getTrainingDaysData = () => {
     const data: Record<string, ITrainingData> = {};
@@ -118,7 +118,7 @@ export default function Main(): JSX.Element {
                         </span>
                     </div>
                     <View startDate={startDate}
-                          visibleDays={visibleDays}
+                          /*visibleDays={visibleDays}*/
                           weeksCount={5}
                           itemBottomContent={(props) =>
                               visibleDays.includes(props.weekday) ?
