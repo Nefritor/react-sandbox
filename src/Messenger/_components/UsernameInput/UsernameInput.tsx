@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 import {MdCheck, MdEdit} from 'react-icons/md';
 import {RxReset} from 'react-icons/rx';
 
@@ -15,6 +15,8 @@ export default function UsernameInput(props: IProps): JSX.Element {
     const [inputValue, setInputValue] = useState('');
     const [isEdit, setIsEdit] = useState(false);
 
+    const textRef = createRef<HTMLInputElement>();
+
     const onConfirm = () => {
         if (inputValue) {
             props.onChange(inputValue);
@@ -29,14 +31,18 @@ export default function UsernameInput(props: IProps): JSX.Element {
         setIsEdit(true);
     }
 
+    useEffect(() => {
+        textRef.current?.focus()
+    }, [textRef]);
+
     return (
         <>
             {
                 isEdit ?
                     <div className='flex gap-3 relative items-center'>
-                        <Text value={inputValue}
+                        <Text ref={textRef}
+                              value={inputValue}
                               className='w-[200px] bg-gray-300 dark:bg-gray-700 shadow-md h-8'
-                              onInit={(ref) => ref.current?.focus()}
                               onChange={setInputValue}>
                             <Button caption={<MdCheck className='text-white dark:text-gray-900' size={20}/>}
                                     className='bg-gray-700 hover:brightness-95 active:brightness-90 dark:bg-gray-500'
@@ -44,8 +50,9 @@ export default function UsernameInput(props: IProps): JSX.Element {
                         </Text>
                         {
                             inputValue !== props.value &&
-                            <RxReset className='absolute -right-3 translate-x-full cursor-pointer text-gray-700 dark:text-gray-300'
-                                      onClick={() => setIsEdit(false)}/>
+                            <RxReset
+                                className='absolute -right-3 translate-x-full cursor-pointer text-gray-700 dark:text-gray-300'
+                                onClick={() => setIsEdit(false)}/>
                         }
                     </div>
                     :

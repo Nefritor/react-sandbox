@@ -1,4 +1,4 @@
-import React, {RefObject, useEffect, useRef} from "react";
+import React, {createRef, forwardRef, RefObject, useImperativeHandle} from "react";
 import clsx from 'clsx';
 
 export interface IInputProps {
@@ -34,18 +34,23 @@ const getBackgroundClass = (value?: TBackground) => {
     }
 }
 
-export default function Text(props: IInputProps) {
-    const inputRef = useRef<HTMLInputElement>(null);
+const Text = forwardRef((props: IInputProps, ref) => {
+    const inputRef = createRef<HTMLInputElement>();
 
-    useEffect(() => {
-        if (props.onInit) {
-            props.onInit(inputRef);
-        }
-    }, [inputRef]);
+    useImperativeHandle(ref, () => {
+        return {
+            focus() {
+                inputRef.current?.focus();
+            }
+        };
+    }, []);
 
     return (
         <form className='flex grow items-baseline'
-              onSubmit={(e) => {e.preventDefault(); props.onSubmit?.();}}>
+              onSubmit={(e) => {
+                  e.preventDefault();
+                  props.onSubmit?.();
+              }}>
             {
                 props.label &&
                 <div className={clsx(
@@ -90,4 +95,6 @@ export default function Text(props: IInputProps) {
             </div>
         </form>
     )
-}
+});
+
+export default Text;

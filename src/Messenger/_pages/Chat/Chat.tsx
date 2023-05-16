@@ -15,7 +15,7 @@ import {IWebSocketRef, startWebSocket, updateWebSocketMessage} from 'Messenger/w
 
 
 import {IMessage, IMessageData, Sender, Status} from 'Messenger/interface';
-import {MessagesList, SecretInput, ThemeSwitch} from 'Messenger/components';
+import {MessagesList, SecretInput} from 'Messenger/components';
 
 interface IProps {
     roomId: string;
@@ -44,6 +44,7 @@ export default function Chat(props: IProps): JSX.Element {
 
     const listBottomRef = createRef<HTMLDivElement>();
     const wsRef = useRef<IWebSocketRef>({webSocket: null, errorCount: 0});
+    const textRef = createRef<HTMLInputElement>();
 
     const observer = useMemo(() => new IntersectionObserver(
         ([entry]) => setIsBottom(entry.isIntersecting)
@@ -167,6 +168,7 @@ export default function Chat(props: IProps): JSX.Element {
     }, [hasUnread, isBottom, secret]);
 
     useEffect(() => {
+        textRef.current?.focus()
         listBottomRef.current?.scrollIntoView();
         startWebSocket(wsRef, {
             onOpen: () => {
@@ -266,13 +268,13 @@ export default function Chat(props: IProps): JSX.Element {
                 </div>
             </div>
             <div className='rounded-lg flex w-full shadow-md'>
-                <Text className='bg-gray-300 text-md leading-10 w-full'
+                <Text ref={textRef}
+                      className='bg-gray-300 text-md leading-10 w-full'
                       value={messageText}
                       placeholder={`${dict('Напишите сообщение')}...`}
                       staticPlaceholder={true}
                       onChange={setMessageText}
-                      onSubmit={sendMessage}
-                      onInit={(ref) => ref.current?.focus()}>
+                      onSubmit={sendMessage}>
                     <div className='overflow-hidden rounded-r-lg shrink-0'>
                         <div className={clsx(
                             'bg-gray-700 dark:bg-gray-500 px-4 cursor-pointer hover:brightness-90',
