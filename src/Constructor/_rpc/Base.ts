@@ -1,7 +1,7 @@
-import {createController, getController} from 'Utils/RPC';
+import {createRPC, getRPC} from 'Utils/RPC';
 
-const RPC_ID: string = 'exerciseConstructor';
+const RPC_ID: string = 'Constructor';
 
-createController(RPC_ID, {secured: 3336, unsecured: 3335});
+createRPC(RPC_ID, 6278);
 
-export const Controller = getController(RPC_ID);
+export const call = getRPC(RPC_ID).post;

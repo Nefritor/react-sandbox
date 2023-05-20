@@ -1,21 +1,21 @@
-import {Controller} from './Base';
+import {call} from './Base';
 
 export const getExerciseList = () => {
-    return Controller.get('exercise-list');
+    return call('Exercise.GetList');
 }
 
-export const getExercise = (id: string) => {
-    return Controller.post('get-exercise', {id});
+export const createExercise = (data: any) => {
+    return call('Exercise.CreateExercise', data);
 }
 
-export const addExercise = (data: any) => {
-    return Controller.post('add-exercise', data);
+export const readExercise = (id: string) => {
+    return call('Exercise.ReadExercise', {id});
 }
 
-export const removeExercise = (id: string) => {
-    return Controller.post('remove-exercise', {id});
+export const updateExercise = (data: any) => {
+    return call('Exercise.UpdateExercise', data);
 }
 
-export const updateExerciseData = (data: any) => {
-    return Controller.post('update-exercise', data);
+export const deleteExercise = (id: string) => {
+    return call('Exercise.DeleteExercise', {id});
 }

@@ -6,6 +6,7 @@ interface IProps<IElement> {
     itemClassName?: string;
     className?: string;
     emptyView?: JSX.Element;
+    emptyText?: string;
     onElementClick: (data: IElement) => void;
 }
 
@@ -20,6 +21,18 @@ export interface IListElement {
     id: string;
 }
 
+const getEmptyView = (emptyView?: JSX.Element, emptyText?: string) => (
+    emptyView ||
+    (
+        emptyText &&
+        <div className='flex min-h-[80px] items-center justify-center'>
+            <div className='text-xl dark:text-gray-400'>
+                {emptyText}
+            </div>
+        </div>
+    )
+)
+
 export default function View<IElement extends IListElement>(props: IProps<IElement>): JSX.Element {
     return (
         <div className={clsx(
@@ -28,14 +41,14 @@ export default function View<IElement extends IListElement>(props: IProps<IEleme
         )}>
 
             {
-                props.list.length || !props.emptyView ?
+                props.list.length ?
                     props.list.map((element) =>
                         <ItemWrapper key={element.id}
                                      className={props.itemClassName}
                                      onClick={() => props.onElementClick(element)}>
                             {props.item(element)}
                         </ItemWrapper>) :
-                    props.emptyView
+                    getEmptyView(props.emptyView, props.emptyText)
             }
         </div>
     )

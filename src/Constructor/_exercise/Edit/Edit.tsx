@@ -8,11 +8,7 @@ import {HiOutlineTrash} from 'react-icons/hi';
 import getUUID from 'react-uuid';
 import {defaultMeta} from './Meta/Meta';
 import clsx from 'clsx';
-import {
-    getExercise,
-    removeExercise as sendRemoveExercise,
-    updateExerciseData as sendUpdateExerciseData
-} from 'Constructor/rpc';
+import {readExercise, updateExercise, deleteExercise} from 'Constructor/rpc';
 
 interface IProps {
     selectedId: string | undefined;
@@ -77,17 +73,17 @@ export default function Edit(props: IProps): ReactElement {
         });
     }
 
-    const removeExercise = () => {
+    const _deleteExercise = () => {
         if (props.selectedId) {
-            sendRemoveExercise(props.selectedId).then(() => {
+            deleteExercise(props.selectedId).then(() => {
                 props.onExerciseRemove();
             });
         }
     }
 
-    const updateExercise = () => {
+    const _updateExercise = () => {
         if (exercise) {
-            sendUpdateExerciseData(exercise).then(() => {
+            updateExercise(exercise).then(() => {
                 setIsChanged(false);
                 if (memoryExercise.current) {
                     props.onExerciseUpdate(memoryExercise.current, exercise)
@@ -105,7 +101,7 @@ export default function Edit(props: IProps): ReactElement {
 
     useEffect(() => {
         if (props.selectedId) {
-            getExercise(props.selectedId).then((res) => {
+            readExercise(props.selectedId).then((res) => {
                 setExercise(res.data);
                 memoryExercise.current = res.data;
             })
@@ -156,7 +152,7 @@ export default function Edit(props: IProps): ReactElement {
                                         <div className={clsx(
                                             'h-fit p-3 rounded-full bg-gray-200 dark:bg-gray-700',
                                             'hover:brightness-90 dark:hover:brightness-125 cursor-pointer')}
-                                             onClick={() => updateExercise()}>
+                                             onClick={() => _updateExercise()}>
                                             <RiCheckLine size={20} className='text-green-600 dark:text-green-400'/>
                                         </div>
                                     </>
@@ -164,7 +160,7 @@ export default function Edit(props: IProps): ReactElement {
                                 <div className={clsx(
                                     'h-fit p-3 rounded-full bg-gray-200 dark:bg-gray-700',
                                     'hover:brightness-90 dark:hover:brightness-125 cursor-pointer')}
-                                     onClick={() => removeExercise()}>
+                                     onClick={() => _deleteExercise()}>
                                     <HiOutlineTrash size={20} className='text-red-600 dark:text-red-400'/>
                                 </div>
                             </div>

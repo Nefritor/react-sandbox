@@ -13,7 +13,7 @@ import Block from 'Layout/Block';
 
 import {IExerciseBase} from 'Constructor/interface';
 
-import {addExercise as sendAddExercise, getExerciseList} from 'Constructor/rpc';
+import {createExercise, getExerciseList} from 'Constructor/rpc';
 
 import clsx from 'clsx';
 import {RiAddFill, RiCheckLine} from 'react-icons/ri';
@@ -54,7 +54,7 @@ const List = forwardRef((props: IProps, ref: ForwardedRef<IRef>): ReactElement =
 
     const saveEditingExercise = () => {
         if (editingConfig) {
-            sendAddExercise(editingConfig).then(() => {
+            createExercise(editingConfig).then(() => {
                 cancelEditing();
                 loadData().then(() => {
                     props.onExerciseSelected(editingConfig.id);
@@ -113,6 +113,7 @@ const List = forwardRef((props: IProps, ref: ForwardedRef<IRef>): ReactElement =
             )}
                    hasPadding={false}>
                 <View list={list}
+                      emptyText='Cписок пуст'
                       onElementClick={(data) => props.onExerciseSelected(data.id)}
                       item={listItem}/>
             </Block>
