@@ -128,8 +128,9 @@ export default function Edit(props: IProps): ReactElement {
                 !exercise ?
                     <div className='dark:text-gray-400'>Данных нет</div> :
                     <div className='flex flex-col gap-3 min-h-[1px]'>
-                        <div className='flex shrink-0 text-xl justify-between items-center'>
+                        <div className='flex shrink-0 text-xl justify-between items-end'>
                             <Text value={exercise.title}
+                                  className='mr-1 grow'
                                   placeholder='Название упражнения'
                                   onChange={(value) => setExercise((exercise) => {
                                       if (exercise) {

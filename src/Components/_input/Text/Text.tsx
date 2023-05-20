@@ -41,7 +41,7 @@ const Text = forwardRef((props: IProps, ref) => {
                         'absolute py-1 px-2 w-full transition-[transform,font-size]',
                         'text-gray-400 dark:text-gray-500 select-none',
                         'cursor-text text-crop whitespace-nowrap',
-                        {'-translate-y-7 text-sm cursor-default': props.value},
+                        {'-translate-y-8 text-sm cursor-default': props.value},
                         {'text-primary-400 dark:text-primary-400': isFocus && props.value},
                         [props.placeholderClassName]
                     )}
