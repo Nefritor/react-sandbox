@@ -3,7 +3,7 @@ import {MdCheck, MdEdit} from 'react-icons/md';
 import {RxReset} from 'react-icons/rx';
 
 import {Button} from 'Components/button';
-import {Text} from 'Components/input';
+import {TextOld} from 'Components/input';
 
 interface IProps {
     value: string;
@@ -40,14 +40,14 @@ export default function UsernameInput(props: IProps): JSX.Element {
             {
                 isEdit ?
                     <div className='flex gap-3 relative items-center'>
-                        <Text ref={textRef}
-                              value={inputValue}
-                              className='w-[200px] bg-gray-300 dark:bg-gray-700 shadow-md h-8'
-                              onChange={setInputValue}>
+                        <TextOld ref={textRef}
+                                 value={inputValue}
+                                 className='w-[200px] bg-gray-300 dark:bg-gray-700 shadow-md h-8'
+                                 onChange={setInputValue}>
                             <Button caption={<MdCheck className='text-white dark:text-gray-900' size={20}/>}
                                     className='bg-gray-700 hover:brightness-95 active:brightness-90 dark:bg-gray-500'
                                     onClick={onConfirm}/>
-                        </Text>
+                        </TextOld>
                         {
                             inputValue !== props.value &&
                             <RxReset

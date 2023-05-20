@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {Button} from 'Components/button';
 import {useFetcher} from 'Components/hooks';
-import {Text} from 'Components/input';
+import {TextOld} from 'Components/input';
 import {Checkbox} from 'Components/toggle';
 
 export default function FetcherDemo(): JSX.Element {
@@ -43,19 +43,19 @@ export default function FetcherDemo(): JSX.Element {
         <div className='h-full w-full flex flex-col items-center justify-center overflow-hidden relative dark:bg-gray-900'>
             <div className='w-[250px] bg-gray-200 rounded-xl flex flex-col py-3 px-5 gap-1 shadow-md dark:bg-gray-700'>
                 <div className='flex align-baseline'>
-                    <Text
+                    <TextOld
                         placeholder='Название уведомления'
                         value={fetcherTitle}
                         onChange={setFetcherTitle}/>
                 </div>
                 <div className='flex align-baseline'>
-                    <Text
+                    <TextOld
                         placeholder='Текст уведомления'
                         value={fetcherCaption}
                         onChange={setFetcherCaption}/>
                 </div>
                 <div className='flex align-baseline'>
-                    <Text
+                    <TextOld
                         placeholder='Длительность задержки (сек)'
                         value={fetcherDuration.toString()}
                         onChange={(value) => setFetcherDuration(+value)}/>

@@ -4,7 +4,7 @@ import Uuid from 'react-uuid';
 
 import {AES, enc} from 'crypto-ts';
 
-import {Text} from 'Components/input';
+import {TextOld} from 'Components/input';
 import {MessagesList} from 'Messenger/components';
 import {IMessage, Sender} from 'Messenger/interface';
 import {Button} from 'Components/button';
@@ -64,8 +64,8 @@ export default function MessengerDemo(): JSX.Element {
     return (
         <div className='flex flex-col h-screen w-screen items-center justify-center gap-3'>
             <div className='bg-gray-300 rounded-xl p-3 shadow-md'>
-                <Text value={secretSender} placeholder='Secret sender' onChange={setSecretSender}/>
-                <Text value={messageSender} placeholder='Message' onChange={setMessageSender}/>
+                <TextOld value={secretSender} placeholder='Secret sender' onChange={setSecretSender}/>
+                <TextOld value={messageSender} placeholder='Message' onChange={setMessageSender}/>
             </div>
             <div className='bg-gray-300 rounded-xl py-2 px-3 shadow-md'>
                 <span className='text-gray-500'>Hash:</span>
@@ -73,7 +73,7 @@ export default function MessengerDemo(): JSX.Element {
                 <span>{hash}</span>
             </div>
             <div className='bg-gray-300 rounded-xl py-2 px-3 shadow-md'>
-                <Text value={secretAddressee} placeholder='Secret receiver' onChange={setSecretAddressee}/>
+                <TextOld value={secretAddressee} placeholder='Secret receiver' onChange={setSecretAddressee}/>
                 <span className='text-gray-500'>Decrypted:</span>
                 &nbsp;
                 <span>{messageAddressee}</span>
@@ -81,14 +81,14 @@ export default function MessengerDemo(): JSX.Element {
             <div className='flex w-[500px] gap-3'>
                 <div className='flex flex-col items-center grow bg-gray-300 rounded-xl py-2 px-3 gap-2 shadow-md'>
                     <div>Left user</div>
-                    <Text value={secretLeft} placeholder='Secret' onChange={setSecretLeft}/>
-                    <Text value={textLeft} placeholder='Message' onChange={setTextLeft}/>
+                    <TextOld value={secretLeft} placeholder='Secret' onChange={setSecretLeft}/>
+                    <TextOld value={textLeft} placeholder='Message' onChange={setTextLeft}/>
                     <Button caption='Отправить' onClick={sendLeft}/>
                 </div>
                 <div className='flex flex-col items-center grow bg-gray-300 rounded-xl py-2 px-3 gap-2 shadow-md'>
                     <div>Right user</div>
-                    <Text value={secretRight} placeholder='Secret' onChange={setSecretRight}/>
-                    <Text value={textRight} placeholder='Message' onChange={setTextRight}/>
+                    <TextOld value={secretRight} placeholder='Secret' onChange={setSecretRight}/>
+                    <TextOld value={textRight} placeholder='Message' onChange={setTextRight}/>
                     <Button caption='Отправить' onClick={sendRight}/>
                 </div>
             </div>

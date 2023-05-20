@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie';
 
 import {Button} from 'Components/button';
 import {getNotificationData, IFetcherData} from 'Components/hooks';
-import {Text} from 'Components/input';
+import {TextOld} from 'Components/input';
 import {IListElement, View as ListView} from 'Components/list';
 import {Edge} from 'Components/popup';
 
@@ -61,11 +61,11 @@ export default function Rooms(props: IProps): JSX.Element {
 
     const getRoomCreateView = useCallback(() => (
         <div className='mt-3'>
-            <Text className='bg-gray-300 dark:bg-gray-700 shadow-md h-8 w-full'
-                  label={dict('Название').toUpperCase()}
-                  value={newRoomName}
-                  onChange={setNewRoomName}
-                  onSubmit={onCreateRoom}>
+            <TextOld className='bg-gray-300 dark:bg-gray-700 shadow-md h-8 w-full'
+                     label={dict('Название').toUpperCase()}
+                     value={newRoomName}
+                     onChange={setNewRoomName}
+                     onSubmit={onCreateRoom}>
                 <div className='overflow-hidden rounded-r-lg shrink-0'>
                     <div className={clsx(
                         'bg-gray-700 dark:bg-gray-500 dark:text-gray-900 px-3 cursor-pointer hover:brightness-90',
@@ -78,7 +78,7 @@ export default function Rooms(props: IProps): JSX.Element {
                         {dict('Создать').toUpperCase()}
                     </div>
                 </div>
-            </Text>
+            </TextOld>
         </div>
     ), [newRoomName]);
 

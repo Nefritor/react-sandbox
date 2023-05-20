@@ -15,3 +15,7 @@ export const addExercise = (data: any) => {
 export const removeExercise = (id: string) => {
     return Controller.post('remove-exercise', {id});
 }
+
+export const updateExerciseData = (data: any) => {
+    return Controller.post('update-exercise', data);
+}

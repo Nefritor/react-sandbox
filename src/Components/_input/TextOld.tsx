@@ -34,7 +34,7 @@ const getBackgroundClass = (value?: TBackground) => {
     }
 }
 
-const Text = forwardRef((props: IInputProps, ref) => {
+const TextOld = forwardRef((props: IInputProps, ref) => {
     const inputRef = createRef<HTMLInputElement>();
 
     useImperativeHandle(ref, () => {
@@ -97,4 +97,4 @@ const Text = forwardRef((props: IInputProps, ref) => {
     )
 });
 
-export default Text;
+export default TextOld;

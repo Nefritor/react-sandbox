@@ -9,17 +9,17 @@ import React, {
     useState
 } from 'react';
 import {View} from 'Components/list';
-import {Text} from 'Components/input';
 import Block from 'Layout/Block';
 
 import {IExerciseBase} from 'Constructor/interface';
 
-import {getExerciseList, addExercise as sendAddExercise} from 'Constructor/rpc';
+import {addExercise as sendAddExercise, getExerciseList} from 'Constructor/rpc';
 
 import clsx from 'clsx';
 import {RiAddFill, RiCheckLine} from 'react-icons/ri';
-import {RxCross2} from 'react-icons/rx';
 import getUUID from 'react-uuid';
+import {Text} from 'Components/input';
+import {RxCross2} from 'react-icons/rx';
 
 interface IProps {
     className?: string
@@ -33,125 +33,117 @@ export interface IRef {
 
 const List = forwardRef((props: IProps, ref: ForwardedRef<IRef>): ReactElement => {
     const [list, setList] = useState<IExerciseBase[]>([]);
-    const [editingId, setEditingId] = useState<string>();
+    const [editingConfig, setEditingConfig] = useState<IExerciseBase>();
 
     useImperativeHandle(ref, (): IRef => ({
         reload: () => {
-            reloadData();
+            loadData();
         }
     }));
+
+    const markerRef = createRef<HTMLDivElement>();
 
     const inputRef = createRef<HTMLInputElement>();
 
     const addExercise = () => {
-        const newItemId = getUUID();
-        setList((list) => [
-            ...list,
-            {
-                id: newItemId,
-                title: ''
-            }
-        ]);
-        setEditingId(newItemId);
+        setEditingConfig({
+            id: getUUID(),
+            title: ''
+        });
     }
 
-    const saveEditingExercise = (data: {id: string, title: string}) => {
-        if (editingId) {
-            list.find((data) => data.id === editingId)
-            sendAddExercise(data).then(() => {
+    const saveEditingExercise = () => {
+        if (editingConfig) {
+            sendAddExercise(editingConfig).then(() => {
                 cancelEditing();
-                reloadData().then(() => {
-                    props.onExerciseSelected(editingId);
+                loadData().then(() => {
+                    props.onExerciseSelected(editingConfig.id);
                 });
             })
         }
     }
 
     const cancelEditing = () => {
-        setList((list) => list.filter((data) => data.id !== editingId));
-        setEditingId(undefined);
+        setEditingConfig(undefined);
     }
 
     const changeEditingTitle = (value: string) => {
-        setList((list) => list.map((data) => {
-            if (data.id !== editingId) {
-                return data
-            }
-            return {
-                ...data,
-                title: value
-            }
-        }));
+        if (editingConfig) {
+            setEditingConfig({...editingConfig, title: value});
+        }
     }
 
-    const reloadData = (): Promise<void> => {
+    const loadData = (): Promise<void> => {
         return getExerciseList().then((response) => {
             setList(response.data);
         })
     }
 
     const listItem = useCallback(({id, title}: IExerciseBase) =>
-            <div className='relative py-2 flex'>
+            <div className='relative flex'>
                 {
                     id === props.selectedId &&
-                    <div
-                        className='absolute w-[5px] h-[30px] left-1 self-center rounded-full bg-gray-700 dark:bg-gray-200'/>
+                    <div ref={markerRef}
+                         className='absolute w-[5px] h-[30px] left-1 self-center rounded-full bg-gray-500'/>
                 }
-                {
-                    id !== editingId ?
-                        <span className='px-4'>{title}</span> :
-                        <div className='px-2 flex items-center grow gap-1'>
-                            <Text ref={inputRef}
-                                  value={title}
-                                  onChange={changeEditingTitle}
-                                  background={'contrast'}
-                                  placeholder='Название упражнения'
-                                  staticPlaceholder={true}/>
-                            {
-                                title &&
-                                <div className='rounded-full p-1 bg-gray-700 hover:brightness-125'
-                                     onClick={() => saveEditingExercise({id, title})}>
-                                    <RiCheckLine/>
-                                </div>
-                            }
-                            <div className='rounded-full p-1 bg-gray-700 hover:brightness-125'
-                                 onClick={() => cancelEditing()}>
-                                <RxCross2/>
-                            </div>
-                        </div>
-                }
+                <span className='px-4 py-2 text-ellipsis overflow-hidden'>{title}</span>
             </div>,
-        [editingId, props.selectedId]
+        [props.selectedId]
     )
 
     useEffect(() => {
-        if (editingId) {
+        if (editingConfig) {
             inputRef.current?.focus();
         }
-    }, [editingId]);
+    }, [editingConfig]);
 
     useEffect(() => {
-        reloadData();
+        loadData();
     }, []);
 
+    useEffect(() => {
+        markerRef.current?.scrollIntoView({behavior: 'smooth'});
+    }, [props.selectedId]);
+
     return (
-        <div className='flex flex-col gap-3'>
-            <Block className={clsx('flex flex-col overflow-hidden', [props.className])}
+        <div className='flex flex-col gap-3 min-w-[1px]'>
+            <Block className={clsx(
+                'flex flex-col overflow-hidden  min-h-[40px] max-h-[150px] sm:max-h-full scrollbar-thin',
+                [props.className]
+            )}
                    hasPadding={false}>
                 <View list={list}
-                      onElementClick={(data) => {
-                          if (data.id !== editingId) {
-                              props.onExerciseSelected(data.id)
-                          }
-                      }}
+                      onElementClick={(data) => props.onExerciseSelected(data.id)}
                       item={listItem}/>
             </Block>
             {
-                !editingId &&
-                <Block className='flex justify-center hover:brightness-90 dark:hover:brightness-125 cursor-pointer'
-                       onClick={() => !editingId && addExercise()}>
-                    <RiAddFill size={20} className='text-gray-600 dark:text-gray-400'/>
-                </Block>
+                !editingConfig ?
+                    <Block className='flex justify-center hover:brightness-90 dark:hover:brightness-125 cursor-pointer'
+                           onClick={() => addExercise()}>
+                        <RiAddFill size={20} className='text-gray-600 dark:text-gray-400'/>
+                    </Block> :
+                    <div className='flex grow leading-9 items-center'>
+                        <Text ref={inputRef}
+                              className='mr-2 grow min-w-[1px]'
+                              inputClassName='px-4'
+                              placeholderClassName='px-4'
+                              value={editingConfig.title}
+                              onChange={changeEditingTitle}
+                              staticPlaceholder={true}
+                              placeholder='Название упражнения'/>
+                        {
+                            editingConfig.title &&
+                            <div
+                                className='p-3 text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer'
+                                onClick={() => saveEditingExercise()}>
+                                <RiCheckLine/>
+                            </div>
+                        }
+                        <div className='p-3 text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer'
+                             onClick={() => cancelEditing()}>
+                            <RxCross2/>
+                        </div>
+                    </div>
             }
         </div>
 

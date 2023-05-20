@@ -1,14 +1,6 @@
-@font-face {
-  font-family: 'Rubik';
-  src: url('../public/Rubik.ttf');
-}
-
-body {
-  margin: 0;
-  font-family: 'Rubik', serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 #root {
   height: -webkit-fill-available;
@@ -17,11 +9,14 @@ body {
   min-height: 1px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: 'Inter';
+  src: url('../public/Inter.ttf');
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer components {
+  .text-crop {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

@@ -7,7 +7,7 @@ import {RxCaretDown, RxEyeClosed, RxEyeOpen} from 'react-icons/rx';
 import Cookies from 'universal-cookie';
 
 import {getNotificationData, IFetcherData} from 'Components/hooks';
-import {Text} from 'Components/input';
+import {TextOld} from 'Components/input';
 
 import {dict} from 'Messenger/i18n';
 import {Constants} from 'Messenger/utils';
@@ -268,13 +268,13 @@ export default function Chat(props: IProps): JSX.Element {
                 </div>
             </div>
             <div className='rounded-lg flex w-full shadow-md'>
-                <Text ref={textRef}
-                      className='bg-gray-300 text-md leading-10 w-full'
-                      value={messageText}
-                      placeholder={`${dict('Напишите сообщение')}...`}
-                      staticPlaceholder={true}
-                      onChange={setMessageText}
-                      onSubmit={sendMessage}>
+                <TextOld ref={textRef}
+                         className='bg-gray-300 text-md leading-10 w-full'
+                         value={messageText}
+                         placeholder={`${dict('Напишите сообщение')}...`}
+                         staticPlaceholder={true}
+                         onChange={setMessageText}
+                         onSubmit={sendMessage}>
                     <div className='overflow-hidden rounded-r-lg shrink-0'>
                         <div className={clsx(
                             'bg-gray-700 dark:bg-gray-500 px-4 cursor-pointer hover:brightness-90',
@@ -290,7 +290,7 @@ export default function Chat(props: IProps): JSX.Element {
                             {dict('Отправить').toUpperCase()}
                         </div>
                     </div>
-                </Text>
+                </TextOld>
             </div>
         </>
     )

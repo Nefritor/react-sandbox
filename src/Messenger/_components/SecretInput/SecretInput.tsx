@@ -1,7 +1,7 @@
 import Copy from 'copy-to-clipboard';
 import {MdContentCopy} from 'react-icons/md';
 
-import {IInputProps, Text} from 'Components/input';
+import {IInputProps, TextOld} from 'Components/input';
 
 interface ISecretProps extends IInputProps {
     onCopy: () => void;
@@ -23,10 +23,10 @@ export default function SecretInput(props: ISecretProps): JSX.Element {
     )
 
     return (
-        <Text {...props}>
+        <TextOld {...props}>
             {
                 getButtons()
             }
-        </Text>
+        </TextOld>
     )
 }

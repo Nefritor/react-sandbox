@@ -2,26 +2,34 @@ import React, {createRef, ReactElement, useEffect, useRef, useState} from 'react
 import {IExercise, IExerciseData, TExerciseDataType} from 'Constructor/interface';
 import Block from 'Layout/Block';
 import {Text} from 'Components/input';
-import {RiAddFill} from 'react-icons/ri';
+import {RiAddFill, RiCheckLine} from 'react-icons/ri';
+import {GrUndo} from 'react-icons/gr';
 import {HiOutlineTrash} from 'react-icons/hi';
 import getUUID from 'react-uuid';
 import {defaultMeta} from './Meta/Meta';
 import clsx from 'clsx';
-import {getExercise, removeExercise as sendRemoveExercise} from 'Constructor/rpc';
+import {
+    getExercise,
+    removeExercise as sendRemoveExercise,
+    updateExerciseData as sendUpdateExerciseData
+} from 'Constructor/rpc';
 
 interface IProps {
     selectedId: string | undefined;
     onExerciseRemove: () => void
+    onExerciseUpdate: (prevData: IExercise, nextData: IExercise) => void
 }
 
 export default function Edit(props: IProps): ReactElement {
-    const [selectedExercise, setSelectedExercise] = useState<IExercise>();
+    const [exercise, setExercise] = useState<IExercise>();
+    const [isChanged, setIsChanged] = useState<boolean>(false);
 
     const addButtonRef = createRef<HTMLDivElement>();
+    const memoryExercise = useRef<IExercise>();
     const needScroll = useRef<boolean>(false);
 
     const onExerciseDataChange = (id: string, meta: IExerciseData['meta']) => {
-        setSelectedExercise((exercise) => {
+        setExercise((exercise) => {
             if (exercise) {
                 return {
                     ...exercise,
@@ -40,7 +48,7 @@ export default function Edit(props: IProps): ReactElement {
     }
 
     const addExerciseData = (type: TExerciseDataType) => {
-        setSelectedExercise((exercise) => {
+        setExercise((exercise) => {
             if (exercise) {
                 return {
                     ...exercise,
@@ -59,7 +67,7 @@ export default function Edit(props: IProps): ReactElement {
     }
 
     const removeExerciseData = (id: string) => {
-        setSelectedExercise((exercise) => {
+        setExercise((exercise) => {
             if (exercise) {
                 return {
                     ...exercise,
@@ -77,34 +85,57 @@ export default function Edit(props: IProps): ReactElement {
         }
     }
 
+    const updateExercise = () => {
+        if (exercise) {
+            sendUpdateExerciseData(exercise).then(() => {
+                setIsChanged(false);
+                if (memoryExercise.current) {
+                    props.onExerciseUpdate(memoryExercise.current, exercise)
+                    memoryExercise.current = exercise;
+                }
+            });
+        }
+    }
+
+    const revertExercise = () => {
+        if (memoryExercise.current) {
+            setExercise(memoryExercise.current);
+        }
+    }
+
     useEffect(() => {
         if (props.selectedId) {
             getExercise(props.selectedId).then((res) => {
-                setSelectedExercise(res.data);
+                setExercise(res.data);
+                memoryExercise.current = res.data;
             })
         } else {
-            setSelectedExercise(undefined);
+            setExercise(undefined);
         }
     }, [props.selectedId]);
 
     useEffect(() => {
+        if (!isChanged && memoryExercise.current !== exercise) {
+            setIsChanged(true);
+        } else if (isChanged && memoryExercise.current === exercise) {
+            setIsChanged(false);
+        }
         if (needScroll.current) {
             needScroll.current = false;
             addButtonRef.current?.scrollIntoView({behavior: 'smooth'});
         }
-    }, [selectedExercise]);
+    }, [exercise]);
 
     return (
-        <Block className={clsx('flex flex-col max-h-full h-fit', {hidden: !selectedExercise && !props.selectedId})}>
+        <Block className={clsx('flex flex-col max-h-full h-fit', {hidden: !exercise && !props.selectedId})}>
             {
-                !selectedExercise ?
+                !exercise ?
                     <div className='dark:text-gray-400'>Данных нет</div> :
                     <div className='flex flex-col gap-3 min-h-[1px]'>
-                        <div className='flex shrink-0 text-xl'>
-                            <Text value={selectedExercise.title}
-                                  background={'contrast'}
+                        <div className='flex shrink-0 text-xl justify-between items-center'>
+                            <Text value={exercise.title}
                                   placeholder='Название упражнения'
-                                  onChange={(value) => setSelectedExercise((exercise) => {
+                                  onChange={(value) => setExercise((exercise) => {
                                       if (exercise) {
                                           return {
                                               ...exercise,
@@ -112,33 +143,50 @@ export default function Edit(props: IProps): ReactElement {
                                           }
                                       }
                                   })}/>
-                            <div className={clsx(
-                                'h-fit p-2 rounded-full bg-gray-200 dark:bg-gray-700',
-                                'hover:brightness-90 dark:hover:brightness-125 cursor-pointer')}
-                                 onClick={() => removeExercise()}>
-                                <HiOutlineTrash size={20} className='text-gray-600 dark:text-gray-400'/>
+                            <div className='flex gap-1'>
+                                {
+                                    isChanged &&
+                                    <>
+                                        <div className={clsx(
+                                            'h-fit p-3 rounded-full bg-gray-200 dark:bg-gray-700',
+                                            'hover:brightness-90 dark:hover:brightness-125 cursor-pointer')}
+                                             onClick={() => revertExercise()}>
+                                            <GrUndo size={20} className='text-gray-600 dark:text-gray-400'/>
+                                        </div>
+                                        <div className={clsx(
+                                            'h-fit p-3 rounded-full bg-gray-200 dark:bg-gray-700',
+                                            'hover:brightness-90 dark:hover:brightness-125 cursor-pointer')}
+                                             onClick={() => updateExercise()}>
+                                            <RiCheckLine size={20} className='text-green-600 dark:text-green-400'/>
+                                        </div>
+                                    </>
+                                }
+                                <div className={clsx(
+                                    'h-fit p-3 rounded-full bg-gray-200 dark:bg-gray-700',
+                                    'hover:brightness-90 dark:hover:brightness-125 cursor-pointer')}
+                                     onClick={() => removeExercise()}>
+                                    <HiOutlineTrash size={20} className='text-red-600 dark:text-red-400'/>
+                                </div>
                             </div>
                         </div>
                         <div className='grow flex flex-col gap-3 scrollbar-thin'>
                             {
-                                selectedExercise.exerciseData.map((data) => (
-                                    <Block className='relative'
+                                exercise.exerciseData.map((data) => (
+                                    <Block className='flex flex-col relative gap-3'
                                            key={data.id}>
                                         <div className={clsx(
                                             'absolute h-fit right-2 top-2 p-2 rounded-full bg-gray-200 dark:bg-gray-700',
                                             'hover:brightness-90 dark:hover:brightness-125 cursor-pointer'
                                         )}
                                              onClick={() => removeExerciseData(data.id)}>
-                                            <HiOutlineTrash size={20} className='text-gray-600 dark:text-gray-400'/>
+                                            <HiOutlineTrash size={20} className='text-red-600 dark:text-red-400'/>
                                         </div>
                                         <div className='text-gray-500 text-sm'>type: {data.type}</div>
                                         <Text value={data.meta.name}
-                                              background={'contrast'}
                                               label='Название'
                                               onChange={(value) =>
                                                   onExerciseDataChange(data.id, {...data.meta, name: value})}/>
                                         <Text value={data.meta.unit}
-                                              background={'contrast'}
                                               label='Единица'
                                               onChange={(value) =>
                                                   onExerciseDataChange(data.id, {...data.meta, unit: value})}/>

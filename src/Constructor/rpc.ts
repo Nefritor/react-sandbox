@@ -1,8 +1,9 @@
-import {getExerciseList, getExercise, addExercise, removeExercise} from './_rpc/Request';
+import {getExerciseList, getExercise, addExercise, removeExercise, updateExerciseData} from './_rpc/Request';
 
 export {
     getExerciseList,
     getExercise,
     addExercise,
-    removeExercise
+    removeExercise,
+    updateExerciseData
 }
