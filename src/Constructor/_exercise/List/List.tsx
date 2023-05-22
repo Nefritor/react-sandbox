@@ -130,6 +130,7 @@ const List = forwardRef((props: IProps, ref: ForwardedRef<IRef>): ReactElement =
                               placeholderClassName='px-4'
                               value={editingConfig.title}
                               onChange={changeEditingTitle}
+                              onSubmit={saveEditingExercise}
                               staticPlaceholder={true}
                               placeholder='Название упражнения'/>
                         {

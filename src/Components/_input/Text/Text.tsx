@@ -39,10 +39,10 @@ const Text = forwardRef((props: IProps, ref) => {
                     props.placeholder && (!props.staticPlaceholder || !props.value) &&
                     <div className={clsx(
                         'absolute py-1 px-2 w-full transition-[transform,font-size]',
-                        'text-gray-400 dark:text-gray-500 select-none',
+                        'text-gray-400 dark:text-gray-400/50 select-none',
                         'cursor-text text-crop whitespace-nowrap',
                         {'-translate-y-8 text-sm cursor-default': props.value},
-                        {'text-primary-400 dark:text-primary-400': isFocus && props.value},
+                        {'text-blue-400 dark:text-blue-400/100': isFocus && props.value},
                         [props.placeholderClassName]
                     )}
                          onMouseDown={(e) => {
@@ -53,12 +53,17 @@ const Text = forwardRef((props: IProps, ref) => {
                     </div>
                 }
                 <form className='flex grow w-full'
-                      onSubmit={() => props.onSubmit?.()}>
+                      onSubmit={(e) => {
+                          e.preventDefault();
+                          props.onSubmit?.()
+                      }}>
                     <input ref={inputRef} className={clsx(
-                        'outline-none rounded-lg border-spacing-0 dark:text-gray-400',
-                        'py-1 px-2 min-w-[1px] w-full',
-                        'focus:border-primary-400 focus:dark:border-primary-400',
-                        props.filled ? 'bg-gray-300' : 'bg-gray-200 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600',
+                        'outline-none rounded-lg outline-spacing-0 dark:text-gray-400 border-gray-300',
+                        'py-1 px-2 min-w-[1px] border-2 w-full',
+                        'focus:border-blue-400 focus:dark:border-blue-400',
+                        props.filled ?
+                            'bg-gray-300 dark:bg-gray-600 dark:border-gray-600' :
+                            'bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 ',
                         [props.inputClassName]
                     )}
                            onFocus={() => setIsFocus(true)}
