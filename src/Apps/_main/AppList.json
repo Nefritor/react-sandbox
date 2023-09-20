@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Poll",
+    "path": "poll"
+  },
+  {
+    "name": "Test",
+    "path": "test"
+  }
+]

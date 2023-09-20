@@ -23,6 +23,10 @@ import {Main as Calendar} from 'Calendar/pages';
 
 import {Main as Constructor} from 'Constructor/exercise';
 
+import {Index as Apps} from 'Apps/main';
+import {Index as Poll} from 'Apps/poll';
+import {Index as TestApp} from 'Apps/test';
+
 import './index.css';
 
 const demoPages = [{
@@ -78,12 +82,12 @@ const router = createBrowserRouter([{
 }, {
     path: 'demo',
     element: <DemoOutlet pages={
-        demoPages.map(({path, caption, shortCaption}) => ({path, caption, shortCaption}))
+        demoPages.map(({ path, caption, shortCaption }) => ({ path, caption, shortCaption }))
     }/>,
     children: [{
         index: true,
         element: <DemoIndex/>
-    }, ...demoPages.map(({path, element}) => ({path, element}))]
+    }, ...demoPages.map(({ path, element }) => ({ path, element }))]
 }, {
     path: 'messenger',
     element: <Messenger/>
@@ -93,6 +97,16 @@ const router = createBrowserRouter([{
 }, {
     path: 'constructor',
     element: <Constructor/>
+}, {
+    path: 'apps',
+    element: <Apps/>,
+    children: [{
+        path: 'poll',
+        element: <Poll/>
+    }, {
+        path: 'test',
+        element: <TestApp/>
+    }]
 }]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

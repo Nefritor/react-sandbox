@@ -12,6 +12,7 @@ export default function Home() {
             <p><a href="/messenger">Messenger</a></p>
             <p><a href="/calendar">Calendar</a></p>
             <p><a href="/constructor">Constructor</a></p>
+            <p><a href="/apps">Apps</a></p>
         </div>
     );
 }
