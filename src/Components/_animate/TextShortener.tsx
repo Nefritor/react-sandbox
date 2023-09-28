@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface ITextShortenerProps {
 
@@ -7,7 +7,7 @@ interface ITextShortenerProps {
 
     // Description => Dscrtpn : [[1, 1], [5, 1], [8, 2]]
     // hide (1) symbol from index [1], (1) symbols from index [5] and (2) symbols from index [8]
-    hideKeys: [number, number][];
+    hideKeys: [ number, number ][];
 
     // 300
     duration?: number;
@@ -16,7 +16,7 @@ interface ITextShortenerProps {
     isShort: boolean;
 
     // 'left'
-    direction?: 'left' | 'right'
+    direction?: 'left' | 'right';
 }
 
 interface IConfig {
@@ -27,7 +27,7 @@ interface IConfig {
 
 TextShortener.defaultProps = {
     value: 'Description',
-    hideKeys: [[1, 1], [5, 5]],
+    hideKeys: [ [ 1, 1 ], [ 5, 5 ] ],
     duration: 300,
     isShort: false,
     direction: 'right'
@@ -44,8 +44,8 @@ const validate = (value: ITextShortenerProps['value'], shortKeys: ITextShortener
         } else if ((range[0] + range[1]) > value.length) {
             throw new Error(`TextShortener (${value}): sum of "index" and "delete count" values of [${range}] can't be greater than value length (${value.length}) at hideKeys[${index}]`);
         }
-    })
-}
+    });
+};
 
 const getConfig = (value: ITextShortenerProps['value'],
                    hideKeys: ITextShortenerProps['hideKeys'],
@@ -66,14 +66,14 @@ const getConfig = (value: ITextShortenerProps['value'],
     }
 
     return {
-        steps: [value, ...keys.map((x, index) => {
+        steps: [ value, ...keys.map((x, index) => {
             fragments.splice(direction === 'right' ? (x - index) : x, 1);
             return fragments.join('');
-        })],
+        }) ],
         length,
         tick: (duration || 300) / length
-    }
-}
+    };
+};
 
 const getNextStepValue = (target: number, currentValue: number): number => {
     if (target > currentValue) {
@@ -83,10 +83,10 @@ const getNextStepValue = (target: number, currentValue: number): number => {
     } else {
         return currentValue;
     }
-}
+};
 
 export default function TextShortener(props: ITextShortenerProps): JSX.Element {
-    const [text, setText] = useState(props.value);
+    const [ text, setText ] = useState(props.value);
 
     const config = useRef<IConfig>(getConfig(props.value, props.hideKeys, props.duration, props.direction));
     const step = useRef<number>(props.isShort ? config.current.length : 0);
@@ -98,9 +98,9 @@ export default function TextShortener(props: ITextShortenerProps): JSX.Element {
         if (step.current !== target) {
             timeout.current = window.setTimeout(() => {
                 updateText(target);
-            }, config.current.tick)
+            }, config.current.tick);
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
         validate(props.value, props.hideKeys);
@@ -112,7 +112,7 @@ export default function TextShortener(props: ITextShortenerProps): JSX.Element {
             window.clearTimeout(timeout.current);
         }
         updateText(props.isShort ? config.current.length - 1 : 0);
-    }, [props.isShort, updateText]);
+    }, [ props.isShort, updateText ]);
 
-    return (<>{text}</>)
+    return (<>{text}</>);
 }

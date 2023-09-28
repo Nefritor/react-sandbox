@@ -1,4 +1,4 @@
-import {forwardRef, useImperativeHandle, useRef, useState} from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 interface IProps {
@@ -16,7 +16,7 @@ interface IProps {
 }
 
 const Text = forwardRef((props: IProps, ref) => {
-    const [isFocus, setIsFocus] = useState(false);
+    const [ isFocus, setIsFocus ] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => inputRef.current);
@@ -24,38 +24,40 @@ const Text = forwardRef((props: IProps, ref) => {
     return (
         <div className={clsx(
             'flex items-baseline',
-            {'mt-5': props.placeholder && !props.staticPlaceholder},
-            [props.className])
+            { 'mt-5': props.placeholder && !props.staticPlaceholder },
+            [ props.className ])
         }>
             {
                 props.label &&
-                <div className='mr-3 text-gray-600 select-none text-crop whitespace-nowrap dark:text-gray-400'
-                     style={props.labelWidth ? {width: props.labelWidth} : undefined}>
+                <div className="mr-3 text-gray-600 select-none text-crop whitespace-nowrap dark:text-gray-400"
+                     style={props.labelWidth ? { width: props.labelWidth } : undefined}
+                     title={props.label}>
                     {props.label}
                 </div>
             }
-            <div className='flex items-center relative grow'>
+            <div className="flex items-center relative grow">
                 {
                     props.placeholder && (!props.staticPlaceholder || !props.value) &&
                     <div className={clsx(
-                        'absolute py-1 px-2 w-full transition-[transform,font-size]',
+                        'absolute py-1 px-3 w-full transition-[transform,font-size]',
                         'text-gray-400 dark:text-gray-400/50 select-none',
                         'cursor-text text-crop whitespace-nowrap',
-                        {'-translate-y-8 text-sm cursor-default': props.value},
-                        {'text-blue-400 dark:text-blue-400/100': isFocus && props.value},
-                        [props.placeholderClassName]
+                        { '-translate-y-8 -translate-x-2 text-sm cursor-default': props.value },
+                        { 'text-blue-400 dark:text-blue-400/100': isFocus && props.value },
+                        props.placeholderClassName
                     )}
                          onMouseDown={(e) => {
                              e.preventDefault();
-                             inputRef.current?.focus()
-                         }}>
+                             inputRef.current?.focus();
+                         }}
+                         title={props.placeholder}>
                         {props.placeholder}
                     </div>
                 }
-                <form className='flex grow w-full'
+                <form className="flex grow w-full"
                       onSubmit={(e) => {
                           e.preventDefault();
-                          props.onSubmit?.()
+                          props.onSubmit?.();
                       }}>
                     <input ref={inputRef} className={clsx(
                         'outline-none rounded-lg outline-spacing-0 dark:text-gray-400 border-gray-300',
@@ -64,7 +66,7 @@ const Text = forwardRef((props: IProps, ref) => {
                         props.filled ?
                             'bg-gray-300 dark:bg-gray-600 dark:border-gray-600' :
                             'bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 ',
-                        [props.inputClassName]
+                        [ props.inputClassName ]
                     )}
                            onFocus={() => setIsFocus(true)}
                            onBlur={() => setIsFocus(false)}
@@ -73,7 +75,7 @@ const Text = forwardRef((props: IProps, ref) => {
                 </form>
             </div>
         </div>
-    )
-})
+    );
+});
 
 export default Text;

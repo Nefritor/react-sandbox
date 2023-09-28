@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
-import {BsChevronCompactLeft, BsChevronCompactRight} from 'react-icons/bs';
-import {RiHomeLine} from 'react-icons/ri';
+import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
+import { RiHomeLine } from 'react-icons/ri';
 
 interface ISideItems {
     key: string;
@@ -16,22 +16,22 @@ interface ISideProps {
 }
 
 export default function Side(props: ISideProps): JSX.Element {
-    const [isExtended, setIsExtended] = useState(false);
+    const [ isExtended, setIsExtended ] = useState(false);
 
     return (
-        <div className='p-[5px]
+        <div className="p-[5px]
                         shrink-0
                         w-[300px]
                         dark:bg-gray-800
                         dark:text-gray-400
                         bg-gray-200
                         flex
-                        flex-col'
+                        flex-col"
              style={{
                  width: isExtended ? 300 : 50,
                  transition: 'width .3s ease'
              }}>
-            <div className='flex
+            <div className="flex
                             items-center
                             justify-center
                             relative
@@ -39,26 +39,26 @@ export default function Side(props: ISideProps): JSX.Element {
                             my-2
                             text-xl
                             text-center
-                            cursor-pointer'
+                            cursor-pointer"
                  onClick={() => props.onItemClick(null)}>
-                <RiHomeLine className='m-[4px] absolute transition-opacity duration-300'
+                <RiHomeLine className="m-[4px] absolute transition-opacity duration-300"
                             style={{
                                 opacity: isExtended ? 0 : 1
                             }}/>
-                <span className='absolute transition-opacity duration-300'
+                <span className="absolute transition-opacity duration-300"
                       style={{
                           opacity: isExtended ? 1 : 0
                       }}>
                     {props.title}
                 </span>
             </div>
-            <div className='flex
+            <div className="flex
                             flex-col
-                            gap-3'>
+                            gap-3">
                 {
-                    props.items.map(({key, caption, shortCaption}) => (
+                    props.items.map(({ key, caption, shortCaption }) => (
                         <div key={key}
-                             className='p-1
+                             className="p-1
                                         h-[30px]
                                         relative
                                         overflow-hidden
@@ -69,16 +69,16 @@ export default function Side(props: ISideProps): JSX.Element {
                                         cursor-pointer
                                         hover:bg-gray-100
                                         dark:text-gray-400
-                                        dark:hover:bg-gray-900'
+                                        dark:hover:bg-gray-900"
                              onClick={() => props.onItemClick(key)}>
                             <>
-                                <span className='absolute transition-opacity duration-300'
+                                <span className="absolute transition-opacity duration-300"
                                       style={{
                                           opacity: isExtended ? 1 : 0
                                       }}>
                                     {caption}
                                 </span>
-                                <span className='absolute transition-opacity duration-300'
+                                <span className="absolute transition-opacity duration-300"
                                       style={{
                                           opacity: isExtended ? 0 : 1
                                       }}>
@@ -90,7 +90,7 @@ export default function Side(props: ISideProps): JSX.Element {
                     ))
                 }
             </div>
-            <div className='relative
+            <div className="relative
                             flex
                             grow
                             w-full
@@ -101,9 +101,9 @@ export default function Side(props: ISideProps): JSX.Element {
                             min-h-[66px]
                             transition-opacity
                             opacity-0
-                            hover:opacity-100'
+                            hover:opacity-100"
                  onClick={() => setIsExtended((value) => !value)}>
-                <div className='absolute
+                <div className="absolute
                                 right-[13px]
                                 bottom-[13px]
                                 flex
@@ -114,7 +114,7 @@ export default function Side(props: ISideProps): JSX.Element {
                                 rounded-xl
                                 text-2xl
                                 dark:bg-gray-700
-                                text-gray-500'>
+                                text-gray-500">
                     {
                         isExtended ?
                             <BsChevronCompactLeft/> :
@@ -123,5 +123,5 @@ export default function Side(props: ISideProps): JSX.Element {
                 </div>
             </div>
         </div>
-    )
+    );
 }

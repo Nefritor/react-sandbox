@@ -1,30 +1,30 @@
-import {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
 
-import {Edge, ILayer, TDirection} from 'Components/popup';
-import {Switch} from 'Components/toggle';
-import {Button} from 'Components/button';
+import { Edge, ILayer, TDirection } from 'Components/popup';
+import { Button } from 'Components/button';
+import Block from 'Layout/Block';
 
 export default function PopupEdgeDemo() {
-    const [visibilityTop, setVisibilityTop] = useState(false);
-    const [topValue, setTopValue] = useState('lol');
-    const [visibilityRight, setVisibilityRight] = useState(false);
-    const [rightValue, setRightValue] = useState('lol');
-    const [visibilityLeft, setVisibilityLeft] = useState(false);
-    const [leftValue, setLeftValue] = useState('lol');
-    const [visibilityBottom, setVisibilityBottom] = useState(false);
-    const [bottomValue, setBottomValue] = useState('lol');
-    const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains('dark'));
+    const [ visibilityTop, setVisibilityTop ] = useState(false);
+    const [ topValue, setTopValue ] = useState('lol');
+    const [ visibilityRight, setVisibilityRight ] = useState(false);
+    const [ rightValue, setRightValue ] = useState('lol');
+    const [ visibilityLeft, setVisibilityLeft ] = useState(false);
+    const [ leftValue, setLeftValue ] = useState('lol');
+    const [ visibilityBottom, setVisibilityBottom ] = useState(false);
+    const [ bottomValue, setBottomValue ] = useState('lol');
+    const [ darkMode, setDarkMode ] = useState(document.documentElement.classList.contains('dark'));
 
     const getLayers = (): ILayer[] => {
-        return [{
+        return [ {
             key: 'lol',
-            content: <div className='w-[100px] h-[100px] bg-amber-500'>lol</div>
+            content: <div className="w-[100px] h-[100px] bg-amber-500">lol</div>
         }, {
             key: 'kek',
-            content: <div className='w-[100px] h-[100px] bg-pink-500'>kek</div>
-        }]
-    }
+            content: <div className="w-[100px] h-[100px] bg-pink-500">kek</div>
+        } ];
+    };
 
     useEffect(() => {
         const HTMLClassList = document.documentElement.classList;
@@ -34,7 +34,7 @@ export default function PopupEdgeDemo() {
         } else if (!darkMode && isDarkMode) {
             HTMLClassList.remove('dark');
         }
-    }, [darkMode]);
+    }, [ darkMode ]);
 
     const getDemoBlock = (direction: TDirection) => {
         const config = {} as {
@@ -85,8 +85,8 @@ export default function PopupEdgeDemo() {
                 <Button onClick={() => config.setVisibility((prev) => !prev)}
                         caption={!config.visibility ? 'Show' : 'Hide'}/>
                 <Button onClick={() => config.setValue((prev) => prev === 'lol' ? 'kek' : 'lol')}
-                        caption='Change layer'/>
-            </div>
+                        caption="Change layer"/>
+            </div>;
 
         const getPopup = () =>
             <div className={config.isVertical ? 'flex flex-col' : 'h-[100px]'}>
@@ -94,68 +94,27 @@ export default function PopupEdgeDemo() {
                       value={config.visibility ? config.value : null}
                       size={100}
                       direction={direction}/>
-            </div>
+            </div>;
 
-        return (
-            <div className={
-                clsx(
-                    'flex',
-                    'flex-col',
-                    'border-2',
-                    'border-gray-200',
-                    'dark:border-gray-600',
-                    'rounded-xl',
-                    'p-3',
-                    'gap-1',
-                    'w-[200px]',
-                    'flex-grow'
-                )
-            }>
-                <span className='text-xl dark:text-gray-400'>Direction: {direction}</span>
-                <div className={clsx('flex', {'flex-col': config.isVertical})}>
-                    {config.isVerse ? <>{getPopup()} {getButtons()}</> : <>{getButtons()} {getPopup()}</>}
-                </div>
+        return <Block className="w-[230px]">
+            <span className="text-xl text-gray-700 dark:text-gray-400">Direction: {direction}</span>
+            <div className={clsx('flex', { 'flex-col': config.isVertical })}>
+                {config.isVerse ? <>{getPopup()} {getButtons()}</> : <>{getButtons()} {getPopup()}</>}
             </div>
-        )
-    }
+        </Block>;
+    };
 
     return (
-        <div className={
-            clsx(
-                'h-screen',
-                'w-screen',
-                'flex',
-                'flex-col',
-                'p-7',
-                'dark:bg-gray-900'
-            )
-        }>
-            <div className='p-3 flex items-center gap-2'>
-                <span className='dark:text-gray-400'>Dark mode</span>
-                <Switch value={darkMode}
-                        onChange={() => setDarkMode((prev) => !prev)}/>
+        <Block className="flex flex-col items-center w-[500px]" shadow={true}>
+            <div className="text-gray-700 dark:text-gray-400 text-3xl text-center mb-3">
+                Component demo: PopupEdge
             </div>
-            <div className={
-                clsx(
-                    'h-[500px]',
-                    'w-[500px]',
-                    'bg-gray-100',
-                    'dark:bg-gray-700',
-                    'rounded-xl',
-                    'p-3',
-                    'shadow-md'
-                )
-            }>
-                <div className='dark:text-gray-400 text-3xl text-center mb-3'>
-                    Component demo: PopupEdge
-                </div>
-                <div className='flex gap-3 flex-wrap'>
-                    {getDemoBlock('top')}
-                    {getDemoBlock('right')}
-                    {getDemoBlock('bottom')}
-                    {getDemoBlock('left')}
-                </div>
+            <div className="flex gap-3 flex-wrap">
+                {getDemoBlock('top')}
+                {getDemoBlock('right')}
+                {getDemoBlock('bottom')}
+                {getDemoBlock('left')}
             </div>
-        </div>
+        </Block>
     );
 }

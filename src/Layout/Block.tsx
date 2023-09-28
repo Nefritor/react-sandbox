@@ -1,4 +1,4 @@
-import {CSSProperties, forwardRef, LegacyRef, MouseEventHandler, ReactNode} from 'react';
+import { CSSProperties, forwardRef, LegacyRef, MouseEventHandler, ReactNode } from 'react';
 
 import clsx from 'clsx';
 
@@ -29,7 +29,7 @@ const Block = forwardRef((
         <div ref={ref}
              className={clsx(
                  'rounded-lg',
-                 [className],
+                 [ className ],
                  {
                      'shadow-md': shadow,
                      'p-3': hasPadding,
@@ -41,7 +41,7 @@ const Block = forwardRef((
              onClick={onClick}>
             {children}
         </div>
-    )
+    );
 });
 
 export default Block;

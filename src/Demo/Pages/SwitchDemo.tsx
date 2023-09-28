@@ -1,17 +1,18 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
-import {Switch} from 'Components/toggle';
+import { Switch } from 'Components/toggle';
+import Block from 'Layout/Block';
 
 export default function SwitchDemo(): JSX.Element {
-    const [value, setValue] = useState(false);
+    const [ value, setValue ] = useState(false);
 
-    return (
-        <div className='h-full w-full flex flex-col items-center justify-center dark:bg-gray-900'>
-            <div className='h-[200px] w-[300px] bg-gray-200 rounded-xl flex flex-col py-3 px-5 gap-1 items-center shadow-md dark:bg-gray-700'>
-                <div className='dark:text-gray-400'>State: {value ? 'true' : 'false'}</div>
-                <Switch value={value}
-                        onChange={setValue}/>
-            </div>
+    return <Block className="flex flex-col items-center gap-3 w-[200px]" shadow={true}>
+        <div className="dark:text-gray-400">State: {value ? 'true' : 'false'}</div>
+        <Switch value={value}
+                onChange={setValue}/>
+        <div className="text-xs text-blue-500 dark:text-blue-400 flex flex-col items-center">
+            <span>Point is draggable</span>
+            <span>Point is clickable</span>
         </div>
-    )
+    </Block>;
 }

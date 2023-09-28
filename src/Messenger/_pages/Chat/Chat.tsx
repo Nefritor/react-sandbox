@@ -1,21 +1,21 @@
 import clsx from 'clsx';
-import {AES, enc} from 'crypto-ts';
-import React, {createRef, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import { AES, enc } from 'crypto-ts';
+import React, { createRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import getUUID from 'react-uuid';
-import {MdOutlineKeyboardArrowLeft} from 'react-icons/md';
-import {RxCaretDown, RxEyeClosed, RxEyeOpen} from 'react-icons/rx';
+import { MdOutlineKeyboardArrowLeft } from 'react-icons/md';
+import { RxCaretDown, RxEyeClosed, RxEyeOpen } from 'react-icons/rx';
 import Cookies from 'universal-cookie';
 
-import {getNotificationData, IFetcherData} from 'Components/hooks';
-import {TextOld} from 'Components/input';
+import { getNotificationData, IFetcherData } from 'Components/hooks';
+import { TextOld } from 'Components/input';
 
-import {dict} from 'Messenger/i18n';
-import {Constants} from 'Messenger/utils';
-import {IWebSocketRef, startWebSocket, updateWebSocketMessage} from 'Messenger/webSocket';
+import { dict } from 'Messenger/i18n';
+import { Constants } from 'Messenger/utils';
+import { IWebSocketRef, startWebSocket, updateWebSocketMessage } from 'Messenger/webSocket';
 
 
-import {IMessage, IMessageData, Sender, Status} from 'Messenger/interface';
-import {MessagesList, SecretInput} from 'Messenger/components';
+import { IMessage, IMessageData, Sender, Status } from 'Messenger/interface';
+import { MessagesList, SecretInput } from 'Messenger/components';
 
 interface IProps {
     roomId: string;
@@ -29,29 +29,29 @@ interface IWebSocketData {
     statusChange: {
         id: string;
         status: Status;
-    }
+    };
 }
 
 const cookies = new Cookies();
 
 export default function Chat(props: IProps): JSX.Element {
-    const [messages, setMessages] = useState<IMessage[]>([]);
-    const [messageText, setMessageText] = useState('');
-    const [secret, setSecret] = useState('');
-    const [secretVisible, setSecretVisible] = useState(false);
-    const [hasUnread, setHasUnread] = useState(false);
-    const [isBottom, setIsBottom] = useState(false);
+    const [ messages, setMessages ] = useState<IMessage[]>([]);
+    const [ messageText, setMessageText ] = useState('');
+    const [ secret, setSecret ] = useState('');
+    const [ secretVisible, setSecretVisible ] = useState(false);
+    const [ hasUnread, setHasUnread ] = useState(false);
+    const [ isBottom, setIsBottom ] = useState(false);
 
     const listBottomRef = createRef<HTMLDivElement>();
-    const wsRef = useRef<IWebSocketRef>({webSocket: null, errorCount: 0});
+    const wsRef = useRef<IWebSocketRef>({ webSocket: null, errorCount: 0 });
     const textRef = createRef<HTMLInputElement>();
 
     const observer = useMemo(() => new IntersectionObserver(
-        ([entry]) => setIsBottom(entry.isIntersecting)
-    ), [])
+        ([ entry ]) => setIsBottom(entry.isIntersecting)
+    ), []);
 
     const onBottomScroll = () => {
-        listBottomRef.current?.scrollIntoView({behavior: 'smooth'});
+        listBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     const onSecretChange = (value: string) => {
@@ -59,7 +59,7 @@ export default function Chat(props: IProps): JSX.Element {
     };
 
     const addMessage = (message: IMessage) => {
-        setMessages((messages) => [...messages, message]);
+        setMessages((messages) => [ ...messages, message ]);
     };
 
     const sendMessage = useCallback(() => {
@@ -86,27 +86,27 @@ export default function Chat(props: IProps): JSX.Element {
             );
             setMessageText('');
         }
-    }, [messageText, secret]);
+    }, [ messageText, secret ]);
 
     const changeMessage = (id: string, data: Partial<IMessage>) => {
         setMessages((messages) => {
             const index = messages.findIndex((message) => message.id === id);
             if (index !== -1) {
-                messages.splice(index, 1, {...messages[index], ...data});
+                messages.splice(index, 1, { ...messages[index], ...data });
             }
-            return [...messages];
+            return [ ...messages ];
         });
-    }
+    };
 
     const onCopySecret = () => {
         props.onNotification(getNotificationData(dict('Секретный ключ'), dict('Скопировано в буфер')));
-    }
+    };
 
     const onMessageBlockInit = (data: IMessageData) => {
         if (data.sender === Sender.IN) {
-            listBottomRef.current?.scrollIntoView({behavior: 'smooth'});
+            listBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
         }
-    }
+    };
 
     const onMessageBlockVisible = (message: IMessage) => {
         wsRef.current.webSocket?.send(
@@ -119,7 +119,7 @@ export default function Chat(props: IProps): JSX.Element {
                 })
             })
         );
-    }
+    };
 
     const onWebSocketMessage = useCallback((message: any) => {
         console.log('MESSAGE', message);
@@ -129,10 +129,10 @@ export default function Chat(props: IProps): JSX.Element {
                 data = message.data as IWebSocketData['message'];
                 const messageData = JSON.parse(data);
                 let isDecrypted = false;
-                messageData.text = AES.decrypt(messageData.text, secret).toString(enc.Utf8)
+                messageData.text = AES.decrypt(messageData.text, secret).toString(enc.Utf8);
                 messageData.senderName = AES.decrypt(messageData.senderName, secret).toString(enc.Utf8);
                 if (messageData.text && messageData.senderName) {
-                    isDecrypted = true
+                    isDecrypted = true;
                 }
                 if (!isDecrypted) {
                     messageData.text = `[${dict('зашифровано')}]`;
@@ -162,21 +162,21 @@ export default function Chat(props: IProps): JSX.Element {
                 break;
             case 'statusChange':
                 data = JSON.parse(message.data) as IWebSocketData['statusChange'];
-                changeMessage(data.id, {status: data.status});
+                changeMessage(data.id, { status: data.status });
                 break;
         }
-    }, [hasUnread, isBottom, secret]);
+    }, [ hasUnread, isBottom, secret ]);
 
     useEffect(() => {
-        textRef.current?.focus()
+        textRef.current?.focus();
         listBottomRef.current?.scrollIntoView();
         startWebSocket(wsRef, {
             onOpen: () => {
-                console.log('OPEN')
+                console.log('OPEN');
             },
             onMessage: onWebSocketMessage,
             onClose: (reason) => {
-                console.log('CLOSE', reason)
+                console.log('CLOSE', reason);
             }
         }, `room/${props.roomId}/${cookies.get('uuid')}`);
         if (listBottomRef.current !== null) {
@@ -185,35 +185,35 @@ export default function Chat(props: IProps): JSX.Element {
         return () => {
             wsRef.current.webSocket?.close(Constants.WSCloseCode.CLOSED_BY_USER);
             observer.disconnect();
-        }
+        };
     }, []);
 
     useEffect(() => {
         updateWebSocketMessage(wsRef, onWebSocketMessage);
-    }, [onWebSocketMessage])
+    }, [ onWebSocketMessage ]);
 
     useEffect(() => {
         if (hasUnread) {
             setHasUnread(false);
         }
-    }, [isBottom]);
+    }, [ isBottom ]);
 
     return (
         <>
-            <div className='flex justify-between items-center mb-3 gap-3'>
+            <div className="flex justify-between items-center mb-3 gap-3">
                 <div className={clsx(
                     'text-2xl tracking-widest overflow-hidden text-gray-700 dark:text-gray-400',
                     'hover:brightness-95 cursor-pointer flex items-center select-none'
                 )}
                      title={props.roomName}
                      onClick={() => props.onLeaveRoom()}>
-                    <MdOutlineKeyboardArrowLeft className='shrink-0'/>
-                    <span className='overflow-ellipsis whitespace-nowrap overflow-hidden'>
+                    <MdOutlineKeyboardArrowLeft className="shrink-0"/>
+                    <span className="overflow-ellipsis whitespace-nowrap overflow-hidden">
                         {props.roomName.toUpperCase()}
                     </span>
                 </div>
-                <div className='flex gap-3 items-center select-none shrink-0'>
-                    <div className='cursor-pointer text-gray-400 hover:brightness-90'
+                <div className="flex gap-3 items-center select-none shrink-0">
+                    <div className="cursor-pointer text-gray-400 hover:brightness-90"
                          onClick={() => setSecretVisible((value) => !value)}>
                         {
                             secretVisible ?
@@ -224,7 +224,7 @@ export default function Chat(props: IProps): JSX.Element {
                     <SecretInput value={secret}
                                  staticPlaceholder={true}
                                  placeholder={dict('Секретный ключ')}
-                                 className='bg-gray-300 w-[170px] text-md leading-7 rounded-lg shadow-md'
+                                 className="bg-gray-300 w-[170px] text-md leading-7 rounded-lg shadow-md"
                                  type={secretVisible ? 'text' : 'password'}
                                  onCopy={onCopySecret}
                                  onChange={onSecretChange}/>
@@ -234,13 +234,13 @@ export default function Chat(props: IProps): JSX.Element {
                 'bg-gray-300 dark:bg-gray-700 rounded-lg grow flex flex-col',
                 'min-h-0 mb-3 p-3 shadow-md scrollbar-thin'
             )}>
-                <div className='grow relative'>
+                <div className="grow relative">
                     <MessagesList list={messages}
                                   onBlockInit={onMessageBlockInit}
                                   onBlockVisible={onMessageBlockVisible}/>
                     {
                         hasUnread &&
-                        <div className='flex
+                        <div className="flex
                                     items-center
                                     text-white
                                     fixed
@@ -258,7 +258,7 @@ export default function Chat(props: IProps): JSX.Element {
                                     shadow-md
                                     cursor-pointer
                                     hover:brightness-90
-                                    select-none'
+                                    select-none"
                              onClick={onBottomScroll}>
                             <RxCaretDown size={20}/>
                             <span>{dict('Новое сообщение').toUpperCase()}</span>
@@ -267,15 +267,15 @@ export default function Chat(props: IProps): JSX.Element {
                     <div ref={listBottomRef}/>
                 </div>
             </div>
-            <div className='rounded-lg flex w-full shadow-md'>
+            <div className="rounded-lg flex w-full shadow-md">
                 <TextOld ref={textRef}
-                         className='bg-gray-300 text-md leading-10 w-full'
+                         className="bg-gray-300 text-md leading-10 w-full"
                          value={messageText}
                          placeholder={`${dict('Напишите сообщение')}...`}
                          staticPlaceholder={true}
                          onChange={setMessageText}
                          onSubmit={sendMessage}>
-                    <div className='overflow-hidden rounded-r-lg shrink-0'>
+                    <div className="overflow-hidden rounded-r-lg shrink-0">
                         <div className={clsx(
                             'bg-gray-700 dark:bg-gray-500 px-4 cursor-pointer hover:brightness-90',
                             'tracking-widest text-white dark:text-gray-800 transition-all',
@@ -293,5 +293,5 @@ export default function Chat(props: IProps): JSX.Element {
                 </TextOld>
             </div>
         </>
-    )
+    );
 }

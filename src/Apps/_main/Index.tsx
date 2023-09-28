@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-
-import { Button } from 'Components/button';
 import { Selector } from 'Components/list';
 
 import { DEFAULT_APP } from './Constants';

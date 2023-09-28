@@ -1,4 +1,4 @@
-import {RiHomeLine} from 'react-icons/ri';
+import { RiHomeLine } from 'react-icons/ri';
 import clsx from 'clsx';
 
 interface INavigationItem {
@@ -15,12 +15,12 @@ interface ISideProps {
 
 export default function Navigation(props: ISideProps): JSX.Element {
     return (
-        <div className='flex
+        <div className="flex
                         absolute
                         justify-center
                         w-full
-                        bottom-0'>
-            <div className='flex
+                        bottom-0">
+            <div className="flex
                             cursor-pointer
                             rounded-xl
                             items-center
@@ -28,21 +28,21 @@ export default function Navigation(props: ISideProps): JSX.Element {
                             select-none
                             leading-none
                             mb-3
-                            mx-3'>
+                            mx-3">
                 <div
-                    className={clsx('p-3 hover:brightness-95 transition-[filter]', props.selectedKey === null ? 'bg-gray-500 text-white' : 'bg-gray-300')}
+                    className={clsx('p-3 brightness-[.9]', props.selectedKey === null ? 'text-gray-800 bg-gray-400 dark:text-gray-400 dark:bg-gray-800' : 'bg-gray-300 text-gray-700 dark:text-gray-400 dark:bg-gray-700')}
                     onClick={() => props.onItemClick(null)}>
                     <RiHomeLine/>
                 </div>
-                <div className='flex
+                <div className="flex
                                 overflow-x-auto
-                                scrollbar-none'>
+                                scrollbar-none">
                     {
                         props.items.map((item: INavigationItem) => (
                             <div key={item.key}
                                  className={clsx(
                                      'p-3 hover:brightness-95 transition-[filter]',
-                                     item.key === props.selectedKey ? 'bg-gray-500 text-white' : 'bg-gray-200'
+                                     item.key === props.selectedKey ? 'text-gray-800 bg-gray-400 dark:text-gray-400 dark:bg-gray-800' : 'bg-gray-300 text-gray-700 dark:text-gray-400 dark:bg-gray-700'
                                  )}
                                  onClick={() => props.onItemClick(item.key)}>
                                 {item.shortCaption}
@@ -52,5 +52,5 @@ export default function Navigation(props: ISideProps): JSX.Element {
                 </div>
             </div>
         </div>
-    )
+    );
 }

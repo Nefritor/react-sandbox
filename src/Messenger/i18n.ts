@@ -1,3 +1,3 @@
-import {getDictionary} from './_i18n/Dictionary';
+import { getDictionary } from './_i18n/Dictionary';
 
 export const dict = getDictionary();

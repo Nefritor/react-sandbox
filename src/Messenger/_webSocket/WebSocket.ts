@@ -1,5 +1,5 @@
-import {MutableRefObject} from 'react';
-import {Constants} from 'Messenger/utils';
+import { MutableRefObject } from 'react';
+import { Constants } from 'Messenger/utils';
 
 interface IWebSocketCallbacks {
     onOpen: () => void;
@@ -21,14 +21,14 @@ export const startWebSocket = (wsRef: MutableRefObject<IWebSocketRef>, callbacks
     wsRef.current.webSocket.onopen = () => {
         wsRef.current.errorCount = 0;
         callbacks.onOpen?.();
-    }
+    };
     wsRef.current.webSocket.onmessage = (message) => {
         callbacks.onMessage?.(JSON.parse(message.data));
-    }
+    };
     wsRef.current.webSocket.onerror = (error) => {
         wsRef.current.errorCount++;
         callbacks.onError?.(error);
-    }
+    };
     wsRef.current.webSocket.onclose = (event) => {
         switch (event.code) {
             case Constants.WSCloseCode.CLOSED_BY_USER:
@@ -45,8 +45,8 @@ export const startWebSocket = (wsRef: MutableRefObject<IWebSocketRef>, callbacks
                 }
                 break;
         }
-    }
-}
+    };
+};
 
 export const updateWebSocketMessage = (
     wsRef: MutableRefObject<IWebSocketRef>,
@@ -55,6 +55,6 @@ export const updateWebSocketMessage = (
     if (wsRef.current.webSocket) {
         wsRef.current.webSocket.onmessage = (message) => {
             onMessage(JSON.parse(message.data));
-        }
+        };
     }
-}
+};

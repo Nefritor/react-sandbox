@@ -1,4 +1,4 @@
-import {Index} from './_poll/Index';
+import { Index } from './_poll/Index';
 
 export {
     Index

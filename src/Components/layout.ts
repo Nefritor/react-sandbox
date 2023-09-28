@@ -1,5 +1,5 @@
-import {Hide} from './_layout/Hide';
+import { Hide } from './_layout/Hide';
 
 export {
     Hide
-}
+};

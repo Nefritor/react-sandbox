@@ -1,7 +1,7 @@
-import React, {forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
+import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import ReactLoading from 'react-loading';
 import getUUID from 'react-uuid';
-import {BiCheckCircle, BiErrorCircle} from "react-icons/bi";
+import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 import clsx from 'clsx';
 import timeout from 'Utils/Timeout';
 
@@ -74,14 +74,14 @@ const getBGClass = (state: TAdvancedStateType, config: INotificationConfig) => {
         default:
             return '';
     }
-}
+};
 
 const getIcon = (state: TAdvancedStateType) => {
-    const isDarkMode = document.documentElement.classList.contains('dark')
+    const isDarkMode = document.documentElement.classList.contains('dark');
     switch (state) {
         case 'loading':
-            return <ReactLoading type='spin' color={isDarkMode ? '#9ca3af' : '#000'} height={20} width={20}
-                                 className='m-[2px]'/>;
+            return <ReactLoading type="spin" color={isDarkMode ? '#9ca3af' : '#000'} height={20} width={20}
+                                 className="m-[2px]"/>;
         case 'success':
             return <BiCheckCircle/>;
         case 'fail':
@@ -89,13 +89,13 @@ const getIcon = (state: TAdvancedStateType) => {
         default:
             return;
     }
-}
+};
 
 const leadingZero = (value: string) => value.length > 1 ? value : `0${value}`;
 const formatTime = (seconds: number) => `${Math.trunc(seconds / 60)}:${leadingZero((seconds % 60).toString())}`;
 
-const Timer = ({isPlaying = false, showAt = 0}: ITimerProps) => {
-    const [time, setTime] = useState(0);
+const Timer = ({ isPlaying = false, showAt = 0 }: ITimerProps) => {
+    const [ time, setTime ] = useState(0);
     const interval = useRef<number>();
 
     const setPlaying = (isPlaying: boolean) => {
@@ -107,14 +107,14 @@ const Timer = ({isPlaying = false, showAt = 0}: ITimerProps) => {
             window.clearInterval(interval.current);
             interval.current = undefined;
         }
-    }
+    };
 
     useEffect(() => {
         setPlaying(isPlaying);
         return () => {
             setPlaying(false);
-        }
-    }, [isPlaying]);
+        };
+    }, [ isPlaying ]);
 
     return (
         <div className={`transition-opacity duration-300 opacity-${showAt <= time ? '100' : '0'}`}>
@@ -123,11 +123,11 @@ const Timer = ({isPlaying = false, showAt = 0}: ITimerProps) => {
             }
         </div>
     );
-}
+};
 
 const FetcherNotificationElement = memo((props: IElementProps): JSX.Element => {
-    const [isVisible, setIsVisible] = useState(false);
-    const [stateType, setStateType] = useState<TAdvancedStateType>('loading');
+    const [ isVisible, setIsVisible ] = useState(false);
+    const [ stateType, setStateType ] = useState<TAdvancedStateType>('loading');
 
     const ref = useRef<HTMLDivElement>(null);
 
@@ -136,7 +136,7 @@ const FetcherNotificationElement = memo((props: IElementProps): JSX.Element => {
             props.onClick();
         }
         remove();
-    }, [])
+    }, []);
 
     const remove = useCallback(() => {
         setIsVisible(false);
@@ -185,53 +185,53 @@ const FetcherNotificationElement = memo((props: IElementProps): JSX.Element => {
             <div>
                 {
                     props.title &&
-                    <div className='text-xs text-ellipsis overflow-hidden whitespace-nowrap mt-1'>
+                    <div className="text-xs text-ellipsis overflow-hidden whitespace-nowrap mt-1">
                         {props.title}
                     </div>
                 }
-                <div className='whitespace-nowrap'>
+                <div className="whitespace-nowrap">
                     {props.config[stateType]?.caption}
                 </div>
             </div>
             {
                 (props.config.showIcon === undefined || props.config.showIcon) &&
-                <div className='flex items-center text-2xl mb-3'>
+                <div className="flex items-center text-2xl mb-3">
                     {getIcon(stateType)}
                 </div>
             }
             {
                 (props.config.showTimer === undefined || props.config.showTimer) &&
-                <div className='absolute text-[10px] right-2 bottom-0.5'>
+                <div className="absolute text-[10px] right-2 bottom-0.5">
                     <Timer isPlaying={stateType === 'loading'} showAt={2}/>
                 </div>
             }
         </div>
-    )
-})
+    );
+});
 
 const FetcherNotificationList = forwardRef((props: INotificationsListProps, ref: React.Ref<object>): JSX.Element => {
-    const {itemsGap = 10} = props.config || {};
-    const [notifications, setNotifications] = useState<INotificationData[]>([]);
+    const { itemsGap = 10 } = props.config || {};
+    const [ notifications, setNotifications ] = useState<INotificationData[]>([]);
 
     useImperativeHandle(ref, (): IFetcherHandle => ({
         add: (uuid: string, data: IFetcherData) => {
-            setNotifications((item) => [...item, {uuid, data, isVisible: true}])
+            setNotifications((item) => [ ...item, { uuid, data, isVisible: true } ]);
         }
     }), []);
 
     const remove = (uuid: string) => {
         setNotifications((item) => item.filter(item => item.uuid !== uuid));
-    }
+    };
 
     const beforeRemove = (uuid: string) => {
         setNotifications((item) =>
-            item.map(item => item.uuid === uuid ? {...item, isVisible: false} : item));
-    }
+            item.map(item => item.uuid === uuid ? { ...item, isVisible: false } : item));
+    };
 
     return (
         <>
             {
-                notifications.map(({uuid, data}, index, items) => (
+                notifications.map(({ uuid, data }, index, items) => (
                     <FetcherNotificationElement key={uuid}
                                                 promise={data.promise}
                                                 title={data.title}
@@ -243,8 +243,8 @@ const FetcherNotificationList = forwardRef((props: INotificationsListProps, ref:
                 ))
             }
         </>
-    )
-})
+    );
+});
 
 export const getNotificationData = (title: string, text: string) => {
     return {
@@ -258,19 +258,19 @@ export const getNotificationData = (title: string, text: string) => {
             showIcon: false
         },
         promise: timeout()
-    }
-}
+    };
+};
 
-export const useFetcher = (config?: IFetcherConfig): [(data: IFetcherData) => void, () => JSX.Element] => {
+export const useFetcher = (config?: IFetcherConfig): [ (data: IFetcherData) => void, () => JSX.Element ] => {
     const fetcherRef = useRef<IFetcherHandle>(null);
     const fetch = (data: IFetcherData) => {
         if (fetcherRef.current !== null) {
             const uuid = getUUID();
             fetcherRef.current.add(uuid, data);
         }
-    }
+    };
     return useMemo(() => [
         fetch,
         () => <FetcherNotificationList config={config} ref={fetcherRef}/>
-    ], [config]);
-}
+    ], [ config ]);
+};

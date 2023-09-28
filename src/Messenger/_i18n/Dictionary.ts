@@ -20,14 +20,14 @@ const getLanguage = (lang: TLangCode): IDictionary['dictionary'] => {
         case 'en':
             return en.dictionary;
     }
-}
+};
 
 export const getDictionary = (lang: TLangCode = defaultLang) => {
     const dictionary = getLanguage(lang);
     if (dictionary) {
         return (text: string): string => {
             return dictionary[text] as string || text;
-        }
+        };
     }
     return (text: string): string => text;
-}
+};

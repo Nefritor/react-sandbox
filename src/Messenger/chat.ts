@@ -1,5 +1,5 @@
-import {ChatAsync} from './_pages/Chat/Chat.async';
+import { ChatAsync } from './_pages/Chat/Chat.async';
 
 export {
     ChatAsync as Chat
-}
+};

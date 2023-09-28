@@ -25,19 +25,19 @@ const getEmptyView = (emptyView?: JSX.Element, emptyText?: string) => (
     emptyView ||
     (
         emptyText &&
-        <div className='flex min-h-[80px] items-center justify-center'>
-            <div className='text-xl dark:text-gray-400'>
+        <div className="flex min-h-[80px] items-center justify-center">
+            <div className="text-xl dark:text-gray-400">
                 {emptyText}
             </div>
         </div>
     )
-)
+);
 
 export default function View<IElement extends IListElement>(props: IProps<IElement>): JSX.Element {
     return (
         <div className={clsx(
             'flex flex-col',
-            [props.className]
+            [ props.className ]
         )}>
 
             {
@@ -51,7 +51,7 @@ export default function View<IElement extends IListElement>(props: IProps<IEleme
                     getEmptyView(props.emptyView, props.emptyText)
             }
         </div>
-    )
+    );
 }
 
 function ItemWrapper(props: IWrapper) {
@@ -59,11 +59,11 @@ function ItemWrapper(props: IWrapper) {
         <div className={clsx(
             'bg-gray-200 dark:bg-gray-700 dark:hover:brightness-110 hover:brightness-95',
             'cursor-pointer text-black dark:text-gray-400',
-            [props.className]
+            [ props.className ]
         )}
              title={props.title}
              onClick={() => props.onClick()}>
             {props.children}
         </div>
-    )
+    );
 }

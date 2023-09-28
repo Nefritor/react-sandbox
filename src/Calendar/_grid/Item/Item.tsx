@@ -1,7 +1,7 @@
-import React, {CSSProperties, ReactNode, useEffect, useState} from 'react';
+import React, { CSSProperties, ReactNode, useEffect, useState } from 'react';
 import Block from 'Layout/Block';
 import clsx from 'clsx';
-import {callEvery, EveryType, getWeekDay} from 'Utils/Date';
+import { callEvery, EveryType, getWeekDay } from 'Utils/Date';
 
 interface IProps extends IItemData {
     className?: string;
@@ -22,14 +22,14 @@ export interface IItemData {
 const getIsToady = (date: Date): boolean => {
     const now = new Date();
     return date.getTime() === now.setHours(0, 0, 0, 0);
-}
+};
 
 export default function Item(props: IProps): JSX.Element {
-    const [isToday, setIsToday] = useState<boolean>(getIsToady(props.date));
+    const [ isToday, setIsToday ] = useState<boolean>(getIsToady(props.date));
 
     useEffect(() => {
-        callEvery( () => setIsToday(getIsToady(props.date)), EveryType.Day);
-    }, [isToday, props.date]);
+        callEvery(() => setIsToday(getIsToady(props.date)), EveryType.Day);
+    }, [ isToday, props.date ]);
 
     return (
         <Block className={clsx(
@@ -40,7 +40,7 @@ export default function Item(props: IProps): JSX.Element {
             {
                 'opacity-10': !isToday && !props.isActive
             },
-            [props.className]
+            [ props.className ]
         )}
                hasPadding={false}
                hasBackground={false}
@@ -50,13 +50,13 @@ export default function Item(props: IProps): JSX.Element {
                    height: props.size.height,
                }}>
             <div className={clsx('flex px-2')}>
-                <div className='text-3xl'>{props.date.getDate()}</div>
-                <div className='flex-grow text-right text-sm'>{getWeekDay(props.date)}</div>
+                <div className="text-3xl">{props.date.getDate()}</div>
+                <div className="flex-grow text-right text-sm">{getWeekDay(props.date)}</div>
             </div>
             {
                 props.bottomContent &&
-                props.bottomContent({date: props.date, isActive: props.isActive, weekday: props.weekday})
+                props.bottomContent({ date: props.date, isActive: props.isActive, weekday: props.weekday })
             }
         </Block>
-    )
+    );
 }

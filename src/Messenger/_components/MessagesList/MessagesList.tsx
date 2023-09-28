@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {BiCheck, BiCheckDouble, BiDotsHorizontalRounded, BiErrorCircle} from 'react-icons/bi';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { BiCheck, BiCheckDouble, BiDotsHorizontalRounded, BiErrorCircle } from 'react-icons/bi';
 
-import {dict} from 'Messenger/i18n';
+import { dict } from 'Messenger/i18n';
 
-import {formatDateTime} from 'Utils/Date';
+import { formatDateTime } from 'Utils/Date';
 
-import {Sender, Status, IMessage} from 'Messenger/interface';
+import { IMessage, Sender, Status } from 'Messenger/interface';
 
 interface IProps extends Partial<IMessageEvents> {
     list: IMessage[];
@@ -32,15 +32,15 @@ const getStatusIcon = (status: Status) => {
         case Status.ERROR:
             return <BiErrorCircle/>;
     }
-}
+};
 
 export default function MessagesList(props: IProps): JSX.Element {
     return (
-        <div className='flex
+        <div className="flex
                         flex-col
                         justify-end
                         gap-2
-                        h-full'>
+                        h-full">
             {
                 props.list.length ?
                     props.list.map((message) => (
@@ -49,22 +49,22 @@ export default function MessagesList(props: IProps): JSX.Element {
                                       onBlockVisible={(id) => props.onBlockVisible?.(id)}
                                       onBlockInit={(id) => props.onBlockInit?.(id)}/>
                     )) :
-                    <div className='flex flex-col items-center justify-center h-full'>
-                        <div className='tracking-widest text-2xl dark:text-gray-400'>
+                    <div className="flex flex-col items-center justify-center h-full">
+                        <div className="tracking-widest text-2xl dark:text-gray-400">
                             {dict('Нет сообщений').toUpperCase()}
                         </div>
                     </div>
             }
         </div>
-    )
+    );
 }
 
 function MessageBlock(props: IMessageBlock): JSX.Element {
-    const [isVisible, setIsVisible] = useState(false);
+    const [ isVisible, setIsVisible ] = useState(false);
     const blockRef = useRef<HTMLDivElement | null>(null);
     const observer = useMemo(() => new IntersectionObserver(
-        ([entry]) => setIsVisible(entry.isIntersecting)
-    ), [])
+        ([ entry ]) => setIsVisible(entry.isIntersecting)
+    ), []);
 
     useEffect(() => {
         props.onBlockInit(props.message);
@@ -73,7 +73,7 @@ function MessageBlock(props: IMessageBlock): JSX.Element {
         }
         return () => {
             observer.disconnect();
-        }
+        };
     }, []);
 
     useEffect(() => {
@@ -81,7 +81,7 @@ function MessageBlock(props: IMessageBlock): JSX.Element {
             props.onBlockVisible(props.message);
             observer.disconnect();
         }
-    }, [isVisible])
+    }, [ isVisible ]);
 
     return (
         <div ref={blockRef}
@@ -125,5 +125,5 @@ function MessageBlock(props: IMessageBlock): JSX.Element {
                 {props.message.status !== undefined && getStatusIcon(props.message.status)}
             </div>
         </div>
-    )
+    );
 }

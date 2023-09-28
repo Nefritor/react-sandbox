@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import getUUID from 'react-uuid';
 import Cookies from 'universal-cookie';
 
-import {useFetcher} from 'Components/hooks';
+import { useFetcher } from 'Components/hooks';
 
-import {Chat, Rooms} from 'Messenger/pages';
-import {Rooms as RoomsRPC} from 'Messenger/rpc';
+import { Chat, Rooms } from 'Messenger/pages';
+import { Rooms as RoomsRPC } from 'Messenger/rpc';
 
-import {dict} from 'Messenger/i18n';
+import { dict } from 'Messenger/i18n';
 
 interface IRoomData {
     id: string;
@@ -24,34 +24,34 @@ if (!cookies.get('username')) {
 }
 
 export default function Main(): JSX.Element {
-    const [fetch, Fetcher] = useFetcher();
-    const [roomData, setRoomData] = useState<IRoomData | null>(null);
+    const [ fetch, Fetcher ] = useFetcher();
+    const [ roomData, setRoomData ] = useState<IRoomData | null>(null);
 
     const onRoomSelect = (id: string) => {
         RoomsRPC.getRoomData(id).then((data: IRoomData) => {
             setRoomData(data);
-        })
-    }
+        });
+    };
 
     const getPage = (roomData: IRoomData | null): JSX.Element => {
         if (roomData) {
             return <Chat roomId={roomData.id}
                          roomName={roomData.title}
                          onLeaveRoom={() => setRoomData(null)}
-                         onNotification={(data) => fetch(data)}/>
+                         onNotification={(data) => fetch(data)}/>;
         }
         return <Rooms onRoomSelect={onRoomSelect}
                       onNotification={(data) => fetch(data)}/>;
-    }
+    };
 
     useEffect(() => {
         document.title = 'Messenger';
     }, []);
 
     return (
-        <div className='bg-white dark:bg-gray-900 flex flex-col w-screen h-screen p-3 overflow-hidden relative fixed'>
+        <div className="bg-white dark:bg-gray-900 flex flex-col w-screen h-screen p-3 overflow-hidden relative fixed">
             {getPage(roomData)}
             <Fetcher/>
         </div>
-    )
+    );
 }

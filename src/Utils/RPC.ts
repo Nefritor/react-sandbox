@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 interface IPostData {
     service: string;
@@ -27,11 +27,11 @@ export const createRPC = (serviceName: string, port: number) => {
                     service: serviceName,
                     method,
                     data
-                } as IPostData)
+                } as IPostData);
             }
         });
     }
-}
+};
 
 export const getRPC = (name: string): IRPCData => {
     const rpcData = rpcList.find((data) => data.name === name);
@@ -39,5 +39,5 @@ export const getRPC = (name: string): IRPCData => {
         return rpcData;
     }
     throw Error(`There is no RPC controller of "${name}" service`);
-}
+};
 

@@ -1,6 +1,6 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Home from 'Home';
 
@@ -17,19 +17,19 @@ import MessengerDemo from 'Demo/Pages/MessengerDemo';
 import HideLayoutDemo from 'Demo/Pages/HideLayoutDemo';
 import TestDemo from 'Demo/Pages/TestDemo';
 
-import {Main as Messenger} from 'Messenger/pages';
+import { Main as Messenger } from 'Messenger/pages';
 
-import {Main as Calendar} from 'Calendar/pages';
+import { Main as Calendar } from 'Calendar/pages';
 
-import {Main as Constructor} from 'Constructor/exercise';
+import { Main as Constructor } from 'Constructor/exercise';
 
-import {Index as Apps} from 'Apps/main';
-import {Index as Poll} from 'Apps/poll';
-import {Index as TestApp} from 'Apps/test';
+import { Index as Apps } from 'Apps/main';
+import { Index as Poll } from 'Apps/poll';
+import { Index as TestApp } from 'Apps/test';
 
 import './index.css';
 
-const demoPages = [{
+const demoPages = [ {
     path: 'popup-edge',
     caption: 'Components/popup:Edge',
     shortCaption: 'Edge',
@@ -74,9 +74,9 @@ const demoPages = [{
     caption: 'Test',
     shortCaption: 'Test',
     element: <TestDemo/>
-}]
+} ];
 
-const router = createBrowserRouter([{
+const router = createBrowserRouter([ {
     path: "/",
     element: <Home/>
 }, {
@@ -84,10 +84,10 @@ const router = createBrowserRouter([{
     element: <DemoOutlet pages={
         demoPages.map(({ path, caption, shortCaption }) => ({ path, caption, shortCaption }))
     }/>,
-    children: [{
+    children: [ {
         index: true,
         element: <DemoIndex/>
-    }, ...demoPages.map(({ path, element }) => ({ path, element }))]
+    }, ...demoPages.map(({ path, element }) => ({ path, element })) ]
 }, {
     path: 'messenger',
     element: <Messenger/>
@@ -100,16 +100,18 @@ const router = createBrowserRouter([{
 }, {
     path: 'apps',
     element: <Apps/>,
-    children: [{
+    children: [ {
         path: 'poll',
         element: <Poll/>
     }, {
         path: 'test',
         element: <TestApp/>
-    }]
-}]);
+    } ]
+} ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
     .render(
-        <RouterProvider router={router}/>
+        <StrictMode>
+            <RouterProvider router={router}/>
+        </StrictMode>
     );

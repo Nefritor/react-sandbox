@@ -1,6 +1,6 @@
-import React, {ReactNode, Suspense, useEffect, useState} from 'react';
-import {Day, DayMs, FullWeek, WeekDaysCount, WeekMs} from 'Calendar/constants';
-import {IItemData, Item} from 'Calendar/grid';
+import React, { ReactNode, Suspense, useEffect, useState } from 'react';
+import { Day, DayMs, FullWeek, WeekDaysCount, WeekMs } from 'Calendar/constants';
+import { IItemData, Item } from 'Calendar/grid';
 
 interface IProps {
     startDate: Date;
@@ -43,11 +43,11 @@ export default function View(
         visibleDays = FullWeek,
         weeksCount,
         itemBottomContent,
-        blockSize = {height: 80, width: 100},
-        blockOffset = {vertical: 10, horizontal: 10}
+        blockSize = { height: 80, width: 100 },
+        blockOffset = { vertical: 10, horizontal: 10 }
     }: IProps
 ): JSX.Element {
-    const [dayBlocks, setDayBlocks] = useState<IDayBlock[]>([]);
+    const [ dayBlocks, setDayBlocks ] = useState<IDayBlock[]>([]);
 
     useEffect(() => {
         setDayBlocks(() => {
@@ -65,15 +65,15 @@ export default function View(
                             weekday: dayIndex,
                             isActive: visibleDays.includes(dayIndex)
                         }
-                    })
+                    });
                 }
             }
             return days;
         });
-    }, [blockOffset.horizontal, blockOffset.vertical, blockSize.height, blockSize.width, startDate, visibleDays, weeksCount]);
+    }, [ blockOffset.horizontal, blockOffset.vertical, blockSize.height, blockSize.width, startDate, visibleDays, weeksCount ]);
 
     return (
-        <div className='flex flex-col gap-3 relative scrollbar-thin'
+        <div className="flex flex-col gap-3 relative scrollbar-thin"
              style={{
                  height: (blockSize.height * weeksCount) + (blockOffset.vertical * (weeksCount - 1))
              }}>
@@ -81,7 +81,7 @@ export default function View(
                 {
                     dayBlocks.map((dayBlock, index) => (
                         <div key={index}
-                             className='absolute'
+                             className="absolute"
                              style={dayBlock.position}>
                             <Item date={dayBlock.data.date}
                                   weekday={dayBlock.data.weekday}
@@ -93,5 +93,5 @@ export default function View(
                 }
             </Suspense>
         </div>
-    )
+    );
 }

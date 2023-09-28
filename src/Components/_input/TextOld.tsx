@@ -1,4 +1,4 @@
-import React, {createRef, forwardRef, RefObject, useImperativeHandle} from "react";
+import React, { createRef, forwardRef, RefObject, useImperativeHandle } from "react";
 import clsx from 'clsx';
 
 export interface IInputProps {
@@ -32,7 +32,7 @@ const getBackgroundClass = (value?: TBackground) => {
         default:
             return 'rounded-md dark:bg-gray-700';
     }
-}
+};
 
 const TextOld = forwardRef((props: IInputProps, ref) => {
     const inputRef = createRef<HTMLInputElement>();
@@ -46,7 +46,7 @@ const TextOld = forwardRef((props: IInputProps, ref) => {
     }, []);
 
     return (
-        <form className='flex grow items-baseline'
+        <form className="flex grow items-baseline"
               onSubmit={(e) => {
                   e.preventDefault();
                   props.onSubmit?.();
@@ -62,8 +62,8 @@ const TextOld = forwardRef((props: IInputProps, ref) => {
             <div className={clsx(
                 getBackgroundClass(props.background),
                 'dark:text-gray-400 relative flex',
-                [props.className],
-                {'mt-4': props.placeholder && !props.absolutePlaceholder && !props.staticPlaceholder}
+                [ props.className ],
+                { 'mt-4': props.placeholder && !props.absolutePlaceholder && !props.staticPlaceholder }
             )}
                  onClick={() => inputRef.current?.focus()}>
                 {
@@ -94,7 +94,7 @@ const TextOld = forwardRef((props: IInputProps, ref) => {
                 }
             </div>
         </form>
-    )
+    );
 });
 
 export default TextOld;

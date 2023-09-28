@@ -11,6 +11,7 @@ export interface IMessageData {
     text: string;
     date: number;
 }
+
 export type ITextStyle =
     | 'default'
     | 'error'

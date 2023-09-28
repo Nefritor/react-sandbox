@@ -1,4 +1,4 @@
-import Edge, {ILayer, TDirection} from './_popup/Edge';
+import Edge, { ILayer, TDirection } from './_popup/Edge';
 
 export {
     Edge

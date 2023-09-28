@@ -18,10 +18,10 @@ Edge.defaultProps = {
     direction: 'top',
     value: null,
     size: 100
-}
+};
 
 export default function Edge(props: IProps) {
-    const {layers, value, size, direction} = props;
+    const { layers, value, size, direction } = props;
 
     const getLayers = () => {
         return layers.map((layer) => (
@@ -54,15 +54,15 @@ export default function Edge(props: IProps) {
                     layer.content
                 }
             </div>
-        ))
-    }
+        ));
+    };
 
     const isVertical = direction === 'top' || direction === 'bottom';
 
     const isVerse = direction === 'top' || direction === 'left';
 
     return (
-        <div className='relative h-full'>
+        <div className="relative h-full">
             <div className={
                 clsx(
                     isVertical ? 'w-full' : 'h-full',

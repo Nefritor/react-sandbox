@@ -4,4 +4,4 @@ import Switch from './_toggle/Switch';
 export {
     Checkbox,
     Switch
-}
+};

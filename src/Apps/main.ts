@@ -1,4 +1,4 @@
-import {Index} from './_main/Index';
+import { Index } from './_main/Index';
 
 export {
     Index

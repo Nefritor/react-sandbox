@@ -1,7 +1,7 @@
 import Copy from 'copy-to-clipboard';
-import {MdContentCopy} from 'react-icons/md';
+import { MdContentCopy } from 'react-icons/md';
 
-import {IInputProps, TextOld} from 'Components/input';
+import { IInputProps, TextOld } from 'Components/input';
 
 interface ISecretProps extends IInputProps {
     onCopy: () => void;
@@ -12,15 +12,15 @@ export default function SecretInput(props: ISecretProps): JSX.Element {
         if (Copy(props.value)) {
             props.onCopy();
         }
-    }
+    };
 
     const getButtons = () => (
-        <div className='flex items-center px-1 gap-1'
+        <div className="flex items-center px-1 gap-1"
              onClick={(event) => event.stopPropagation()}>
-            <MdContentCopy className='cursor-pointer text-gray-400 hover:brightness-90'
+            <MdContentCopy className="cursor-pointer text-gray-400 hover:brightness-90"
                            onClick={onCopyClick}/>
         </div>
-    )
+    );
 
     return (
         <TextOld {...props}>
@@ -28,5 +28,5 @@ export default function SecretInput(props: ISecretProps): JSX.Element {
                 getButtons()
             }
         </TextOld>
-    )
+    );
 }

@@ -1,9 +1,9 @@
-import React, {createRef, useEffect, useState} from 'react';
-import {MdCheck, MdEdit} from 'react-icons/md';
-import {RxReset} from 'react-icons/rx';
+import React, { createRef, useEffect, useState } from 'react';
+import { MdCheck, MdEdit } from 'react-icons/md';
+import { RxReset } from 'react-icons/rx';
 
-import {Button} from 'Components/button';
-import {TextOld} from 'Components/input';
+import { Button } from 'Components/button';
+import { TextOld } from 'Components/input';
 
 interface IProps {
     value: string;
@@ -12,8 +12,8 @@ interface IProps {
 }
 
 export default function UsernameInput(props: IProps): JSX.Element {
-    const [inputValue, setInputValue] = useState('');
-    const [isEdit, setIsEdit] = useState(false);
+    const [ inputValue, setInputValue ] = useState('');
+    const [ isEdit, setIsEdit ] = useState(false);
 
     const textRef = createRef<HTMLInputElement>();
 
@@ -24,39 +24,39 @@ export default function UsernameInput(props: IProps): JSX.Element {
         } else {
             props.onError();
         }
-    }
+    };
 
     const onEdit = () => {
         setInputValue(props.value);
         setIsEdit(true);
-    }
+    };
 
     useEffect(() => {
-        textRef.current?.focus()
-    }, [textRef]);
+        textRef.current?.focus();
+    }, [ textRef ]);
 
     return (
         <>
             {
                 isEdit ?
-                    <div className='flex gap-3 relative items-center'>
+                    <div className="flex gap-3 relative items-center">
                         <TextOld ref={textRef}
                                  value={inputValue}
-                                 className='w-[200px] bg-gray-300 dark:bg-gray-700 shadow-md h-8'
+                                 className="w-[200px] bg-gray-300 dark:bg-gray-700 shadow-md h-8"
                                  onChange={setInputValue}>
-                            <Button caption={<MdCheck className='text-white dark:text-gray-900' size={20}/>}
-                                    className='bg-gray-700 hover:brightness-95 active:brightness-90 dark:bg-gray-500'
+                            <Button caption={<MdCheck className="text-white dark:text-gray-900" size={20}/>}
+                                    className="bg-gray-700 hover:brightness-95 active:brightness-90 dark:bg-gray-500"
                                     onClick={onConfirm}/>
                         </TextOld>
                         {
                             inputValue !== props.value &&
                             <RxReset
-                                className='absolute -right-3 translate-x-full cursor-pointer text-gray-700 dark:text-gray-300'
+                                className="absolute -right-3 translate-x-full cursor-pointer text-gray-700 dark:text-gray-300"
                                 onClick={() => setIsEdit(false)}/>
                         }
                     </div>
                     :
-                    <div className='flex
+                    <div className="flex
                                     items-center
                                     cursor-pointer
                                     text-gray-500
@@ -65,7 +65,7 @@ export default function UsernameInput(props: IProps): JSX.Element {
                                     text-lg
                                     active:brightness-90
                                     leading-8
-                                    select-none'
+                                    select-none"
                          onClick={onEdit}>
                         <span>{props.value}</span>
                         &nbsp;
@@ -73,5 +73,5 @@ export default function UsernameInput(props: IProps): JSX.Element {
                     </div>
             }
         </>
-    )
+    );
 }

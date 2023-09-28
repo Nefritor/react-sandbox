@@ -1,4 +1,4 @@
-import {createRPC, getRPC} from 'Utils/RPC';
+import { createRPC, getRPC } from 'Utils/RPC';
 
 const RPC_ID: string = 'Constructor';
 

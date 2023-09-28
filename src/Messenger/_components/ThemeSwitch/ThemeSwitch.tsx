@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import React, {useEffect, useState} from 'react';
-import {FiMoon, FiSun} from 'react-icons/fi';
+import React, { useEffect, useState } from 'react';
+import { FiMoon, FiSun } from 'react-icons/fi';
 
 interface IProps {
     className: string;
@@ -11,11 +11,11 @@ if (!localStorage.getItem('theme')) {
 }
 
 export default function ThemeSwitch(props: IProps): JSX.Element {
-    const [darkTheme, setDarkTheme] = useState(localStorage.getItem('theme') === 'dark');
+    const [ darkTheme, setDarkTheme ] = useState(localStorage.getItem('theme') === 'dark');
 
     const onSwitchClick = (event: React.MouseEvent<HTMLDivElement>) => {
         setDarkTheme((value) => !value);
-    }
+    };
 
     useEffect(() => {
         const classList = document.documentElement.classList;
@@ -30,18 +30,18 @@ export default function ThemeSwitch(props: IProps): JSX.Element {
             localStorage.setItem('theme', 'light');
             icon?.setAttribute('href', 'favicon.ico');
         }
-    }, [darkTheme]);
+    }, [ darkTheme ]);
 
     return (
         <div className={clsx(
             'flex items-center justify-center h-12 w-12 rounded-full cursor-pointer hover:brightness-95 select-none z-10',
             darkTheme ? 'bg-gray-600' : 'bg-amber-300',
-            [props.className]
+            [ props.className ]
         )}
              onClick={onSwitchClick}>
             {
                 darkTheme ? <FiMoon size={20}/> : <FiSun size={20}/>
             }
         </div>
-    )
+    );
 }

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 
 interface ICheckboxProps {
     label?: string;
@@ -8,15 +8,15 @@ interface ICheckboxProps {
 
 export default function Checkbox(props: ICheckboxProps) {
     return (
-        <div className='flex items-baseline cursor-pointer select-none'
+        <div className="flex items-baseline cursor-pointer select-none"
              onClick={() => props.onChange(!props.value)}>
-            <input type='checkbox'
+            <input type="checkbox"
                    checked={props.value}
                    readOnly={true}/>
             {
                 props.label &&
-                <div className='ml-3 dark:text-gray-400'>{props.label}</div>
+                <div className="ml-3 dark:text-gray-400">{props.label}</div>
             }
         </div>
-    )
+    );
 }

@@ -1,18 +1,13 @@
-import React, {Suspense} from 'react';
+import React, { useState } from 'react';
 import Block from 'Layout/Block';
-import {ThemeSwitch} from 'Messenger/components';
-import Background from 'Layout/Background';
+import { Button } from 'Components/button';
 
 export default function InputTextDemo(): JSX.Element {
-
-    return (
-        <Background className='items-center justify-center relative'>
-            <Suspense>
-                <ThemeSwitch className='absolute right-3 top-3 shadow-md'/>
-            </Suspense>
-            <Block shadow={true}>
-                123
-            </Block>
-        </Background>
-    )
+    const [ count, setCount ] = useState(0);
+    return <Block className="flex flex-col gap-3 items-center w-[300px]" shadow={true}>
+        <div className="text-gray-700 dark:text-gray-400">{count}</div>
+        <Button
+            caption="Нажми меня"
+            onClick={() => setCount((x) => ++x)}/>
+    </Block>;
 }
